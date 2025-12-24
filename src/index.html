@@ -1,32 +1,2924 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PakePlus App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周易软件集成系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f3ef;
+            color: #333;
+            line-height: 1.6;
+            background-image: linear-gradient(to bottom, #f5f3ef 0%, #e8e4dc 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #f1c40f;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #bdc3c7;
+            font-style: italic;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background-color: #34495e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn {
+            padding: 18px 30px;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            border-right: 1px solid #2c3e50;
+        }
+        
+        .nav-btn:last-child {
+            border-right: none;
+        }
+        
+        .nav-btn:hover {
+            background-color: #3d566e;
+        }
+        
+        .nav-btn.active {
+            background-color: #1abc9c;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .page-content {
+            display: none;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            min-height: 600px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #1abc9c;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .content-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #1abc9c;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .content-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .content-item h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .content-item p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .content-item .item-number {
+            display: inline-block;
+            background-color: #1abc9c;
+            color: white;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+            line-height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .symbol {
+            font-size: 1.5rem;
+            color: #e74c3c;
+            margin: 0 5px;
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                border-right: none;
+                border-bottom: 1px solid #2c3e50;
+            }
+            
+            .page-content {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>周易学习软件及课程 - 传承中华文明   走向世界</h1>
+            <p class="subtitle">山东青岛董德龙 · 国学传承 · 电话：15166397157</p>
+        </header>
+        
+        <nav>
+            <button class="nav-btn active" data-page="divination">周易排盘</button>
+            <button class="nav-btn" data-page="explanation">六十四卦全象·推演系统</button>
+            <button class="nav-btn" data-page="statement">文化传承</button>
+        </nav>
+        
+        <!-- 周易排盘页面 -->
+        <section id="divination" class="page-content active">
+           
+            
+           <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易经推命 - 天纪终极原著版</title>
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.2.37/lunar.js"></script>
+    <style>
+        :root { --blue: #1677ff; --bg: #f0f2f5; --card: #fff; --text: #333; --red: #ff4d4f; --border: #e5e7eb; }
+        body { font-family: "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .panel { background: var(--card); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        .panel-head { font-size: 18px; font-weight: bold; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; color: #1f1f1f; }
+        .input-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 12px; color: #666; margin-bottom: 5px; }
+        input, select { padding: 8px 10px; border: 1px solid #d9d9d9; border-radius: 4px; width: 90px; outline: none; }
+        .btn { padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer; color: #fff; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .btn-primary { background: var(--blue); }
+        .btn-primary:hover { background: #4096ff; }
+        .btn-green { background: #52c41a; }
+        .bz-table { width: 100%; border-collapse: collapse; text-align: center; border: 1px solid #f0f0f0; }
+        .bz-table th { background: #fafafa; padding: 10px; color: #666; border: 1px solid #f0f0f0; }
+        .bz-table td { padding: 15px; border: 1px solid #f0f0f0; font-size: 16px; }
+        .ganzhi { font-weight: bold; font-size: 22px; display: block; margin-bottom: 5px; }
+        .sum-info { background: #e6f7ff; color: #096dd9; padding: 10px; text-align: center; margin-top: 10px; border-radius: 4px; font-weight: bold; }
+        .gua-area { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .gua-box { width: 220px; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .gua-name { font-size: 20px; font-weight: bold; color: var(--red); margin-bottom: 15px; border-bottom: 2px solid #ffccc7; width: 100%; text-align: center; padding-bottom: 10px; }
+        .yao-stack { display: flex; flex-direction: column; gap: 8px; width: 140px; }
+        .yao-line { height: 18px; display: flex; justify-content: space-between; position: relative; }
+        .yang { width: 100%; height: 100%; background: #333; border-radius: 2px; }
+        .yin-group { width: 100%; height: 100%; display: flex; justify-content: space-between; }
+        .yin-part { width: 42%; height: 100%; background: #333; border-radius: 2px; }
+        .is-yt .yang, .is-yt .yin-part { background: var(--red); }
+        .yt-text { position: absolute; right: -65px; top: 0; color: var(--red); font-size: 12px; font-weight: bold; line-height: 18px; }
+        .idx-text { position: absolute; left: -30px; top: 0; color: #ccc; font-size: 12px; line-height: 18px; }
+        .dy-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .dy-card { background: #fff; border: 1px solid #e0e0e0; padding: 8px 15px; border-radius: 4px; text-align: center; min-width: 80px; }
+        .dy-title { font-size: 12px; color: #999; margin-bottom: 2px; }
+        .dy-range { font-weight: bold; color: var(--blue); font-size: 14px; }
+        .flow-panel { background: #f0f9ff; border: 1px solid #bae7ff; }
+        .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .flow-item { background: #fff; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #e6f7ff; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .flow-label { font-size: 12px; color: #888; margin-bottom: 5px; font-weight: bold; }
+        .flow-val { font-size: 18px; font-weight: bold; color: #333; }
+        .flow-extra { font-size: 11px; color: #666; margin-top: 5px; line-height: 1.4; }
+        .flow-time { font-size: 10px; color: #999; margin-top: 3px; }
+        .debug-info { background: #f9f9f9; border-left: 4px solid #ccc; padding: 10px; margin: 10px 0; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
 
-    <body>
-        <main class="container">
-            <h1>Welcome to PakePlus</h1>
-            <form class="row" id="greet-form">
-                <input id="inputValue" placeholder="Enter a something..." />
-            </form>
-            <div class="resultBox">
-                <span>result: </span>
-                <span id="result"></span>
+<div class="container">
+    <div class="panel">
+        <div class="panel-head">
+            <span> 命造排盘 (天纪算法)</span><p><button class="btn btn-primary" onclick="calcMain()">开始排盘</button></p>
+        </div>
+        <div class="input-row">
+            <div class="input-group"><label>公历年</label><input type="number" id="y" value="1998"></div>
+            <div class="input-group"><label>月</label><select id="m"></select></div>
+            <div class="input-group"><label>日</label><select id="d"></select></div>
+            <div class="input-group"><label>时</label><input type="number" id="h" value="14"></div>
+            <div class="input-group"><label>分</label><input type="number" id="min" value="31"></div>
+            <div class="input-group"><label>性别</label><select id="sex"><option value="1">男</option><option value="0">女</option></select></div>
+            <div class="input-group"><label>经度</label><input type="number" id="lon" value="120.0"></div>
+        </div>
+    </div>
+
+    <div id="result-view" style="display:none;">
+        <div class="panel">
+            <div class="panel-head">2. 四柱八字与数理</div>
+            <div style="font-size:12px; color:#666; margin-bottom:10px;">真太阳时: <span id="txt-time"></span> | 节气: <span id="txt-jie"></span></div>
+            <table class="bz-table">
+                <thead><tr><th>年柱</th><th>月柱</th><th>日柱</th><th>时柱</th></tr></thead>
+                <tbody id="bz-body"></tbody>
+            </table>
+            <div class="sum-info">地数：<span id="val-dishu"></span> | 天数：<span id="val-tianshu"></span></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">3. 命卦 (先天 / 后天)</div>
+            <div class="gua-area">
+                <div class="gua-box">
+                    <div class="gua-name" id="n-xt">--</div>
+                    <div id="g-xt" class="yao-stack"></div>
+                </div>
+                <div class="gua-box">
+                    <div class="gua-name" id="n-ht">--</div>
+                    <div id="g-ht" class="yao-stack"></div>
+                </div>
             </div>
-            <div class="invokeBox">
-                <button id="openUrl">open_url_browser</button>
-                <button id="openUrlNew">open_url_new</button>
-                <button id="runCommand">run_command</button>
-                <button id="downloadFile">download_file</button>
-                <button id="getExeDir">get_exe_dir</button>
-                <button id="getEnvVar">get_env_var</button>
-                <button id="findPort">find_port</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">4. 大运流转</div>
+            <div id="dy-area" class="dy-container"></div>
+        </div>
+
+        <div class="panel flow-panel">
+            <div class="panel-head" style="border-bottom-color:#91d5ff; color:#003a8c;">
+                <span>5. 任意时刻流运推算</span>
+                <p><button class="btn btn-primary" onclick="calcFlow()">刷新流运</button></p>
             </div>
-        </main>
-    </body>
+            <div class="input-row">
+                <div class="input-group"><label>查年</label><input type="number" id="cy"></div>
+                <div class="input-group"><label>月</label><select id="cm"></select></div>
+                <div class="input-group"><label>日</label><select id="cd"></select></div>
+                <div class="input-group"><label>时</label><input type="number" id="ch"></div>
+                <div class="input-group"><label>分</label><input type="number" id="cmin"></div>
+                <div class="input-group"><label>&nbsp;</label><button class="btn btn-green" onclick="setNow()">当前时间</button></div>
+            </div>
+            <div class="flow-grid">
+                <div class="flow-item"><div class="flow-label">流年（天纪算法）</div><div class="flow-val" id="fv-y">--</div><div class="flow-extra" id="fd-y"></div></div>
+                <div class="flow-item"><div class="flow-label">流月（天纪算法）</div><div class="flow-val" id="fv-m">--</div><div class="flow-extra" id="fd-m"></div><div class="flow-time" id="ft-m"></div></div>
+                <div class="flow-item"><div class="flow-label">流日（新规则）</div><div class="flow-val" id="fv-d">--</div><div class="flow-extra" id="fd-d"></div><div class="flow-time" id="ft-d"></div></div>
+                </div>
+            <div id="debug-info" class="debug-info" style="display:none;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+var GAN_VAL = {'甲':6,'乙':2,'丙':8,'丁':7,'戊':1,'己':9,'庚':3,'辛':4,'壬':6,'癸':2};
+var ZHI_VAL = {'子':[1,6],'丑':[5,10],'寅':[3,8],'卯':[3,8],'辰':[5,10],'巳':[2,7],'午':[2,7],'未':[5,10],'申':[4,9],'酉':[4,9],'戌':[5,10],'亥':[1,6]};
+var GUA_BITS = {'乾':[1,1,1],'兑':[1,1,0],'离':[1,0,1],'震':[1,0,0],'巽':[0,1,1],'坎':[0,1,0],'艮':[0,0,1],'坤':[0,0,0]};
+var GUA_MAP = {1:'坎',2:'坤',3:'震',4:'巽',5:'艮',6:'乾',7:'兑',8:'艮',9:'离'};
+var GUA_NAMES = {'乾乾':'乾为天','乾兑':'天泽履','乾离':'天火同人','乾震':'天雷无妄','乾巽':'天风姤','乾坎':'天水讼','乾艮':'天山遯','乾坤':'天地否','兑乾':'泽天夬','兑兑':'兑为泽','兑离':'泽火革','兑震':'泽雷随','兑巽':'泽风大过','兑坎':'泽水困','兑艮':'泽山咸','兑坤':'泽地萃','离乾':'火天大有','离兑':'火泽睽','离离':'离为火','离震':'火雷噬嗑','离巽':'火风鼎','离坎':'火水未济','离艮':'火山旅','离坤':'火地晋','震乾':'雷天大壮','震兑':'雷泽归妹','震离':'雷火丰','震震':'震为雷','震巽':'雷风恒','震坎':'雷水解','震艮':'雷山小过','震坤':'雷地豫','巽乾':'风天小畜','巽兑':'风泽中孚','巽离':'风火家人','巽震':'风雷益','巽巽':'巽为风','巽坎':'风水涣','巽艮':'风山渐','巽坤':'风地观','坎乾':'水天需','坎兑':'水泽节','坎离':'水火既济','坎震':'水雷屯','坎巽':'水风井','坎坎':'坎为水','坎艮':'水山蹇','坎坤':'水地比','艮乾':'山天大畜','艮兑':'山泽损','艮离':'山火贲','艮震':'山雷颐','艮巽':'山风蛊','艮坎':'山水蒙','艮艮':'艮为山','艮坤':'山地剥','坤乾':'地天泰','坤兑':'地泽临','坤离':'地火明夷','坤震':'地雷复','坤巽':'地风升','坤坎':'地水师','坤艮':'地山谦','坤坤':'坤为地'};
+var JIEQI_MONTH_MAP = {'立春':1,'惊蛰':2,'清明':3,'立夏':4,'芒种':5,'小暑':6,'立秋':7,'白露':8,'寒露':9,'立冬':10,'大雪':11,'小寒':12};
+var YANG_ZHI = ['子','寅','辰','午','申','戌'];
+var YIN_ZHI = ['丑','卯','巳','未','酉','亥'];
+var ALL_ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+var YAO_NAMES = ['初','二','三','四','五','上'];
+var GAN_NAMES = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+
+var G = null;
+
+window.onload = function() {
+    var ms = [document.getElementById('m'), document.getElementById('cm')];
+    var ds = [document.getElementById('d'), document.getElementById('cd')];
+    for(var i = 1; i <= 12; i++) {
+        for(var j = 0; j < ms.length; j++) ms[j].add(new Option(i + '月', i));
+    }
+    for(var i = 1; i <= 31; i++) {
+        for(var j = 0; j < ds.length; j++) ds[j].add(new Option(i + '日', i));
+    }
+    document.getElementById('m').value = 4;
+    document.getElementById('d').value = 13;
+    setNow();
+};
+
+function setNow() {
+    var n = new Date();
+    document.getElementById('cy').value = n.getFullYear();
+    document.getElementById('cm').value = n.getMonth() + 1;
+    document.getElementById('cd').value = n.getDate();
+    document.getElementById('ch').value = n.getHours();
+    document.getElementById('cmin').value = n.getMinutes();
+}
+
+// 根据年份获取天干
+function getGanFromYear(year) {
+    var ganIdx = (year - 4) % 10;
+    return GAN_NAMES[ganIdx];
+}
+
+// ==================== 按照最新规则的元堂计算函数 ====================
+function calcYuanTang(yaos, timeZhi, birthYear, isMale, lunarMonth) {
+    // 文档规则：
+    // 阳时：子、丑、寅、卯、辰、巳
+    // 阴时：午、未、申、酉、戌、亥
+    
+    var yangTime = ['子','丑','寅','卯','辰','巳'];
+    var yinTime = ['午','未','申','酉','戌','亥'];
+    
+    var isYangTime = yangTime.indexOf(timeZhi) >= 0;
+    
+    // 获取时辰在对应列表中的索引
+    var timeIdx;
+    if(isYangTime) {
+        timeIdx = yangTime.indexOf(timeZhi);  // 阳时从子时(0)开始
+    } else {
+        timeIdx = yinTime.indexOf(timeZhi);   // 阴时从午时(0)开始
+    }
+    
+    console.log("元堂计算调试信息：");
+    console.log("时辰:", timeZhi, "阳时?", isYangTime);
+    console.log("卦爻:", yaos);
+    console.log("时辰索引:", timeIdx);
+    
+    // ========== 特殊情况处理：全阳爻或全阴爻 ==========
+    var yangYaoCount = yaos.filter(y => y === 1).length;
+    var yinYaoCount = 6 - yangYaoCount;
+    
+    // 检查是否为全阳爻（乾卦）或全阴爻（坤卦）
+    var isAllYang = yangYaoCount === 6;
+    var isAllYin = yinYaoCount === 6;
+    
+    if(isAllYang || isAllYin) {
+        console.log("特殊情况：全", isAllYang ? "阳" : "阴", "爻卦");
+        return handleAllSameYao(isAllYang, isYangTime, timeIdx, birthYear, isMale, lunarMonth);
+    }
+    
+    // ========== 正常情况处理 ==========
+    // 按照最新规则：
+    // 1. 阳时生人：取本卦阳爻，从子时数起
+    // 2. 阴时生人：取本卦阴爻，从午时数起
+    // 3. 数完目标爻后，继续数非目标爻（特殊情况除外）
+    
+    return handleNormalCase(yaos, isYangTime, timeIdx, yangYaoCount);
+}
+
+// ==================== 处理正常情况 ====================
+function handleNormalCase(yaos, isYangTime, timeIdx, yangYaoCount) {
+    var yinYaoCount = 6 - yangYaoCount;
+    
+    // 找出目标爻和非目标爻的位置
+    var targetYaoPositions = [];  // 目标爻位置（阳时：阳爻，阴时：阴爻）
+    var otherYaoPositions = [];   // 非目标爻位置（阳时：阴爻，阴时：阳爻）
+    
+    for(var i = 0; i < 6; i++) {
+        var yaoPos = i + 1;
+        if(isYangTime) {
+            // 阳时生人：目标爻是阳爻
+            if(yaos[i] === 1) {
+                targetYaoPositions.push(yaoPos);
+            } else {
+                otherYaoPositions.push(yaoPos);
+            }
+        } else {
+            // 阴时生人：目标爻是阴爻
+            if(yaos[i] === 0) {
+                targetYaoPositions.push(yaoPos);
+            } else {
+                otherYaoPositions.push(yaoPos);
+            }
+        }
+    }
+    
+    console.log("目标爻位置:", targetYaoPositions);
+    console.log("非目标爻位置:", otherYaoPositions);
+    
+    // 判断是否需要数非目标爻
+    var needCountOther = true;
+    
+    if(isYangTime) {
+        // 阳时生人特殊情况：
+        // 1. 纯阳卦（全阳爻）不数阴爻 - 已在特殊情况处理
+        // 2. 三阳爻元堂卦不数阴爻
+        if(yangYaoCount === 3) {
+            needCountOther = false;
+            console.log("三阳爻卦，不数阴爻");
+        }
+    } else {
+        // 阴时生人特殊情况：
+        // 1. 纯阴卦（全阴爻）不数阳爻 - 已在特殊情况处理
+        // 2. 三阴爻元堂卦不数阳爻
+        if(yinYaoCount === 3) {
+            needCountOther = false;
+            console.log("三阴爻卦，不数阳爻");
+        }
+    }
+    
+    // ========== 根据规则创建循环数组 ==========
+    // 总结规则：
+    // 1. 一阳爻卦：阳爻数两次，然后数阴爻
+    // 2. 二阳爻卦：阳爻各数两次（共4次），然后数阴爻
+    // 3. 三阳爻卦：只数阳爻（循环数），不数阴爻
+    // 4. 四阳爻卦：阳爻数一次，然后数阴爻
+    // 5. 五阳爻卦：阳爻数一次，然后数阴爻
+    // 阴时生人类似，只是目标爻是阴爻
+    
+    // 创建实际的循环数组
+    var cycleArray = [];
+    
+    if(isYangTime) {
+        // 阳时生人
+        switch(yangYaoCount) {
+            case 1:
+                // 一阳爻卦：阳爻数两次
+                cycleArray.push(targetYaoPositions[0]); // 第一次
+                cycleArray.push(targetYaoPositions[0]); // 第二次
+                // 然后数阴爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+                
+            case 2:
+                // 二阳爻卦：阳爻各数两次（共4次）
+                // 第一个阳爻：第一次
+                cycleArray.push(targetYaoPositions[0]);
+                // 第二个阳爻：第一次
+                cycleArray.push(targetYaoPositions[1]);
+                // 第一个阳爻：第二次
+                cycleArray.push(targetYaoPositions[0]);
+                // 第二个阳爻：第二次
+                cycleArray.push(targetYaoPositions[1]);
+                // 然后数阴爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+                
+            case 3:
+                // 三阳爻卦：只数阳爻，不数阴爻
+                // 循环数阳爻：2爻数子，4爻数丑，6爻数寅，2爻数卯，4爻数辰，6爻数巳
+                for(var i = 0; i < 6; i++) {
+                    cycleArray.push(targetYaoPositions[i % 3]);
+                }
+                break;
+                
+            case 4:
+                // 四阳爻卦：阳爻数一次，然后数阴爻
+                // 例子：天水讼阳爻为2爻4爻5爻6爻，2爻数子，4爻数丑，5爻数寅，6爻数卯
+                for(var i = 0; i < targetYaoPositions.length; i++) {
+                    cycleArray.push(targetYaoPositions[i]);
+                }
+                // 然后数阴爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+                
+            case 5:
+                // 五阳爻卦：阳爻数一次，然后数阴爻
+                // 例子：火天大有阳爻为1爻2爻3爻4爻6爻，1爻数子，2爻数丑，3爻数寅，4爻数卯，6爻数辰
+                for(var i = 0; i < targetYaoPositions.length; i++) {
+                    cycleArray.push(targetYaoPositions[i]);
+                }
+                // 然后数阴爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+        }
+    } else {
+        // 阴时生人
+        switch(yinYaoCount) {
+            case 1:
+                // 一阴爻卦：阴爻数两次
+                cycleArray.push(targetYaoPositions[0]); // 第一次
+                cycleArray.push(targetYaoPositions[0]); // 第二次
+                // 然后数阳爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+                
+            case 2:
+                // 二阴爻卦：阴爻各数两次（共4次）
+                // 例子：山天大蓄阴爻为4爻，5爻，4爻数午，5爻数未，4爻数申，5爻数酉
+                cycleArray.push(targetYaoPositions[0]); // 第一个阴爻：第一次
+                cycleArray.push(targetYaoPositions[1]); // 第二个阴爻：第一次
+                cycleArray.push(targetYaoPositions[0]); // 第一个阴爻：第二次
+                cycleArray.push(targetYaoPositions[1]); // 第二个阴爻：第二次
+                // 然后数阳爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+                
+            case 3:
+                // 三阴爻卦：只数阴爻，不数阳爻
+                // 例子：泽水困阴爻为1爻，3爻，6爻，1爻数午，3爻数未，6爻数申，1爻数酉，3爻数戌，6爻数亥
+                for(var i = 0; i < 6; i++) {
+                    cycleArray.push(targetYaoPositions[i % 3]);
+                }
+                break;
+                
+            case 4:
+                // 四阴爻卦：阴爻数一次，然后数阳爻
+                // 例子：震为雷阴爻为2爻，3爻，5爻，6爻，2爻数午，3爻数未，5爻数申，6爻数酉
+                for(var i = 0; i < targetYaoPositions.length; i++) {
+                    cycleArray.push(targetYaoPositions[i]);
+                }
+                // 然后数阳爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+                
+            case 5:
+                // 五阴爻卦：阴爻数一次，然后数阳爻
+                // 例子：地雷复阴爻为2爻，3爻，4爻，5爻，6爻，2爻数午，3爻数未，4爻数申，5爻数酉，6爻数戌
+                for(var i = 0; i < targetYaoPositions.length; i++) {
+                    cycleArray.push(targetYaoPositions[i]);
+                }
+                // 然后数阳爻
+                for(var i = 0; i < otherYaoPositions.length; i++) {
+                    cycleArray.push(otherYaoPositions[i]);
+                }
+                break;
+        }
+    }
+    
+    console.log("循环数组:", cycleArray);
+    console.log("时辰索引:", timeIdx);
+    
+    // 计算在循环中的位置
+    var result = cycleArray[timeIdx];
+    console.log("元堂爻位:", result);
+    
+    return result;
+}
+
+// ==================== 处理全阳爻或全阴爻的特殊情况 ====================
+function handleAllSameYao(isAllYang, isYangTime, timeIdx, birthYear, isMale, lunarMonth) {
+    // 获取节气信息（判断冬至后夏至前还是夏至后冬至前）
+    var isAfterWinterSolstice = isAfterWinterSolsticeFunc(birthYear, lunarMonth);
+    
+    if(isAllYang) {
+        // 全阳爻（乾卦）
+        if(isMale) {
+            // 男命 - 乾卦男命不分夏至冬至
+            if(isYangTime) {
+                // 男命阳时生人：1爻数子，2爻数丑，3爻数寅，1爻数卯，2爻数辰，3爻数巳
+                var yangPattern = [1, 2, 3, 1, 2, 3];
+            } else {
+                // 男命阴时生人：4爻数午，5爻数未，6爻数申，4爻数酉，5爻数戌，6爻数亥
+                var yinPattern = [4, 5, 6, 4, 5, 6];
+            }
+        } else {
+            // 女命
+            if(isYangTime) {
+                // 阳时生人
+                if(isAfterWinterSolstice) {
+                    // 冬至后夏至前：6爻数子，5爻数丑，4爻数寅，6爻数卯，5爻数辰，4爻数巳
+                    var yangPattern = [6, 5, 4, 6, 5, 4];
+                } else {
+                    // 夏至后冬至前：1爻数子，2爻数丑，3爻数寅，1爻数卯，2爻数辰，3爻数巳
+                    var yangPattern = [1, 2, 3, 1, 2, 3];
+                }
+            } else {
+                // 阴时生人
+                if(isAfterWinterSolstice) {
+                    // 冬至后夏至前：3爻数午，2爻数未，1爻数申，3爻数酉，2爻数戌，1爻数亥
+                    var yinPattern = [3, 2, 1, 3, 2, 1];
+                } else {
+                    // 夏至后冬至前：4爻数午，5爻数未，6爻数申，4爻数酉，5爻数戌，6爻数亥
+                    var yinPattern = [4, 5, 6, 4, 5, 6];
+                }
+            }
+        }
+    } else {
+        // 全阴爻（坤卦）
+        // 根据文档明确规则：
+        if(isMale) {
+            // 男命全阴爻
+            if(isYangTime) {
+                // 阳时生人
+                if(isAfterWinterSolstice) {
+                    // 冬至后夏至前：1爻数子，2爻数丑，3爻数寅，1爻数卯，2爻数辰，3爻数巳
+                    var yangPattern = [1, 2, 3, 1, 2, 3];
+                } else {
+                    // 夏至后冬至前：6爻数子，5爻数丑，4爻数寅，6爻数卯，5爻数辰，4爻数巳
+                    var yangPattern = [6, 5, 4, 6, 5, 4];
+                }
+            } else {
+                // 阴时生人
+                if(isAfterWinterSolstice) {
+                    // 冬至后夏至前：4爻数午，5爻数未，6爻数申，4爻数酉，5爻数戌，6爻数亥
+                    var yinPattern = [4, 5, 6, 4, 5, 6];
+                } else {
+                    // 夏至后冬至前：3爻数午，2爻数未，1爻数申，3爻数酉，2爻数戌，1爻数亥
+                    var yinPattern = [3, 2, 1, 3, 2, 1];
+                }
+            }
+        } else {
+            // 女命全阴爻
+            if(isYangTime) {
+                // 女命阳时生人：1爻数子，2爻数丑，3爻数寅，1爻数卯，2爻数辰，3爻数巳
+                var yangPattern = [1, 2, 3, 1, 2, 3];
+            } else {
+                // 女命阴时生人：4爻数午，5爻数未，6爻数申，4爻数酉，5爻数戌，6爻数亥
+                var yinPattern = [4, 5, 6, 4, 5, 6];
+            }
+        }
+    }
+    
+    // 返回对应时辰的爻位
+    var result = isYangTime ? yangPattern[timeIdx] : yinPattern[timeIdx];
+    console.log("全", isAllYang ? "阳" : "阴", "爻卦特殊处理：", 
+                isMale ? "男命" : "女命", 
+                isYangTime ? "阳时" : "阴时",
+                "节气:", isAfterWinterSolstice ? "冬至后夏至前" : "夏至后冬至前",
+                "元堂爻位:", result);
+    
+    return result;
+}
+
+// ==================== 判断是否在冬至后夏至前 ====================
+function isAfterWinterSolsticeFunc(year, lunarMonth) {
+    // 简化处理：农历11月到次年4月为冬至后夏至前
+    // 实际应该根据具体节气日期判断，这里做简化
+    return lunarMonth >= 11 || lunarMonth <= 4;
+}
+
+// ==================== 辅助函数 ====================
+// 判断是否为阳干年（甲丙戊庚壬）
+function isYangGanYear(year) {
+    var gan = getGanFromYear(year);
+    return ['甲','丙','戊','庚','壬'].indexOf(gan) >= 0;
+}
+
+function getGanFromYear(year) {
+    var ganIdx = (year - 4) % 10;
+    if(ganIdx < 0) ganIdx += 10;
+    return GAN_NAMES[ganIdx];
+}
+
+function getName(arr) {
+    var s = arr.join(',');
+    for(var k in GUA_BITS) {
+        if(GUA_BITS[k].join(',') === s) return k;
+    }
+    return '坤';
+}
+
+function getGuaName(yaos) {
+    var lower = getName(yaos.slice(0, 3));
+    var upper = getName(yaos.slice(3, 6));
+    return GUA_NAMES[upper + lower] || (upper + lower);
+}
+
+function getYaoName(idx) {
+    return YAO_NAMES[idx];
+}
+// 添加日期格式化函数
+function formatDate(date) {
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    return m + '月' + d + '日';
+}
+
+// 添加时间格式化函数（用于流分）
+function formatTime(minutes) {
+    var hours = Math.floor(minutes / 60);
+    var mins = Math.floor(minutes % 60);
+    return (hours < 10 ? '0' : '') + hours + ':' + (mins < 10 ? '0' : '') + mins;
+}
+
+// 获取某年所有节气的精确时间
+function getYearJieqiTable(year) {
+    var result = [];
+    try {
+        for(var m = 1; m <= 12; m++) {
+            var solar = Solar.fromYmd(year, m, 1);
+            var lunar = solar.getLunar();
+            var jieqi = lunar.getJieQiTable();
+            for(var name in jieqi) {
+                if(JIEQI_MONTH_MAP[name] !== undefined) {
+                    var s = jieqi[name];
+                    result.push({
+                        name: name,
+                        lunarMonth: JIEQI_MONTH_MAP[name],
+                        date: new Date(s.getYear(), s.getMonth() - 1, s.getDay(), s.getHour(), s.getMinute(), s.getSecond())
+                    });
+                }
+            }
+        }
+        // 获取次年立春前的小寒
+        var nextSolar = Solar.fromYmd(year + 1, 1, 1);
+        var nextLunar = nextSolar.getLunar();
+        var nextJieqi = nextLunar.getJieQiTable();
+        if(nextJieqi['小寒']) {
+            var s = nextJieqi['小寒'];
+            result.push({
+                name: '小寒(次年)',
+                lunarMonth: 12,
+                date: new Date(s.getYear(), s.getMonth() - 1, s.getDay(), s.getHour(), s.getMinute(), s.getSecond()),
+                isNextYear: true
+            });
+        }
+        if(nextJieqi['立春']) {
+            var s = nextJieqi['立春'];
+            result.push({
+                name: '立春(次年)',
+                lunarMonth: 1,
+                date: new Date(s.getYear(), s.getMonth() - 1, s.getDay(), s.getHour(), s.getMinute(), s.getSecond()),
+                isNextYear: true
+            });
+        }
+    } catch(e) {
+        console.error('获取节气失败:', e);
+    }
+    result.sort(function(a, b) { return a.date - b.date; });
+    return result;
+}
+
+// 获取指定时间所在的节气月份
+function getJieqiMonthInfo(year, month, day, hour, minute) {
+    var targetDate = new Date(year, month - 1, day, hour, minute, 0);
+    var jieqiList = [];
+    
+    for(var y = year - 1; y <= year + 1; y++) {
+        var yearJieqi = getYearJieqiTable(y);
+        jieqiList = jieqiList.concat(yearJieqi);
+    }
+    jieqiList.sort(function(a, b) { return a.date - b.date; });
+    
+    var seen = {};
+    var uniqueList = [];
+    for(var i = 0; i < jieqiList.length; i++) {
+        var key = jieqiList[i].date.getTime();
+        if(!seen[key]) {
+            seen[key] = true;
+            uniqueList.push(jieqiList[i]);
+        }
+    }
+    jieqiList = uniqueList;
+    
+    for(var i = 0; i < jieqiList.length - 1; i++) {
+        if(targetDate >= jieqiList[i].date && targetDate < jieqiList[i + 1].date) {
+            return {
+                startJieqi: jieqiList[i],
+                endJieqi: jieqiList[i + 1],
+                lunarMonth: jieqiList[i].lunarMonth
+            };
+        }
+    }
+    return null;
+}
+
+function formatDateTime(date) {
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    var h = date.getHours();
+    var min = date.getMinutes();
+    return m + '月' + d + '日' + h + ':' + (min < 10 ? '0' : '') + min;
+}
+
+// 构建阳爻顺序表
+function buildYangYaoOrder(xt, ht) {
+    var order = [];
+    var count = 0;
+    
+    // 先天卦：从元堂开始向上数
+    for(var i = 0; i < 6; i++) {
+        var idx = (xt.yt - 1 + i) % 6;
+        if(xt.yaos[idx] === 1) {
+            count++;
+            order.push({ type: 'xt', yaoIdx: idx, orderNum: count });
+        }
+    }
+    
+    // 后天卦：从元堂开始向上数
+    for(var i = 0; i < 6; i++) {
+        var idx = (ht.yt - 1 + i) % 6;
+        if(ht.yaos[idx] === 1) {
+            count++;
+            order.push({ type: 'ht', yaoIdx: idx, orderNum: count });
+        }
+    }
+    
+    return order;
+}
+
+function getYangYaoOrderNum(yangYaoOrder, type, yaoIdx) {
+    for(var i = 0; i < yangYaoOrder.length; i++) {
+        if(yangYaoOrder[i].type === type && yangYaoOrder[i].yaoIdx === yaoIdx) {
+            return yangYaoOrder[i].orderNum;
+        }
+    }
+    return 0;
+}
+
+function calcMain() {
+    if(typeof Solar === 'undefined') { alert("JS库未加载"); return; }
+    var y = parseInt(document.getElementById('y').value);
+    var m = parseInt(document.getElementById('m').value);
+    var d = parseInt(document.getElementById('d').value);
+    var h = parseInt(document.getElementById('h').value);
+    var min = parseInt(document.getElementById('min').value);
+    var isMale = document.getElementById('sex').value === "1";
+    var lon = parseFloat(document.getElementById('lon').value);
+
+    var offset = (lon - 120) * 4;
+    var tm = h * 60 + min + offset;
+    var th = Math.floor(tm / 60);
+    var tmm = Math.floor(tm % 60);
+    if(tmm < 0) { tmm += 60; th--; }
+    if(th >= 24) th -= 24;
+    if(th < 0) th += 24;
+
+    var solar = Solar.fromYmdHms(y, m, d, th, tmm, 0);
+    var lunar = solar.getLunar();
+    var bz = lunar.getEightChar();
+
+    document.getElementById('result-view').style.display = 'block';
+    document.getElementById('txt-time').innerText = th + ':' + (tmm < 10 ? '0' : '') + tmm;
+    document.getElementById('txt-jie').innerText = lunar.getPrevJie().getName() + ' / ' + lunar.getNextJie().getName();
+
+    var cols = [{g: bz.getYearGan(), z: bz.getYearZhi()},{g: bz.getMonthGan(), z: bz.getMonthZhi()},{g: bz.getDayGan(), z: bz.getDayZhi()},{g: bz.getTimeGan(), z: bz.getTimeZhi()}];
+    var ts = 0, ds = 0, html = '';
+    for(var i = 0; i < cols.length; i++) {
+        var c = cols[i];
+        var gn = GAN_VAL[c.g], zn = ZHI_VAL[c.z];
+        html += '<td><span class="ganzhi">' + c.g + c.z + '</span><span style="font-size:12px;color:#888">干' + gn + ' 支' + zn[0] + ',' + zn[1] + '</span></td>';
+        var nums = [gn, zn[0], zn[1]];
+        for(var j = 0; j < nums.length; j++) {
+            if(nums[j] % 2 !== 0) ts += nums[j]; else ds += nums[j];
+        }
+    }
+    document.getElementById('bz-body').innerHTML = '<tr>' + html + '</tr>';
+    document.getElementById('val-tianshu').innerText = ts;
+    document.getElementById('val-dishu').innerText = ds;
+
+    var getGuaNum = function(n, base) {
+        var v = n;
+        if(base === 25 && v > 25) v = v - 25;
+        else if(base === 30 && v > 30) v = v - 30;
+        if(v >= 10) {
+            if(v % 10 === 0) return Math.floor(v / 10);
+            else return v % 10;
+        }
+        return v || 1;
+    };
+    
+    var handle5Palace = function(v, birthYear, isMale, isYangYearFlag) {
+        if(v !== 5) return v;
+        var minguo = birthYear - 1911;
+        if(minguo < 13) return isMale ? 8 : 2;
+        else if(minguo <= 72) {
+            if(isMale) return isYangYearFlag ? 8 : 2;
+            else return isYangYearFlag ? 2 : 8;
+        } else return isMale ? 9 : 7;
+    };
+
+    var yz = bz.getYearZhi();
+    var YZ_YANG = ['子','寅','辰','午','申','戌'];
+    var isYangYearFlag = YZ_YANG.indexOf(yz) >= 0;
+    
+    var tGuaCode = getGuaNum(ts, 25);
+    var dGuaCode = getGuaNum(ds, 30);
+    tGuaCode = handle5Palace(tGuaCode, y, isMale, isYangYearFlag);
+    dGuaCode = handle5Palace(dGuaCode, y, isMale, isYangYearFlag);
+    
+    var tGua = GUA_MAP[tGuaCode];
+    var dGua = GUA_MAP[dGuaCode];
+    var isTypeA = (isMale && isYangYearFlag) || (!isMale && !isYangYearFlag);
+    var upper = isTypeA ? tGua : dGua;
+    var lower = isTypeA ? dGua : tGua;
+
+    var xtYaos = GUA_BITS[lower].slice().concat(GUA_BITS[upper].slice());
+    var hz = bz.getTimeZhi();
+    var yt = calcYuanTang(xtYaos, hz);
+    var xtObj = { yaos: xtYaos.slice(), yt: yt };
+
+    var xtGuaName = getGuaName(xtYaos);
+    var lunarMonth = lunar.getMonth();
+    var isYangLing = (lunarMonth >= 11 || lunarMonth <= 4);
+    
+    var htYaos = xtYaos.slice();
+    var htYt = yt <= 3 ? yt + 3 : yt - 3;
+    var isZunGua = ['坎为水', '水雷屯', '水山蹇'].indexOf(xtGuaName) >= 0;
+    
+    if(isZunGua && yt === 5) {
+        if(isYangLing) htYaos[yt - 1] = 1 - htYaos[yt - 1];
+    } else if(isZunGua && yt === 6) {
+        if(!isYangLing) htYaos[yt - 1] = 1 - htYaos[yt - 1];
+    } else {
+        htYaos[yt - 1] = 1 - htYaos[yt - 1];
+    }
+    
+    var htYaosNew = htYaos.slice(3, 6).concat(htYaos.slice(0, 3));
+    var htObj = { yaos: htYaosNew, yt: htYt };
+
+    renderGua(xtObj, 'n-xt', 'g-xt');
+    renderGua(htObj, 'n-ht', 'g-ht');
+    
+    var yangYaoOrder = buildYangYaoOrder(xtObj, htObj);
+    
+    renderDayun(xtObj, htObj);
+
+    G = { by: y, xt: xtObj, ht: htObj, yangYaoOrder: yangYaoOrder };
+    calcFlow();
+}
+
+function renderGua(g, nid, gid) {
+    document.getElementById(nid).innerText = getGuaName(g.yaos);
+    var h = '';
+    for(var i = 5; i >= 0; i--) {
+        var isYt = g.yt === (i + 1);
+        var yaoVal = g.yaos[i];
+        var bar = yaoVal === 1 ? '<div class="yang"></div>' : '<div class="yin-group"><div class="yin-part"></div><div class="yin-part"></div></div>';
+        var yaoName = getYaoName(i);
+        h += '<div class="yao-line ' + (isYt ? 'is-yt' : '') + '"><div class="idx-text">' + yaoName + '</div>' + bar + (isYt ? '<div class="yt-text">← 元堂</div>' : '') + '</div>';
+    }
+    document.getElementById(gid).innerHTML = h;
+}
+
+function renderDayun(xt, ht) {
+    var h = '', age = 1;
+    for(var i = 0; i < 6; i++) {
+        var yaoIdx = (xt.yt - 1 + i) % 6;
+        var yaoVal = xt.yaos[yaoIdx];
+        var span = (yaoVal === 1) ? 9 : 6;
+        var end = age + span - 1;
+        var yaoName = getYaoName(yaoIdx);
+        h += '<div class="dy-card"><div class="dy-title">先天' + yaoName + '爻</div><div class="dy-range">' + age + '-' + end + '岁</div></div>';
+        age = end + 1;
+    }
+    for(var i = 0; i < 6; i++) {
+        var yaoIdx = (ht.yt - 1 + i) % 6;
+        var yaoVal = ht.yaos[yaoIdx];
+        var span = (yaoVal === 1) ? 9 : 6;
+        var end = age + span - 1;
+        var yaoName = getYaoName(yaoIdx);
+        h += '<div class="dy-card"><div class="dy-title">后天' + yaoName + '爻</div><div class="dy-range">' + age + '-' + end + '岁</div></div>';
+        age = end + 1;
+    }
+    document.getElementById('dy-area').innerHTML = h;
+}
+
+// ==================== 核心：流年卦计算（严格按照规则） ====================
+function calcLiunianInDayun(baseYaos, dayunYuantang, yearInDayun, birthYear, dayunStartAge, isYangYao) {
+    var debugInfo = [];
+    var currentYaos = baseYaos.slice();
+    var currentYt = dayunYuantang;
+    
+    // 计算大运第一年的天干
+    var firstYear = birthYear + dayunStartAge - 1;
+    var firstYearGan = (firstYear - 4) % 10; // 0:甲, 1:乙, 2:丙, 3:丁, 4:戊, 5:己, 6:庚, 7:辛, 8:壬, 9:癸
+    var isFirstYearYangGan = [0, 2, 4, 6, 8].indexOf(firstYearGan) >= 0; // 甲丙戊庚壬
+    
+    debugInfo.push("大运第一年: " + firstYear + "年, 天干: " + GAN_NAMES[firstYearGan] + 
+                  ", 是否为甲丙戊庚壬: " + (isFirstYearYangGan ? "是(规则一)" : "否(规则二)"));
+    
+    for(var yr = 1; yr <= yearInDayun; yr++) {
+        debugInfo.push("--- 第" + yr + "年 ---");
+        
+        if(isYangYao) {
+            // 阳爻规则
+            if(isFirstYearYangGan) {
+                // 规则一：第一年是甲丙戊庚壬
+                if(yr === 1) {
+                    // 第1年：不变爻
+                    debugInfo.push("规则一第1年：甲丙戊庚壬年，不变爻");
+                    currentYt = dayunYuantang;
+                } else if(yr === 2) {
+                    // 第2年：取应爻（元堂+3）
+                    var yingYao = ((dayunYuantang - 1 + 3) % 6);
+                    debugInfo.push("规则一第2年：变应爻（元堂" + dayunYuantang + "+3 = " + (yingYao+1) + "爻）");
+                    currentYaos[yingYao] = 1 - currentYaos[yingYao];
+                    currentYt = yingYao + 1;
+                } else if(yr === 3) {
+                    // 第3年：变第二年流年卦的应爻（即变第一年元堂）
+                    debugInfo.push("规则一第3年：变第二年流年卦的应爻（即变第一年元堂" + dayunYuantang + "爻）");
+                    currentYaos[dayunYuantang - 1] = 1 - currentYaos[dayunYuantang - 1];
+                    currentYt = dayunYuantang;
+                } else {
+                    // 第4-9年：每年上推一爻（基于上一年流年卦）
+                    var prevYt = currentYt;
+                    var yaoToChange = ((prevYt - 1 + 1) % 6); // 上推一爻
+                    debugInfo.push("规则一第" + yr + "年：上一年元堂" + prevYt + "爻，上推一爻变" + (yaoToChange+1) + "爻");
+                    currentYaos[yaoToChange] = 1 - currentYaos[yaoToChange];
+                    currentYt = yaoToChange + 1;
+                }
+            } else {
+                // 规则二：第一年是乙丁己辛癸
+                if(yr === 1) {
+                    // 第1年：变元堂爻
+                    debugInfo.push("规则二第1年：乙丁己辛癸年，变元堂" + dayunYuantang + "爻");
+                    currentYaos[dayunYuantang - 1] = 1 - currentYaos[dayunYuantang - 1];
+                    currentYt = dayunYuantang;
+                } else {
+                    // 第2-9年：每年上推一爻（基于上一年流年卦）
+                    var prevYt = currentYt;
+                    var yaoToChange = ((prevYt - 1 + 1) % 6); // 上推一爻
+                    debugInfo.push("规则二第" + yr + "年：上一年元堂" + prevYt + "爻，上推一爻变" + (yaoToChange+1) + "爻");
+                    currentYaos[yaoToChange] = 1 - currentYaos[yaoToChange];
+                    currentYt = yaoToChange + 1;
+                }
+            }
+        } else {
+            // 阴爻规则（6年运）
+            if(yr === 1) {
+                // 第1年：变元堂爻
+                debugInfo.push("阴爻规则第1年：变元堂" + dayunYuantang + "爻");
+                currentYaos[dayunYuantang - 1] = 1 - currentYaos[dayunYuantang - 1];
+                currentYt = dayunYuantang;
+            } else {
+                // 第2-6年：每年上推一爻（基于上一年流年卦）
+                var prevYt = currentYt;
+                var yaoToChange = ((prevYt - 1 + 1) % 6); // 上推一爻
+                debugInfo.push("阴爻规则第" + yr + "年：上一年元堂" + prevYt + "爻，上推一爻变" + (yaoToChange+1) + "爻");
+                currentYaos[yaoToChange] = 1 - currentYaos[yaoToChange];
+                currentYt = yaoToChange + 1;
+            }
+        }
+    }
+    
+    // 显示调试信息
+    if(debugInfo.length > 0) {
+        document.getElementById('debug-info').innerHTML = "<strong>流年卦计算过程:</strong><br>" + debugInfo.join("<br>");
+        document.getElementById('debug-info').style.display = 'block';
+    }
+    
+    return { yaos: currentYaos, yt: currentYt };
+}
+
+// ==================== 流月卦计算（严格按照规则） ====================
+function calcLiuyueGua(liunianYaos, liunianYt, lunarMonth) {
+    var debugInfo = [];
+    debugInfo.push("流月计算：农历" + lunarMonth + "月，流年元堂：" + liunianYt + "爻");
+    
+    // 计算奇数月（1,3,5,7,9,11月）
+    var oddMonthYaos = [];
+    var oddMonthYt = [];
+    
+    for(var i = 1; i <= 6; i++) {
+        var monthNum = i * 2 - 1; // 1,3,5,7,9,11
+        var yaos, yt;
+        
+        if(i === 1) {
+            // 一月：变流年元堂
+            yaos = liunianYaos.slice();
+            yaos[liunianYt - 1] = 1 - yaos[liunianYt - 1];
+            yt = liunianYt;
+            debugInfo.push("一月：变流年元堂" + liunianYt + "爻");
+        } else {
+            // 其他奇数月：变上一奇数月流月卦的（流年元堂+(i-1)）爻
+            var prevYaos = oddMonthYaos[i-2];
+            var prevYt = oddMonthYt[i-2];
+            
+            // 计算要变的爻位：(流年元堂+(i-1)-1) % 6
+            var yaoToChange = ((liunianYt - 1 + (i-1)) % 6);
+            yaos = prevYaos.slice();
+            yaos[yaoToChange] = 1 - yaos[yaoToChange];
+            yt = yaoToChange + 1;
+            
+            debugInfo.push(monthNum + "月：变流年元堂" + liunianYt + "+" + (i-1) + " = " + (yaoToChange+1) + "爻");
+        }
+        
+        oddMonthYaos.push(yaos);
+        oddMonthYt.push(yt);
+    }
+    
+    // 根据当前月份选择结果
+    var monthIndex = Math.ceil(lunarMonth / 2) - 1; // 0-5
+    var isOddMonth = (lunarMonth % 2 === 1);
+    
+    if(isOddMonth) {
+        // 奇数月：直接返回对应的奇数月卦
+        debugInfo.push("农历" + lunarMonth + "月为奇数月，返回" + (monthIndex+1) + "奇数月卦");
+        return { yaos: oddMonthYaos[monthIndex], yt: oddMonthYt[monthIndex] };
+    } else {
+        // 偶数月：在对应的奇数月卦基础上变应爻
+        var oddYaos = oddMonthYaos[monthIndex];
+        var oddYt = oddMonthYt[monthIndex];
+        var yingYao = ((oddYt - 1 + 3) % 6);
+        var evenYaos = oddYaos.slice();
+        evenYaos[yingYao] = 1 - evenYaos[yingYao];
+        
+        debugInfo.push("农历" + lunarMonth + "月为偶数月，在" + (lunarMonth-1) + "月卦基础上变应爻（" + oddYt + "+3 = " + (yingYao+1) + "爻）");
+        return { yaos: evenYaos, yt: yingYao + 1 };
+    }
+}
+
+// ==================== 流日卦计算（严格按照规则） ====================
+function calcLiuriGua(liuyueYaos, liuyueYt, dayIndex, totalParts) {
+    // 规则：从流月卦元堂开始，每天变一爻，每爻管一日，每卦管六日
+    // dayIndex: 当前在节气中的第几天（从0开始）
+    // totalParts: 节气总天数
+    
+    // 计算当前应该变哪一爻
+    var yaoOffset = dayIndex % 6;  // 每6天一个循环
+    
+    // 复制流月卦
+    var result = liuyueYaos.slice();
+    
+    // 变对应的爻位
+    var changedYao = ((liuyueYt - 1 + yaoOffset) % 6);
+    result[changedYao] = 1 - result[changedYao];
+    
+    // 计算新的元堂位置（元堂+1）
+    var newYt = ((liuyueYt - 1 + 1) % 6) + 1;
+    
+    return { 
+        yaos: result, 
+        yt: newYt, 
+        yaoOffset: yaoOffset,
+        dayInCycle: (dayIndex % 6) + 1  // 当前在第几天（1-6）
+    };
+}
+
+// ==================== 流时卦计算（严格按照规则） ====================
+function calcLiushiGua(liuriYaos, liuriYt, hour) {
+    // 规则：从流日卦元堂开始变卦，再变元堂+1爻，再变元堂+2爻...
+    // 每个时辰对应一个变爻
+    
+    // 计算时辰对应的变爻偏移量（0-5）
+    var shichenIndex = Math.floor(hour / 2);  // 0-11对应12时辰
+    var yaoOffset = shichenIndex % 6;  // 每6个时辰一个循环
+    
+    // 复制流日卦
+    var result = liuriYaos.slice();
+    
+    // 变对应的爻位
+    var changedYao = ((liuriYt - 1 + yaoOffset) % 6);
+    result[changedYao] = 1 - result[changedYao];
+    
+    // 计算新的元堂位置
+    var newYt = changedYao + 1;
+    
+    // 获取时辰地支
+    var zhiIndex = Math.floor((hour + 1) / 2) % 12;
+    var zhi = ALL_ZHI[zhiIndex];
+    
+    return { 
+        yaos: result, 
+        yt: newYt, 
+        zhi: zhi,
+        shichenIndex: shichenIndex
+    };
+}
+
+// ==================== 流分卦计算 ====================
+function calcLiufenGua(liushiYaos, liushiYt, minuteInShichen) {
+    // 第一层变化：把一个时辰(120分钟)分成6份，每份20分钟
+    var fenIndex1 = Math.floor(minuteInShichen / 20);
+    if(fenIndex1 > 5) fenIndex1 = 5;
+    
+    // 复制流时卦作为基础
+    var layer1Yaos = liushiYaos.slice();
+    
+    // 变动第一层对应的爻
+    var layer1ChangedYao = ((liushiYt - 1 + fenIndex1) % 6);
+    layer1Yaos[layer1ChangedYao] = 1 - layer1Yaos[layer1ChangedYao];
+    
+    // 第一层变化后的新元堂
+    var layer1Yt = layer1ChangedYao + 1;
+    
+    // 第二层变化：把20分钟再分成6份，每份约3.33分钟
+    var minuteInFen = minuteInShichen % 20;
+    var fenIndex2 = Math.floor(minuteInFen * 6 / 20);
+    if(fenIndex2 > 5) fenIndex2 = 5;
+    
+    // 复制第一层变化后的卦作为基础
+    var layer2Yaos = layer1Yaos.slice();
+    
+    // 在新元堂的基础上，变动第二层对应的爻
+    var layer2ChangedYao = ((layer1Yt - 1 + fenIndex2) % 6);
+    layer2Yaos[layer2ChangedYao] = 1 - layer2Yaos[layer2ChangedYao];
+    
+    // 返回最终结果
+    return { 
+        yaos: layer2Yaos, 
+        yt: layer2ChangedYao + 1,
+        fenIndex1: fenIndex1,
+        fenIndex2: fenIndex2
+    };
+}
+
+function calcFlow() {
+    if(!G) return;
+    
+    var cy = parseInt(document.getElementById('cy').value);
+    var cm = parseInt(document.getElementById('cm').value);
+    var cd = parseInt(document.getElementById('cd').value);
+    var ch = parseInt(document.getElementById('ch').value);
+    var cmin = parseInt(document.getElementById('cmin').value);
+    
+    // 判断是否过了立春
+    var effectiveYear = cy;
+    var lichunDate = new Date(cy, 1, 4, 11, 0);  // 2月4日11点近似立春
+    var queryDate = new Date(cy, cm - 1, cd, ch, cmin);
+    if (queryDate < lichunDate) {
+        effectiveYear = cy - 1;  // 立春前属于上一年
+    }
+    
+    var age = effectiveYear - G.by + 1;
+    if(age < 1) age = 1;
+    
+    // 1. 构建大运列表
+    var dayunList = [];
+    var cumAge = 0;
+    
+    for(var i = 0; i < 6; i++) {
+        var yaoIdx = (G.xt.yt - 1 + i) % 6;
+        var yaoVal = G.xt.yaos[yaoIdx];
+        var years = (yaoVal === 1) ? 9 : 6;
+        var yangOrderNum = getYangYaoOrderNum(G.yangYaoOrder, 'xt', yaoIdx);
+        
+        dayunList.push({
+            type: 'xt',
+            yaoIndex: yaoIdx,
+            yaoValue: yaoVal,
+            startAge: cumAge + 1,
+            endAge: cumAge + years,
+            years: years,
+            baseYaos: G.xt.yaos.slice(),
+            baseYt: G.xt.yt,
+            dayunYt: yaoIdx + 1,
+            yangOrderNum: yangOrderNum
+        });
+        cumAge += years;
+    }
+    
+    for(var i = 0; i < 6; i++) {
+        var yaoIdx = (G.ht.yt - 1 + i) % 6;
+        var yaoVal = G.ht.yaos[yaoIdx];
+        var years = (yaoVal === 1) ? 9 : 6;
+        var yangOrderNum = getYangYaoOrderNum(G.yangYaoOrder, 'ht', yaoIdx);
+        
+        dayunList.push({
+            type: 'ht',
+            yaoIndex: yaoIdx,
+            yaoValue: yaoVal,
+            startAge: cumAge + 1,
+            endAge: cumAge + years,
+            years: years,
+            baseYaos: G.ht.yaos.slice(),
+            baseYt: G.ht.yt,
+            dayunYt: yaoIdx + 1,
+            yangOrderNum: yangOrderNum
+        });
+        cumAge += years;
+    }
+    
+    // 2. 找到当前年龄所在的大运
+    var currentDayun = null;
+    for(var i = 0; i < dayunList.length; i++) {
+        if(age >= dayunList[i].startAge && age <= dayunList[i].endAge) {
+            currentDayun = dayunList[i];
+            break;
+        }
+    }
+    if(!currentDayun) currentDayun = dayunList[dayunList.length - 1];
+    
+    // 3. 计算流年卦
+    var yearInDayun = age - currentDayun.startAge + 1;
+    var isYangYao = currentDayun.yaoValue === 1;
+    
+    var liunian = calcLiunianInDayun(
+        currentDayun.baseYaos,
+        currentDayun.dayunYt,
+        yearInDayun,
+        G.by,
+        currentDayun.startAge,
+        isYangYao
+    );
+    
+    var dayunTypeName = currentDayun.type === 'xt' ? '先天' : '后天';
+    var liunianInfo = dayunTypeName + getYaoName(currentDayun.yaoIndex) + '爻运 第' + yearInDayun + '年';
+    
+    document.getElementById('fv-y').innerText = getGuaName(liunian.yaos);
+    document.getElementById('fd-y').innerText = getYaoName(liunian.yt - 1) + '爻元堂 | ' + age + '岁 ' + liunianInfo;
+    
+    // 4. 获取节气月份信息并计算流月
+    var jieqiInfo = getJieqiMonthInfo(cy, cm, cd, ch, cmin);
+    var lunarMonth = 1;
+    var monthTimeStr = '';
+    
+    if(jieqiInfo) {
+        lunarMonth = jieqiInfo.lunarMonth;
+        monthTimeStr = jieqiInfo.startJieqi.name + '(' + formatDateTime(jieqiInfo.startJieqi.date) + ') 至 ' + 
+                       jieqiInfo.endJieqi.name + '(' + formatDateTime(jieqiInfo.endJieqi.date) + ')';
+    }
+    
+    var liuyue = calcLiuyueGua(liunian.yaos, liunian.yt, lunarMonth);
+    
+    document.getElementById('fv-m').innerText = getGuaName(liuyue.yaos);
+    document.getElementById('fd-m').innerText = getYaoName(liuyue.yt - 1) + '爻元堂 | 农历' + lunarMonth + '月';
+    document.getElementById('ft-m').innerText = monthTimeStr;
+    
+   // 在calcFlow函数中找到流日计算部分，替换为：
+
+// 5. 计算流日（严格按照规则）
+if(jieqiInfo) {
+    var targetDate = new Date(cy, cm - 1, cd, ch, cmin, 0);
+    var monthStartMs = jieqiInfo.startJieqi.date.getTime();
+    var monthEndMs = jieqiInfo.endJieqi.date.getTime();
+    var totalMonthMs = monthEndMs - monthStartMs;
+    var elapsedMs = targetDate.getTime() - monthStartMs;
+    
+    if(elapsedMs < 0) elapsedMs = 0;
+    if(elapsedMs > totalMonthMs) elapsedMs = totalMonthMs;
+    
+    // 计算在节气中的天数（从0开始）
+    var totalDays = totalMonthMs / (1000 * 60 * 60 * 24);
+    var dayIndex = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+    
+    var liuri = calcLiuriGua(liuyue.yaos, liuyue.yt, dayIndex, totalDays);
+    
+    // 计算该爻段的时间范围（每爻管一日）
+    var yaoStartDay = Math.floor(dayIndex / 6) * 6;
+    var yaoEndDay = yaoStartDay + 5;
+    var yaoStartDate = new Date(monthStartMs + yaoStartDay * 24 * 60 * 60 * 1000);
+    var yaoEndDate = new Date(monthStartMs + Math.min(yaoEndDay, totalDays-1) * 24 * 60 * 60 * 1000);
+    
+    document.getElementById('fv-d').innerText = getGuaName(liuri.yaos);
+    document.getElementById('fd-d').innerText = getYaoName(liuri.yt - 1) + '爻元堂 | 第' + liuri.dayInCycle + '日';
+    document.getElementById('ft-d').innerText = formatDate(yaoStartDate) + ' 至 ' + formatDate(yaoEndDate);
+    
+    // 6. 计算流时
+    var liushi = calcLiushiGua(liuri.yaos, liuri.yt, ch);
+    
+    document.getElementById('fv-h').innerText = getGuaName(liushi.yaos);
+    document.getElementById('fd-h').innerText = getYaoName(liushi.yt - 1) + '爻元堂 | ' + liushi.zhi + '时';
+    
+    // 7. 计算流分（两层变化）
+    var minuteInShichen = ((ch % 2) * 60 + cmin);
+    var liufen = calcLiufenGua(liushi.yaos, liushi.yt, minuteInShichen);
+    
+    // 计算时间范围
+    var fen1StartMin = liufen.fenIndex1 * 20;  // 每份20分钟
+    var fen1EndMin = (liufen.fenIndex1 + 1) * 20;
+    var fen2StartSec = liufen.fenIndex2 * (20/6) * 60;  // 每份约3.33分钟
+    var fen2EndSec = (liufen.fenIndex2 + 1) * (20/6) * 60;
+    
+    document.getElementById('fv-min').innerText = getGuaName(liufen.yaos);
+    document.getElementById('fd-min').innerText = getYaoName(liufen.yt - 1) + '爻元堂 | 第' + (liufen.fenIndex1+1) + '层第' + (liufen.fenIndex2+1) + '分';
+    
+} else {
+    document.getElementById('fv-d').innerText = '--';
+    document.getElementById('fd-d').innerText = '无法获取节气信息';
+    document.getElementById('ft-d').innerText = '';
+    document.getElementById('fv-h').innerText = '--';
+    document.getElementById('fd-h').innerText = '';
+    document.getElementById('fv-min').innerText = '--';
+    document.getElementById('fd-min').innerText = '';
+}
+}
+</script>
+
+</body>
+</html>            </div>
+        </section>
+        
+        <!-- 六十四卦全象·推演系统页面 -->
+        <section id="explanation" class="page-content">
+            
+            
+            
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>六十四卦全象·天纪绝学推演系统 (终极完整版)</title>
+    <style>
+        :root { --main: #2c3e50; --red: #c0392b; --bg: #f0f2f5; --white: #fff; }
+        body { font-family: "Microsoft YaHei", sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        h1 { text-align: center; color: var(--main); margin-bottom: 5px; }
+        .sub { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+        
+        .box { background: var(--white); padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; gap: 15px; }
+        .col { flex: 1; display: flex; flex-direction: column; }
+        .col-t { text-align: center; font-weight: bold; color: var(--main); border-bottom: 2px solid var(--main); margin-bottom: 10px; padding-bottom: 5px; }
+        
+        .sel-area { height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 5px; background: #fafafa; }
+        .sel-row { display: flex; align-items: center; margin-bottom: 5px; font-size: 12px; }
+        .lbl { width: 40px; color: #999; flex-shrink: 0; }
+        select { flex: 1; padding: 4px; }
+
+        button { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #a93226; }
+
+        .res-area { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 50px; }
+        .res-col { flex: 1; min-width: 380px; background: #e9ecef; padding: 10px; border-radius: 8px; }
+        .res-t { text-align: center; background: var(--main); color: #fff; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-weight: bold; }
+
+        .card { background: #fff; border-radius: 6px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .c-head { padding: 10px 15px; background: #f8f9fa; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .c-name { font-weight: bold; font-size: 16px; color: #222; }
+        .c-step { background: var(--red); color: #fff; font-size: 12px; padding: 2px 6px; border-radius: 3px; }
+
+        details { border-top: 1px solid #eee; }
+        summary { padding: 10px 15px; cursor: pointer; font-weight: bold; color: #555; list-style: none; display: flex; justify-content: space-between; }
+        summary:hover { background: #fdfdfd; }
+        summary::after { content: '+'; color: #ccc; }
+        details[open] summary { color: var(--red); background: #fff; border-bottom: 1px dashed #eee; }
+        details[open] summary::after { content: '-'; color: var(--red); }
+        .c-body { padding: 15px; font-size: 14px; line-height: 1.6; color: #444; text-align: justify; background: #fff; }
+
+        /* 地理表格 */
+        table.g-tab { width: 100%; border-collapse: collapse; border: 2px solid #444; margin-top: 5px; text-align: center; font-size: 12px; }
+        table.g-tab td { border: 1px solid #888; padding: 6px; width: 33%; }
+        .g-on { background: #fff3cd; color: #856404; font-weight: bold; border: 2px solid #c0392b !important; }
+    </style>
+</head>
+<body>
+
+<h1>六十四卦全象·推演系统</h1>
+
+
+<div class="box">
+    <div class="col">
+        
+        <div class="sel-area" id="in1"></div>
+    </div>
+    </div>
+
+<button onclick="gen()">点击生成</button>
+
+<div class="res-area" id="out">
+    <div style="width:100%; text-align:center; padding:50px; color:#999;">请选择卦象后点击生成</div>
+</div>
+
+<script>
+    // 1. 辅助：九宫格生成
+    function gd(p) {
+        const m = { 'SE':'巽(东南)', 'S':'离(南)', 'SW':'坤(西南)', 'E':'震(东)', 'C':'中宫', 'W':'兑(西)', 'NE':'艮(东北)', 'N':'坎(北)', 'NW':'乾(西北)' };
+        let h = '<table class="g-tab">';
+        [['SE','S','SW'],['E','C','W'],['NE','N','NW']].forEach(r => {
+            h+='<tr>'; r.forEach(k => { h+=`<td class="${k===p?'g-on':''}">${m[k]}</td>`; }); h+='</tr>';
+        });
+        return h + '</table>';
+    }
+
+    // 2. 核心数据库：直接定义内容，没有任何“待填入”的代码
+    const DB = {
+        1: {
+            n: "乾为天",
+            t: "一、官人在梯上：平步青雲象。<br>二、鹿在雲中：作為行事心中不可求祿，則祿至矣。<br>三、石上玉有光明：示人才如玉之含光，吉也。<br>四、人磨玉：示人堅心不移，夕惕若厲，隨時戒之。<br>五、工匠：有重立門户之象。<br>六、望磨玉人：戒盛，念中无妄。<br>七、梯上官人：棺也。卜疾厄凶也。<br>八、官人望磨玉人：示人即平步青雲須戒盛，且望下看，念中無妄，則升遷平安，如爭位則旦夕而亡也。",
+            x: "刚健中正，天行健，君子以自强不息。六龙御天之象。<br>初九：潜龙勿用。<br>九二：见龙在田，利见大人。<br>九三：君子终日干干，夕惕若厉，无咎。<br>九四：或跃在渊，无咎。<br>九五：飞龙在天，利见大人。<br>上九：亢龙有悔。",
+            h: "【先天】：生带禄,智慧高，聪明才智，不见生父为定数，非过世，乃因偏房生。<br>【后天】：官带加身，声名远播，四海扬名。财禄丰盛，父母双全。<br>【流年】：男，流年逢之，连升三级。唯好事多磨，六甲得子，乃偏房生，非正房生。跟从母姓，不跟父姓。女，性过刚，事业非常亨通，但婚事多磨，总成空。真正丈夫在上位。",
+            d: gd('NW')+"父居西北。此卦出現，官人逢之舉步青雲，心想事成，發達時往往比平常 快，且越級晉升。商人逢之，為做生意當老闆之人，財多祿豐，科甲一般，对养病极好，对婚姻极好属于父之正位。",
+            c: "官：官人登梯，升官，向下看（需要照顾臣民才会升官）<br>财：鹿从天上来，为天禄也。空有关可成<br>婚：匠人磨玉，自立门户是也，结婚就是自立门户。月有光明，事情有希望。<br>科：光，希望也，坚心谨慎会成。<br>病：人登梯，人＋木=休，官+木=棺也，病会加重，需要休息。"
+        },
+        2: {
+            n: "坤为地",
+            t: "一、十一口：吉也，陈姓人也。<br>二、一官人：倌人，丈夫也。公务员也。<br>三、坐看二串钱：欲拿不得，忧心忡忡状。<br>四、一马者：肖马人；指官贵；指调动也。<br>五、金甲神：示民心也。<br>六、授文书与官：授官封侯。<br>七、土堆上有四點：黑也，背有陰謀也。",
+            x: "厚德载物，地势坤。含弘光大，品物咸亨。<br>初六：履霜，坚冰至。<br>六二：直方大，不习，无不利。<br>六三：含章可贞，或从王事，无成有终。<br>六四：括囊，无咎，无誉。<br>六五：黄裳，元。<br>上六：龙战于野，其血玄黄。",
+            h: "【先天】：女子：母仪天下，有德性，厚德，多才，不重利。官带入命，从官。<br>【后天】：女，天机：陈官人贪禄成灾。马人，属马，或姓马，大吉，受天命。忧心为财，财不入。猴上逢之事竟成，生意人有官讼。<br>【流年】：女命逢之忌口舌。陷害他人不成功。逢马相克事不成，天机也。马，属马，马年，破财因己不守。官人则公务员司法主贵。一般公职人员，贪污犯官符。需防窃。",
+            d: gd('SW')+"母居西南。此格在阳宅上出现，就如易之言地厚能载物一样，已婚女人才 有，其包含寡居，且有子女同住，此局方现。代表意义为婚姻主破散，孤军奋战，肩负一家之重任，夫宫不 得志造成此果，如以事业上论，则官家掌权，商人赚钱易如反掌， 女中强人型，其志过丈夫，无人能及。",
+            c: "官:做看两串钱，忧心忡忡，贪污不升。马回头，调动。文书至，可升官调动。<br>财:两串钱在地，忧心忡忡，钱被偷盗。无财可进，逢马人、时间马上回头，不要做。<br>婚：金甲神人带文书至，可婚，十一个口，吉逢候人时间加吉。<br>科：金甲神人带文书至，高中，十一个口，吉。<br>病：钱宝在地，纸钱象，丧葬之象，重病凶。"
+        },
+        3: {
+            n: "水雷屯",
+            t: "一、人在望竿头上立：此不明局势之屯难时也，不可妄动也。<br>二、犬上回字：乃肖狗之人，狗年，狄姓之人，果为哭之象。<br>三、车在泥中：进退两难之象。刀在牛上：解也，牛为贵人象。<br>四、人射文书：张姓，小人阻碍也。射：同音，色也，绯闻。<br>五、牛不顺道：背道而驰，反其道而为之，吉。<br>六、人望：人亡也。<br>七、人立：在位也。<br>八、盒：先成后破。<br>九、牛回头视犬：计无所出，待也。",           
+            x: "万事开头难，动乎险中。利建侯。<br>初九：盘桓，利居贞，利建侯。<br>六二 ：屯如邅如，乘马班如，匪寇，婚媾，女子贞不字，十年乃字。<br>六三：即鹿无虞，惟入于林中，君子几，不如舍，往吝。<br>六四：乘马班如，求婚媾，往，无不利。<br>九五：屯其膏，小贞，大贞凶。<br>上六：乘马班如，泣血涟如。",
+            h: "【先天】：肖狗之人，父母双全，独子。肖牛人，早年多血光灾，病痛。胆大过人，麻烦多，是非官司总不停。<br>【后天】：官运亨通，且发文书职（文官、教员、或姓谢）。位高无权可平安（如参谋顾问）。大器晚成。争名夺利必招凶。酉年须防父母凶。<br>【流年】：事态不明，阻力大，秋逢贵人发文书。强力求之必招灾。遇尼必主婚事破。女命逢之，夫调远方，聚少离多。肖犬人，或姓狄，主丧服，肖牛人，或姓解，顺道受阻，凡事多败。贫且困，故逢之不利。唯有读书为上吉。不做决策为上策。",
+            d: gd('E')+"次子居东。此卦为次子卦，时机在长子未婚，且同居一处，方可论之，一 旦长子或本人结婚，此局立消，切记。次子居此，则比长子早婚，比同时出生之人早二年结婚，但有 禁忌，如肖狗或狄姓之人，主夭折，此卦大凶，又逢犬年加凶，肖 牛人，必任妻摆布，背离家庭，不顾父母。所以如其他人成此局， 只不过早婚而已，对犬、牛人主凶，不利。次子越位，志过长兄局已定出，个性上亦同。",
+            c: "官:人射文书，文书不全不至。代表官不升。逢到谢姓反升。<br>财:车在泥中，如做事则会进退两难，属牛逢牛大凶，被解体瓜分。逢朱亦凶。<br>婚：不要结婚，会进退两难，结果是哭。问离婚也不要离婚，此时为局势不明之时，不要妄动。<br>科：不中，或暗中被人破坏。<br>病：为凶，结果为哭。如病重求问，结果大凶，有离世之意。人望，人亡是也。逢牛人加凶，朱姓加凶，有被肢解之嫌。<br>其他：若得到屯，不要着急妄动，静待天时。小心犬人，狄姓之人，亦或者贵人为犬人。"
+        },
+        4: {
+            n: "山水蒙",
+            t: "一、满船珍寳：暗示人图财之象。<br>二、船在水上：乃离国他去象。<br>三、鹿在地上，示仍有小禄于内，鹿—禄也。<br>四、两串钱：乃忧心忡忡象，即意虽有禄，但仍令人忧心。<br>五、图中一碗：示此蒙蔽手段，必先成后破，因其乃不正之财，必不久远也。<br>六、李树子折：示人李姓人氏，且有子夭折之象，则成格。",
+            x: "童蒙求我，启蒙教育。果行育德。<br>初六：发蒙，利用刑人，用说桎梏，以往吝。<br>九二：包蒙，纳妇，子克家。<br>六三：勿用，取女见金夫，不有躬，无攸利。<br>六四：困蒙，吝。<br>六五：童蒙，。<br>上九：击蒙，不利爲寇，利御寇。",
+            h: "【先天】：个性迷蒙不开，慧镜生尘。多病多灾。无子之家，姐妹多。有子夭折。二人，夫也、父也，二人在江水中，人于险中。父母不和。生离死别，一般为父有凶。<br>【后天】：蒙蔽世人总为财，得财遇险。先成后破。晚节不保。子夭。<br>【流年】：十八子大吉。财禄亨通。有子夭折，发外戚。得义子。财禄成后破，来源不正，有官司，招窃，现成后破，丈夫遇险，合伙招凶。",
+            d: gd('N')+"三子居北。阳宅上此局出现，必有三子居家中，且未婚，排行第三儿子，出此局其造成：一、以蒙蔽之法欺家人，惟利是图。二、本身愚昧，不知进退。三、性刚不听兄长之言，独行独断。四、较次子早婚，较长子晚婚。五、比同时生人早七年婚。六、常喜赌博性之钱禄，故往往求财遇险之象。吾人入宅发现此局，当及早对其改局，惟有使他本人想通，方 可助他，否则即令父母耳提面命，亦于事无补，成败在一念之间耳。",
+            c: "官：船在水上，远离此地，调职。<br>财：满船珍宝，离开此地，一盒子，一鹿。先赚后赔，不能做，做的结果就是蒙蔽他人的人最终被别人所蒙蔽，被盗窃。<br>婚：盒子，合和，可结婚，但要防破，盒子最后是破的。<br>科：折枝，离开此地，此次或者此志愿不中，如可调剂可上。<br>病：金钱在地，烧纸钱象，丧事。"
+        },
+        5: {
+            n: "水天需",
+            t: "一、月当天：阴人居上位象，无担当也；清明无灾。<br>二、一门：豪斗也，官府也。<br>三、一人攀龙尾：附于贵人，想进据其位也。<br>四、一僧接引：光头之人，柔而无欲之象。入空门可解。<br>五、墓：藏棺之地，有官与财象；置之死地而后生之象。",
+            x: "饮食宴乐，等待时机。不进防险。<br>初九：需于郊，利用恒，无咎。<br>九二：需于沙，小有言，终。<br>九三：需于泥，致寇至。<br>六四：需于血，出自穴。<br>九五：需于酒食，贞。<br>上六：入于穴，有不速之客三人来，敬之终。",
+            h: "【先天】：父先丧失，母独养成，攀龙附凤，居于尾，五岁之前，有凶事。二十日大人入土中。<br>【后天】：侍君身侧为驶席（如驾驶员公交车司机）。跟随贵人，终其一生。兄弟争财。老来入空门。<br>【流年】：龙出现，失宠无官。非尔所愿也。有父凶之虞。草中有玉，不见天日。尾大不掉，任人宰割。丢官。入空门可解。婚事有凶，易结难离。有待戌像(戌年，狗人，肖狗）可发福发禄。",
+            d: gd('NW')+"次子居西北。此卦出现，代表其人智慧成长快速，势必超越同年纪同时生人 多多，且个性刚烈，不受建言，须注意，如长兄一旦结婚，此局立 消，局自长兄婚之日始，立变为雷天大壮收局。需卦局所表现的意义如后：一、婚事延后七年，且单岁婚。二、如逢八字中，喜庆逢凶，必入宗教或不婚。 三、婚时，妻必为改嫁之人。四、于事业上，必有大成，年少居权位，受重用，进退有据。",
+            c: "官:攀附龙尾，墓，跟随贵人可升，升与不升只在一线之间。<br>财:墓，里面有棺材，财也，为一线财，得与不得在一线之间。<br>婚：攀附龙尾，攀龙附凤，嫁入豪门。或者问是否不婚，问就是不婚，出家。要先确定问题问的是什幺。<br>科：月有光，墓，僧人接引。逢曾姓，名月（yue）字有希望高中，其余皆不见天日，是为不中也。<br>病：父亡之时，或者是儿子，兄弟，丈夫。总之不是家里的女人。女人就是平安。<br>其他：得到需，需要守正待时，肖龙或者与龙有关的人最凶，曾姓人是贵人。草头人女人出头，例如董，苗，黄等。"
+        },
+        6: {
+            n: "天水讼",
+            t: "一、口舌二字：官司，纠纷，灾也。<br>二、山下有睡虎：入危地而不知象。<br>三、虎：王姓，肖虎之人。<br>四、文书在云中：心想事不成，幻想也。<br>五、人立虎下：近险也，近险为脱险之道。<br>六、柳树：随风而动，虽大风而不断，此柳之性也。",
+            x: "作事谋始，讼则终凶。慎始敬终。<br>初六：不永所事，小有言，终。<br>九二：不克讼，归而逋，其邑人三百户，无眚。<br>六三：食旧德，贞厉终。或从王事，无成。<br>九四：不克讼，复即命，渝安贞，。<br>九五：讼，元。<br>上九：或锡之鞶带，终朝三褫之。",
+            h: "【先天】：口舌是非总不断，祸因皆由口无遮拦。事与愿违(含考试读书)。动则得咎。天机：王虎潜藏，发在他乡。<br>【后天】：顺势而为，坚守正道，方可平安。当官、公务人员：官运不通，有口舌缠身。有幸得财，有财险中求（如六合彩）。一生不遂。较累。王姓虎人为贵，从之吉。<br>【流年】：口舌官司为他人。二次官司难免。肖虎贵人，王姓凶人。处险，随风平安，柳姓刘姓是贵人。婚姻则有实无名，婚不成。",
+            d: gd('N')+"父居北。此局令人官司不断，诉讼缠身，或为好讼之徒。一旦离婚此局 方破，否则你只好改变卧房位置，方可脱离此局之限。一、官人居此局，升官慢五年，诸事不顺，即令不违法，亦受 他人连累。二、商人居此局，财禄不进，必须兴讼方可得财。三、夫妻婚姻主破，诉讼离婚，此须看命，如命中有，则必成 格；如命中没有，则不成格。四、专业人士如医师，会计师等居此局，千万须防讼事来临， 流年逢之，同时生人没事，而你必生事端，运气不好使然。",
+            c: "官:文书云中，口舌，心想事不成，是幻想也，有官司也。<br>财:文书云中，虎卧是幻想也，有危险也<br>婚:文书云中，是幻想也，不成<br>科:是幻想也，不中<br>病:虎卧，有险也，姓王凶，姓柳肖虎反而平安，肖虎者调动远方比在本地好"
+        },
+        7: {
+            n: "地水师",
+            t: "一、肖虎、马、羊之人三合：可战。<br>二、文武二官绶印：得万人服之帅。<br>三、人立棋盘上：围棋愈下愈多，但须有谋略方可成事<br>四、将军台上立：示有兵权也。生杀之专权也。武职大利。<br>五、羊回首：回阳也，病危之人卜之，有自阴间回阳间之象。<br>六、虎在马后：为马之靠山，马因虎威而动。故马回首视虎。",
+            x: "行军用兵，丈人吉，无咎。<br>初六：师出以律，否臧凶。<br>九二：在师中，，无咎，王三锡命。<br>六三： 师或舆尸，凶。<br>六四：师左次，无咎。<br>六五：田有禽，利执言，无咎。长子帅师，弟子舆尸，贞凶。<br>上六：大君有命，开国成家，小人勿用。",
+            h: "【先天】：天降神武于斯人，英明神武。成格需肖马肖虎肖羊人。恩从九重天来，受重用，青年时当将军打胜仗。将星受命，主大贵。尤其发武官人（军人警察法官外交官），武官人发迹。手足三人，发二人，发两房。<br>【后天】：平步青云，逢调必升。棋子（儿子）少，唯一缺失。<br>【流年】：升将之年。天机：回阳回首，虎为后。老虎在后。天机：台，三人台上立，室人坐喜。",
+            d: gd('N')+"母居北。此局大异其趣，吾人常见泼妇骂街，女人性刚，甚而与人殴 打，其局如此，生人如此，亦为妙矣。当你发现母亲如此，凶暴，易与人起争端，仇视外人，其皆由 此局产生的，当须化解，方可平安。一、对婚事必凶，有妻殴夫之象。二、事业上，亦不得志，常生纠纷，男命女身。三、独来独往，胆大过人。四、从商主破婚，得财，尤利虎、马、羊三人，其商机、官运 亨通，但婚则凶，各有利弊。其与同时生之人或双胞胎大异其趣，各方面皆不同。",
+            c: "官:文武授印，文武双全，升官之象。<br>财:人在棋盘上立，围棋越下越多之象，发财之象，如问是否会滞销，货物积累越来越多，问就是会。棋盘，需要谋略也。<br>婚：婚姻带印必成。<br>科：文武授印，有文印，故大利考试。<br>病：羊回头，回阳也，为不死也。亦或者新冠等病毒复阳也。<br>其他：肖虎、马、羊大利，凡事加吉"
+        },
+        8: {
+            n: "水地比",
+            t: "一、月圆当空：政治清明象。<br>二、三星拱照：得贤能刚直之人辅助。<br>三、秀才望月饮酒：示才智之人无忧也<br>四、自酌自斟：无欲则刚象，孤独之象。<br>五、药炉在高处：无病无灾，故不需用药也。<br>六、枯树开花：晚发也。示心有诚，制度立，事必成。<br>七、酒：忘忧之物。",
+            x: "亲比，辅助，众星拱月。建万国亲诸侯。<br>初六：有孚，比之无咎。有孚盈缶，终来有它，。<br>六二：比之自内，贞。<br>六三：比之匪人。<br>六四：外比之，贞。<br>九五：显比，王用三驱，失前禽，邑人不诫，。<br>上六：比之无首，凶。",
+            h: "【先天】：母为贵人命中定。歌舞升华才出众。孤独一生谁来问。若鼻子没有肉，尖尖下来，终身为伶人。父不全，晚得子。天机：三星相佐，内通外流。<br>【后天】：妻宫得力，阴为贵人。贵人隐在暗处。四五之后方兴发。中年起运。有病无灾清闲人。有志不遂晚得子，然晚来子贵。<br>【流年】：需防胃病。母吉父无助。才艺之人无事做。教职吉。此为顶点。桃李满天下。",
+            d: gd('SW')+"次子居西南，此卦出现，须长兄为未婚，一旦长兄婚，此局立变为豫卦，须 注意变局将如何，则看长兄之命，何时有婚，知何时生变局，此即 阳宅上可见未来之象。此卦有亲比之意。一、性喜从母事，且任劳任怨，家事一手包办，与母连心。 二、适婚年龄到时，喜欢比自己年长于己之女人，如命中同时生人为二十八岁婚，但此局人婚必延后三年到三十一岁才婚，且娶 年长于己之女人方合格，否则婚主破散，不出一年。三、如命中主破，婚事不成，再居此局，则终身不娶，且与有 婚或离婚之女有来往，终无果也。四、事业上则居佐才之位，无法任职主管。五、商场上亦为人工作，不为老板，同时生人有可能为很成功 的老板，但命只居三才之三分之一，运的局影响，使其终身不得 志，且与同时生人有不同之结果。唯俟长子成婚后，局方可改变，如长兄居侧，或认干兄，此局势必难变。",
+            c: "官：此次不升。问是否可以做局长，可以做副局长。<br>财：枯树开花，晚发，现在不要着急做。<br>婚：自酌自饮，自己无对象，晚婚。<br>科：秀才望月饮酒，才智无忧，可高中。<br>病：药炉高处，不需用药，炉为火土之不合，小心胃吐血等。"
+        },
+        9: {
+            n: "风天小畜",
+            t: "一、两重山：知有险阻于前，不妄动之象。亦为出字象。<br>二、一人山顶：孤立独行象。已至颠峰，将走下坡之意。<br>三、舟横岸上：准备出发，水未至而不行也。<br>四、望竿在草里：等待讯息象。草头姓人为贵人。望，亡也。<br>五、上有羊马：马引羊过河，马为贵人，肖马人，姓马人也，马亦为午时。",
+            x: "小有积蓄，暂时受阻。懿文德。<br>初九：复自道，何其咎，。<br>九二：牵复，。<br>九三：舆说辐，夫妻反目。<br>六四：有孚，血去惕出，无咎。<br>九五：有孚挛如，富以其邻。<br>上九：既雨既处，尚德载，妇贞厉。月几望，君子征凶。",
+            h: "【先天】：两重山阻，外乡发迹。天机：舟扬犹待水来会。舟，如周，杨，羊等。草头人望。苗、黄，草头也。马领羊过险，马为羊之贵人。山顶独行，特立独行，特立人间，不与人群居一起，喜一人独来独往。个性使然。<br>【后天】：外乡发迹命中定。万事俱备，东风为水（水年、人、事。漂洋过海）。夫妻两地相隔，夫妻反目。天机：马羊之人，独子不亡。或曰：非马羊之人，有儿子夭折。<br>【流年】：草头人成格，贵。非草头人不成格，孤立无援，前险后阻。左支右拙，草头人出力大，草头人为贵（黄，苗，草头）。逢马羊可脱困，二次努力可得。婚事逢之，分两地。草头人望归。",
+            d: gd('NW')+"长女居西北，着重于事业，不重于婚姻，凡家有女儿皆易成此局， 卦局之判读，请参阅录影教学带，此处不言。一、女代父职，且能力强过男人，独立自主，不依赖他人。 二、事业企图心旺盛，早年为老板，事业有成。三、婚事方面，须与命同参，如同时生人为二十八岁婚，而此 阳宅局之人会提前二年结婚。如同时生人婚姻不成主有婚必破，此 局之人必终身不嫁，全心在事业上发展，成为一女强人。此局大利肖羊、马之人，但即令有婚，夫亦无力助之，全靠一己之力独撑大局。",
+            c: "官:两重山，一人山顶，马引羊过河，出也，外派，走下坡路也，不升，马、羊升官（属肖或时间，长得像也算）<br>财:河中无水，无财也，马、羊得财。<br>婚：一人山顶，孤独之象，婚姻不成，逢马羊成。<br>科：望者，有望也，逢马、羊高中，草头人，苗等有望高中。<br>病：望者，亡也。马羊不亡。"
+        },
+        10: {
+            n: "天泽履",
+            t: "一、女人在笠下：妾也。<br>二、千里堠：远离外出封侯象。<br>三、文书破在地：凭证承诺无效象。<br>四、伞下：有庇荫也。<br>五、军旗下官人坐：主有官司、诉讼、牢狱之灾象。<br>六、二点在地：践踏之足印也，示人处危之时，有礼之道，乃能行危而无殃也",
+            x: "如履薄冰，行礼有度。定民志。<br>初九：素履往，无咎。<br>九二：履道坦坦，幽人贞。<br>六三：眇能视，跛能履，履虎尾，咥人凶，武人爲于大君。<br>九四：履虎尾，愬愬终。<br>九五：夬履贞厉。<br>上九：视履考祥，其旋元。",
+            h: "【先天】：庶出之人天注定。寄人旗下不自知。早年离家，重重阻隔。辛苦成家。科甲不兴，桃花多。<br>【后天】：妾有闪，人偏离，近军令。重楼之侧，无名有险。婚姻有险。夫妻相隔，总为情。官司失财，生横事。窃盗火灾来。<br>【流年】：男外有妾，妾在何处，重楼之内。武官外调，财不利，契约成空婚事凶。天机：竹子立下，文书破。遇猴乃有千里行。",
+            d: gd('W')+"父居西。遇险事却往往踯躅不前，成履卦。一、事业上常有欲进不得，退之又凶，居进退两难之局，其事 势如此，而其性亦如此，其解常靠女人决定之。二、官运不通，停滞不前。三、商机不利，运气不佳，取舍之间，因时机已误，丧失良好 机会，徒于事懊恼而已，于事无补。四、婚事方面，妻能力过于己，故有在外娶妾之行为，以求恢 复男人之自信心、自尊心，故于婚姻主凶。同时生人如命中婚姻不 散则感情破裂，终而同床异梦，但如命中，主婚姻破裂，再加运上 此局，则必主破散无救。此同时生人之不同处，流年不同之因也。",
+            c: "官:文书破在地，官事不升，有官司。非文职外地吉。<br>财:文书再地，财会不进<br>婚：文书在地，婚事不成或者离婚。立妾，代表出轨，在重楼之内。<br>科：文书在地，不中<br>病：文书在地，是为烧纸之象，丧象。"
+        },
+        11: {
+            n: "地天泰",
+            t: "一、月中桂开：清明政治之时。<br>二、官人登梯：升迁顺遂之意，官人亦倌人，即丈夫也。<br>三、鹿衔书：受天子恩赐禄位。<br>四、小儿在云中：少年得志象。得天官贵人助也。<br>五、羊回头：回阳间也。亦杨姓人，发肖羊人成格。",
+            x: "天地交，万物通。君子道长。<br>初九：拔茅茹，以其汇，征。<br>九二：包荒，用冯河，不遐遗，朋亡，得尚于中行。<br>九三：无平不陂，无往不复，艰贞无咎，勿恤其孚，于食有福。<br>六四：翩翩不富，以其邻，不戒以孚。<br>六五：帝乙归妹，以祉元。<br>上六：城复于隍，勿用师，自邑告命，贞吝。",
+            h: "【先天】：父登青云位，生在清贵家。禄命来。少年得志。遇阳回阳。天机：羊杨有桂，受高任命。中年以后，禄命自九重来。<br>【后天】：桃李满天下，清誉贵人香，官人守禄命。官人平登青云志。有子在远方，逢羊杨方回。子大贵。<br>【流年】：官运亨通。平步青云嘛。流年生病，疾厄回阳。求财做生意，禄财丰盛。天机：进二春吉。春时进二。男带桃花，婚事必成。",
+            d: gd('NW')+"母居西北。此名为泰卦，有否极泰来，安泰舒适之象。每逢有已婚女向本 人求教之时，我都以此卦教之，令改，促进夫妻和睦乃吾道中人之 一大职责，此功德无量。此局大吉，无论于婚姻、事业、健康及教育子女上，都有卓越 之表现，为一贤妻良母。一、于婚姻，主一世夫妻，白首到老。二、于事业，在家相夫教子亦为事业。在公事上，进退有据， 受人重用，必不待言，其心想事成。三、于健康主平安到老，一生无大病痛，凡未经指点，能得此 局之人，必属大富大贵之人，福厚之人，一生无灾，常见命格好之 人，自然居之，真所谓「福地福人居」实不为过。实务上，吾人可 见命薄之人，不但无法居此，即使你告诉她有如此好，而她亦会因 外在环境上之束缚，而无法改变自己，不知人与天争，即在此，祸 福在一念之间耳。唯自求多福，但希望你真能自求而生多福，但须 知世事常不尽人意，如能刻意成局之人乃属有福之人，其刚柔动静之间，必能掌握机先，事事快人一步，终必大成。",
+            c: "官:鹿衔书，任命到，升<br>财:鹿衔书，大利至<br>婚：鹿衔书，婚书到，可成，天官赐福，吉。<br>科：月中桂开，高中。<br>病：羊回头，回羊，回阳是也。再重的病都有希望救回来。"
+        },
+        12: {
+            n: "天地否",
+            t: "一、男子卧病：男子为阳，阳同佯，装病之象也。<br>二、镜破：不可赴也。破镜难圆之象。<br>三、人路上坐：小人阻路，不让进也。<br>四、张弓箭头落地：鸟尽弓藏也。<br>五、人拍掌笑：幸灾乐祸之小人，做假攻讦两人感情得逞状，夫妻凶。<br>六、舌：主口舌，官司，謡言生害。<br>七、口上有四点：四点为黑，暗中诬陷之謡言，古人谓三口成虎，即意此。",
+            x: "天地不交，闭塞。小人道长。<br>初六：拔茅如，以其汇，贞，亨。<br>六二：包承，小人，大人否，亨。<br>六三：包羞。<br>九四：有命，无咎，畴离祉。<br>九五：休否，大人，其亡，其亡，繋于苞桑。<br>上九：倾否，先否后喜。",
+            h: "【先天】：中年前运多阻桡，少年家运财禄破，父母相刑不往来，长弓（如张）发二未中。明中有损。寻常事无阻，却每逢要事必倒霉，满腹经纶然科甲不中。不入衙门卖卜人。<br>【后天】：财破人佯病。连续口舌来。不从生意人，内种心虚无人知。机内诬陷总不成，唯有青灯（出家）伴到老。<br>【流年】：官司，暗害、口舌，财破拆伙。婚姻破裂。长弓竞金不中，争财不中且破。防人暗害。天机：二戈一贝自寻烦恼。寸言立身逢张落地（二戈一贝遇长弓买单。如姓谢人考试，主考官姓张，则买单）。堂上（在近处）拿人。",
+            d: gd('SW')+"父居西南。惟男人有之，此男女本性之不同，亦可于此卦局窥见之，男人 之性过刚于女，自尊好强之心，又显现无遗，往往天性上，有欲大 力小之性而不自知，不知己之才能如何，妄度不知量进，乃终成否 卦。常见个性如此之人居否局，而不自知，仍自以为是，故终其一 生必无成就，每日只知怨天尤人，叹时不利己，己不逢时而已。一、于婚事主大凶，夫妻反目成仇，加上命格中如婚破，又在 运宅上居此局，则势必无法挽回。二、官家之人，必主否塞不通，终致无成，不但不升官，反招 凶祸，乃致退休。三、商家人，居此局，必生大耗，财耗家散，终致一败涂地。 四、健康上亦凶，主大病缠身，如加上命中流年逢羊刃，血光必现，在数中难逃此大限之局。",
+            c: "官：人路上坐，小人当道，官不升也，口舌，官司缠身也。<br>财：镜破，竞争不利也。做生意拿到天地否绝对不能做，绝对会大败而归，耗尽家财。<br>婚：人拍掌笑，张工落地，被人暗算，口舌，官司是非，不成。<br>科：张弓落地，不成。<br>病：男子为阳，阳病，洋装病也，或者是心血管新冠等阳病。"
+        },
+        13: {
+            n: "天火同人",
+            t: "一、人捧文书上有心字：得民心之象，同心协力之象。宁姓。<br>二、人张弓射山上：高中金榜。张姓人氏。<br>三、一鹿饮水：财禄滚滚而来。亦在野之贤人。<br>四、一溪：平和安静状。<br>五、鹿之性，动则敏，静则顺，此刚健人之性，世间但闻虎食人，未闻鹿食人。",
+            x: "上下同心，利涉大川。类族辨物。<br>初九：同人于门，无咎。<br>六二：同人于宗，吝！<br>九三：伏戎于莽，升其高陵，三岁不兴。<br>九四：乘其墉，弗克攻，。<br>九五：同人，先号咷而后笑，大师克相遇。<br>上九：同人于郊，无悔。",
+            h: "【先天】：生时带财人称羡，文武双全受封诰。名登金榜，长弓宁，第三儿成格，不排第三余减一半。<br>【后天】：文从武，武从文。文武双全，出将入相。名利双收。心想事成。发于黄甲，命中四子，三子送终。<br>【流年】：金榜登科。一朝扬名，四海同心。需专心，且坚持到终必成。冬加一喜。",
+            d: gd('S')+"父居南。此局在阳宅上亦妙不可言，学者切勿分辨错误，须仔细分详， 以免误人而不自知。一、官家人逢之，必主人和，手下得力，禄命九重来，平步青云。二、商人逢之，财禄丰盛，但须二人合伙，方可成事，一人独 资势必不成大器。三、自由业、服务业居此局，必主名气大，声名远播，财禄亨通。四、对妻不利，因此局出现，妻必成明夷卦，主妻有暗伤，血 光难逃，故不如干为天，地天泰吉，即在此，不利妻之处。吾人常见夫妻一对，夫之事业如日中天，而妻子却病灾不断必为此局之阳宅也。",
+            c: "官：文武双全，文武皆升。文书有字为心，代表得民心之官，人大，政协，协会更佳。<br>财：一鹿饮水，财禄滚滚而来。<br>婚：一人捧书，婚书也，可婚，如测算结婚之后如何，此为官禄皆得，夫妻恩爱之象。<br>科：一人高射山上，高中。<br>病：宁静之象，静养之象。"
+        },
+        14: {
+            n: "火天大有",
+            t: "一、妇人腹中一道气：妊娠之事；事萌于内也。<br>二、气中二子：主双喜临斗。伯仲之间象。<br>三、一药王：平安之象。得病有救，遇良医也。<br>四、药有光：药有名也，灾中有救也。<br>五、女人受药：女人为阴，示表面不信，但暗中仍听之。<br>六、一犬：乃狗年，戌月，戌日，此论时机也；或狄姓人士。<br>七、犬：哭笑皆有象。",
+            x: "顺天休命，富甲天下。遏恶扬善。<br>初九：无交害，匪咎，艰则无咎。<br>九二：大车以载，有攸往，无咎。<br>九三：公用亨于天子，小人弗克。<br>九四：匪其彭，无咎。<br>六五：厥孚交如，威如，。<br>上九：自天祐之，，无不利。",
+            h: "【先天】：数中兄弟二人，谋略过人生即富，狗人逢之必加吉。男招贵妻，女招贵夫。名狄肖犬是真形，可建立不世之功。<br>【后天】：医星高照，悬壶得命。发医生。药济众生。双人一儿，犬在侧。如双人徐。诸事顺遂。当得半子。良马逢伯乐，宝玉有光彩。<br>【流年】：医星入命，声名远播。有喜且是双喜，生子。又逢狗（年、人、事），更加吉。问鼎天下。",
+            d: gd('NW')+"次女居西北。吾人常见有未婚之女，娇美如花，事业上功成名就，但婚姻不 好，即此局之人。一、性阳刚过人，倔强固执本性展现无遗。二、不重视婚姻，也不在乎婚姻，唯对子女独有所钟，有未婚 生子之象，且不在乎人言，且主得二子。三、如遇命中婚姻顺畅，则比同时生人要早三年成婚。四、命中事业旺，祖业大之人，再加上此局，势必为女承父业 之象，兄弟无力。肖犬之小姐居此局反之，必主大吉大利，智慧高，婚事吉，事 业顺利，婚后有二子双生之象。",
+            c: "官：妇人一气生二子，双喜临门，尤利医药。<br>财：妇人一气生二子，吉，尤利医药。<br>婚：妇人一气生二子，可成<br>科：妇人一气生二子，高中<br>病：妇人一气生二子，一药王，妇为阴，表面不信，仍旧服药。药王，医术高超之人，有救。"
+        },
+        15: {
+            n: "地山谦",
+            t: "一、月当天：清明之政，中秋时也。<br>二、一人骑鹿：才禄俱备。<br>三、三人脚下乱丝，隐于山后：小人不敢正面示人，惟隐山谦之后(即外饰谦为幌子)实则乱如麻，计无所出。<br>四、贵人捧镜：明镜高悬，执法公正光大。",
+            x: "谦受益，满招损。裒多益寡。<br>初六：谦谦君子，用涉大川，。<br>六二：呜谦，贞。<br>九三：劳谦，君子有终，。<br>六四：无不利，撝谦。<br>六五：不富以其邻，利用侵伐，无不利。<br>上六：鸣谦，利用行师，征邑国。",
+            h: "【先天】：智明如月，才德兼备。天机：众人心乱，无所适从。谦受益，满招损。出则凶。出事出山，招凶。受世人诬乱。潜藏进修，吉。看尽人间百态。独来独往。马最奇。<br>【后天】：君子临朝，小人退隐。为官公正，逢马最奇。禄且明。<br>【流年】：勾陈有窃灾，三人成行，贵人为官。明月当天。有禄至，不守，财进财出。事后官司终有巢。",
+            d: gd('NE')+"母居东北。谦卦九三爻位，劳谦，君子有终，有劳谦之美。史上如周公， 为其代表。常见妇人，任劳任怨，居无所苦，谦以让人，妇之贤 德，表现无遗，且始终不变，即此卦局能成。一、必为贤妻良母之人无疑，但夫卦为遯，主夫妻不利，感情 退化，所以常见有贤德之妇人，往往尽心尽力为家操心，结果却无 法挽回婚姻之善，但六十五岁以后不成此局。二、身体小病痛不断，因劳成疾多有。三、官家人逢之，主遇事公平处之，一丝不茍之人。四、商家人得此局，必生财禄，但往往有股东不合，因分利不 均而破坏。五、同时生人，则有官带现，如命为公职人，但居谦卦局，有 民选官之倾向，商家人亦有此倾向，会居国会殿堂之中。",
+            c: "官：官人骑鹿，公字高悬，手捧明镜，处事公道，升官一方之象，这种人当官最后，例如马奇。<br>财：一鹿在地，财禄进也，小人在旁，或有劳累之象。<br>婚：手捧明镜，月当天，有光明也，事可成也，需礼遇处公，行正大光明之道吉。<br>科：公字上镜，竞得公也，大利竞争性考试。<br>病：独行，小人在后，一堆绳索，甚防劳累致病。"
+        },
+        16: {
+            n: "雷地豫",
+            t: "一、两重山：出象，千里阻隔也。<br>二、官人在中：外出不任官象；丈夫外出从商。<br>三、一禄一马：从商之人，财禄丰盛。<br>四、金银数锭：纸钱锭，主丧服。<br>五、钱一堆者：内有忧心忡忡象。",
+            x: "雷出地奋，悦乐。作乐崇德。<br>初六：鸣豫，凶。<br>六二：介于石，不终日，贞。<br>六三：盱豫，悔。迟有悔。<br>九四：由豫，大有得，勿疑，朋盍簪。<br>六五：贞疾，恒不死。<br>上六：冥豫，成有渝，无咎。",
+            h: "【先天】：内忧外阻，父有凶。禄马交驰，入豪门。马人大利。凶为吉。看似凶事，实为吉事。不为官人为富商。天机：五阴一阳数中定。孤子承母，三千宠爱在一身。<br>【后天】：生意兴隆。财禄多。出山得金又得官。<br>【流年】：冬有丧服，阴人亡。出得外地分东西。天机：草原千里为险阻。动得干戈有官司。去官则终吉，可从商南北走。",
+            d: gd('SW')+"长子居西南。成此卦局之男人，必有因禄远行之象，大利肖马之人。一、居家中为母助，家事琐碎，巨细靡遗，有男人能做一手好 菜即此局之人。二、事业财官双美平步青云，惟与六亲远离，母有先丧之象。 三、婚姻延后，此同时出生之人晚五年婚。四、事业上为良佐之人，任何老板或主管任用之后，都将得幸有此人相助。五、婚事有娶二婚妻之象，或年长于己之小姐。",
+            c: "官：官人外出，调职远方或者离职，马人凶反为吉。<br>财：一鹿一马，财宝若干，此为大利之象。去官从商为正道。<br>婚：可如豪门，逢马最佳。<br>科：两重山，出也，重也，此次不中。<br>病：财宝散落在地一堆，此丧葬之象。<br>其他：得豫时去官从商为正道，得财之后不可人前显耀，会招来小人暗算（盗窃）甚至杀害。"
+        },
+        17: {
+            n: "泽雷随",
+            t: "一、云中雁传书：飞来喜讯象。<br>二、一堆钱：财聚也。<br>三、朱门内有人坐：君王之象，必见君面也。<br>四、一人在斗外立地：乃士人求仕，受尊重之象。<br>五、串钱在地：有用利不行之象。<br>六、乱珠聚盆：先聚后散之象。",
+            x: "随顺，随时变通。向晦入宴息。<br>初九：官有渝，贞，出门交有功。<br>六二：系小子，失丈夫。<br>六三：系丈夫，失小子，随有求得，利居贞。<br>九四：随有获，贞凶，有孚在道以明，何咎？<br>九五：孚于嘉，。<br>上六：拘系之，乃从维之，王用亨于西山。",
+            h: "【先天】：云中雁来向南行。顺性顺命人随和。身在豪门不重利。遇事避开，无有担当。六亲先聚后散。兄弟姐妹各奔东西。男得良妻，女得贵夫。八牛人大吉。朱高正，八条牛。<br>【后天】：有口之人得君禄（如口天吴）。遇得贵人升青云。得官得禄，有灾殃。舍去重利方是吉。<br>【流年】：婚事吉。科甲中。求财有财。得财须闪，不可贪禄。求事逢贵，当官者心想事成。恐有南迁。",
+            d: gd('E')+"三女居东。此卦现代人最多见，吾人常见街上有女孩，女扮男装或粗壮过 一般女人之小姐，即此局之人。一、有女同性恋之倾向，其心念一直认为自己为男人，且不屑 自己为男人，且不屑一顾周围之男人，喜与女孩同出同入。二、全心于事业，为达目的不择手段，有时位高且居天子或董 事长之身侧。三、如同时生人，命中婚姻吉祥，再加此局势必嫁入富贵人 家，且比同时生人，早婚四年，如对方不富有，终必散。故学者如此，必须天文地理合局，方可确知同时生人之不同在 何处，同时亦知如何可解。比方遇此卦局之人，命中婚姻又凶，吾 人事先探知，利用巽为风卦，即可解开此局生成之祸端。",
+            c: "官：云中燕传书，喜讯至，升官<br>财：一堆钱，大利<br>婚：云中燕传书，喜讯至，可成。<br>科：云中燕传书，大利考试。<br>病：一堆钱在地，此为纸钱也，凶。"
+        },
+        18: {
+            n: "山风蛊",
+            t: "一、孩儿在云中：有天官促成也。不求名利之人。<br>二、雁啣书：有消息至。<br>三、一鹿：有大利也。<br>四、钱在空中：此心中图利之象也。<br>五、对拜：非正婚。",
+            x: "子承父业，整顿改革。振民育德。<br>初六：干父之盎，有子，考无咎，厉终。<br>九二：干母之蛊，不可贞。<br>九三：干父之蛊，小有悔，无大咎。<br>六四：裕父之蛊，往见吝。<br>六五：干父之蛊，用誉。<br>上九：不事王侯，高尚其事。",
+            h: "【先天】：五岁大限，女为凶，且难防。人貌不同。善知人意，大人状。主夭。积善之家必有余庆。祖业有积，机深。早有功名。早婚。<br>【后天】：金榜题名自由人，不求名利，名利自来。财禄兴旺，无官带。男女合有利，机多必败。<br>【流年】：科甲高中，婚事有成。从商合伙吉，须防人言生害。",
+            d: gd('SE')+"三子居东南。三虫聚一盘中，互相争食，此成蛊象，吾人常见几位女性同居 一桌，东家长西家短的议论他人，此虽生是非之地，但并非成蛊 卦，此卦在阳宅上惟见之于男人，此又男女之不同，女人之蛊，吾 人可以立见，男人之蛊在心中，表面上不易看到。一、此局男人图利野心至大，为达目的，往往不择手段。二、主发科甲，读书考试成绩必超人一等。三、有早婚之象，比同时生人提前四年婚，且二位兄长尚未娶妻，自己先娶。",
+            c: "官：天官助力，可升，机多反败。<br>财：一鹿一财，财禄双全之象，吉。<br>婚：男女相拜，此为因利结合，非为正道。<br>科：燕衔书，喜讯至，高中。<br>病：病有天官相助，有救。小儿防夭亡。需要防心脏病，中风等。"
+        },
+        19: {
+            n: "地泽临",
+            t: "一、妇人乘风：外援为阴女，美人也。<br>二、一车上有使旗：出使之象，以谋略可解灾，谋之对象为女人也。连姓、车姓人。<br>三、人在山顶头：盛极将衰，招困也，即将下坡也。<br>四、虎在山下坐：人受虎困之象。<br>五、一合：先成后破象。<br>六、人射弓：张姓人士，夷狄之人，以弓射猎，故外族入侵象。",
+            x: "以上临下，至于八月有凶。保民无疆。<br>初九：咸临，贞。<br>九二：咸临，无不利。<br>六三：甘临，无攸利，既忧之，无咎。<br>六四：至临，无咎。<br>六五：知临，大君之宜，。<br>上六：敦临，，无咎。",
+            h: "【先天】：天机：乔木有鳳来儀，阴多阳二。生在武官家，主大贵。陈连单使，发肖虎人。长弓之人，暗度陈仓。先成后破。<br>【后天】：武将受困，逢张生害。弃武从商，反为富。天道：遇美人。在任出使，车行千里。防张生害，人至北千里。<br>【流年】：婚事须防，虎生暗害。武官外调。出使他国。等待吉。强进生是非，官司。可不动声色，假作不知。",
+            d: gd('W')+"母居西。母居此局，因对象之卦为履，故有难为之象出现。已婚妇人居 此由于夫宫必无力，产生以下数种状况：一、夫业受困，乃因妻之过刚，为求功心切，招致如此，请参 考履卦。二、妻为委曲求全，而以力大居小，顺从于夫可也。三、子女逢母如此，任何事皆有母来做主，以致母过烦忧，发 展权限过大，终致子女反弹，背逆其意行事，其招致如此，乃因母 亲无安全感，全心寄托在子女身上而成此特殊之心理状况。其结果 大家痛苦，而无法解决。四、肖虎人居此局，婚事凶，主破，但于事业却能力争上游，成就非凡。",
+            c: "官：车行带令，外事吉，大使吉，其余被困，不升。肖虎姓王反升。<br>财：一盒子，张弓射，先成后破，有人暗算，不能做。<br>婚：可成但要防破。<br>科：远方可中，需在舟车之外。另一解释可以说是美国。<br>病：男者招困，需要女人或者美人来解，另一解释是需阴人解。"
+        },
+        20: {
+            n: "风地观",
+            t: "一、日月当天：政治清明，普照大地，父母双全。<br>二、官人香案边立：倌人，丈夫也。蔡姓人士，神人共明之象。<br>三、鹿在山上：得高禄之象。<br>四、金甲人：君侧之人也，护卫也。<br>五、执印秤：提印信而来授权也。",
+            x: "观民设教，神道设教。省方观民。<br>初六：童观，小人无咎，君子吝。<br>六二：闚观，利女贞。<br>六三：观我生，进退。<br>六四：观国之光，利用宾于王。<br>九五：观我生，君子无咎。<br>上九：观其生，君子无咎。",
+            h: "【先天】：父母双全人大吉。次子偏禄成事业，官人得印又称心。女子逢之恐为偏。<br>【后天】：父全母失为定数。财禄日增，官运通。逢辛逢乙必征婚。火年须防母有凶。<br>【流年】：逢之必升，诸事顺遂，路上平安。婚事可成，夫主贵。父母双全人安康。",
+            d: gd('SW')+"长女居西南。观卦之精义在以静观可以洞悉周围之事，黄帝之阴符经云：「聋者善视。」即此意。但亦有缺失，岂不闻古言：「水至清则无 鱼，人至明则无徒」此卦唯长女可见，婚后局消。一、其明在过明，而产生以财富论定是否愿意嫁人，造成如遇未有事业之男人，即使再爱也不愿结婚，宁可做有钱人的偏房，不 婚。二、如逢命格婚姻有凶，则有嫁二婚夫，且对方有子之人，但 须比同时生人再加六年方成正式婚姻。三、未婚前，女儿代母职，掌理一家大小之事，有姊如母，即 此局之人。四、如遇命中为僧道命之人，则主终身不嫁。",
+            c: "官：执印秤，官必升，不分文武。<br>财：执印秤，官必升，不分文武。鹿在山，远鹿也，需要时间。<br>婚：带印必成。<br>科：带印必中。<br>病：日月双全，无灾。但需防火灾，心脏病，逢午为凶。<br>其他：此为得神人相助之时，清明无灾，唯有逢到午年月日时会出事，要小心。"
+        },
+        21: {
+            n: "火雷噬嗑",
+            t: "一、北斗星：君王也，夫君也，公职也。<br>二、妇人烧香拜：妻于人事无助，乃求助于天。<br>三、忧字不全喜字全：乃无又喜象。<br>四、一鸡食稻：果被食，无果也。<br>五、一钱财、一鹿者：于财禄事忧心忡忡也。<br>六、禽：字解为『离多会少』之象。",
+            x: "咬合，刑罚，除梗。明罚敕法。<br>初九：屦校灭趾，无咎。<br>六二：噬肤灭鼻，无咎也。<br>六三：噬腊肉遇毒，小吝，无咎。<br>九四：噬干胏，得金矢，利艰贞，。<br>六五：噬干肉，得黄金，贞厉，无咎。<br>上九：何校灭耳，凶。",
+            h: "【先天】：生为尾胎，在豪门。足踏七星，发男儿。从商多败多成。从官从武，位至极品，一人之下万人之上。<br>【后天】：心香一炷为诸君，所求未果，逢鸡忧财。女命逢之，枯坐到老。求财如镜中月，可遇不遇。<br>【流年】：防窃忧失财。如考试，再度无功名。心诚求苍天。天机：肖鸡能食果（鸡人，或鸡年）。",
+            d: gd('E')+"次女居东。成此之局法，请观录影带说明，于此不累述。吾人常见有女孩 小时即喜欢咬人，劝之不听，乃生噬嗑之象。一、此女性刚，报复手段常用咬的，平日唠叨不停。 二、婚姻对象为阴柔之男人。三、本身想法动作一如男人，且主少年有成，故常见年轻之影 剧圈出身小姐，名气很大，少年得志，都属此局。四、婚事延后六年，故同时生人如为二十六岁婚，则此局人加 六年，成为三十二岁婚。五、事业非常顺利，但如为肖鸡之女性逢之，其果必坐吃山 空，吾人常见的有未婚妾成此局，也有离婚之女成此局，但须与寡 母同住一起，方成此局。为何如此，学者须看录影带说明。",
+            c: "官：一鸡食果，另一解释为雁，逢雁字，鸡年时，鸡人等可成<br>财：两串钱，被偷之象，防盗。此为财禄被偷之象，不可做。一鸡食果，另一解释为雁，逢雁字，鸡年时，鸡人等可得财禄。<br>婚：一鸡食果，另一解释为雁，逢雁字，鸡年时，鸡人等可成<br>科：考两次以上不中，一次可中。一鸡食果，另一解释为雁，逢雁字，鸡年时，鸡人等可中。<br>病：串钱在地，纸钱丧葬之象，重病凶。非重病的结果就是忧心忡忡，逢到酉年月等会好，或者鸡人会好。"
+        },
+        22: {
+            n: "山火贲",
+            t: "一、雨下：满也，润泽也，成也。<br>二、车行路：前往任官象，行走四方也。<br>三、舟张帆在江中：此行顺风大利也。<br>四、官人着公服登梯：升迁在外地象。任公职主官外调象。丈夫从公职升官也。<br>五、仙女云中执珪：受阴人提携象",
+            x: "装饰，外表华丽。明庶政。<br>初九：贲其趾，舍车而徒。<br>六二：贲其须。<br>九三：贲如濡如，永贞，。<br>六四：贲如皤如，白马翰如，匪寇婚媾。<br>六五：贲于丘园，束帛戋戋，吝，终。<br>上九：白贲，无咎。",
+            h: "【先天】：英明为官带，出使四方为人重。公务人员前途有人助。不须去问津。长弓之人行巷道。排列第三。不出江中数中定。姓江排第一。<br>【后天】：平步青云，位至三公。禄命天上来。声名远播。<br>【流年】：男女同心，升官迁动，待势而发，此行大利。逢科甲高中，长弓行险路，终凶。",
+            d: gd('S')+"三子居南。贲卦为求外饰之道，其之于人事，惟男人居此局中成格。诸君 试想一位堂堂男子汉，如果要外饰，其目的何在呢？因为有真内实 之人，其心但求充实，必舍外饰之道，不会花心思刻意去修饰。君 不见真正有钱，有高智慧之人，其外观往往很零乱，甚至衣服反穿 而不自知，其原因在他根本不想花心思在这方面，你有同感吗？一、男身女态之象，性喜夸张矫作之服饰。二、个性好动，不耐静守，又刚烈主见强，性易怒。三、婚姻延后，三十岁以后进退失据，吾人常见空服人员及影 剧圈人士居此局中而不自知。四、此局以科甲，声名，故利考试。同时生人会考试成绩不 同，有人名落孙山，地理之格局影响深远矣。",
+            c: "官：官人登梯，升官。<br>财：雨下江满，舟扬风帆，顺风大利也。<br>婚：仙女云中，欣赏提拔之象，可婚。<br>科：推车，登梯，仙女云中，此为阴人助力，转变之象，可上。<br>病：官+人=棺，木+人=休，病重则亡，小病则修养也。"
+        },
+        23: {
+            n: "山地剥",
+            t: "一、妇人床上坐：必有暗灾，阴人得势，阳道衰弱，小人为主官。<br>二、烛在风中：险也。<br>三、葫芦：医药无救也；有暗计也。<br>四、缫丝：事务繁冗。<br>五、山下官人坐：有靠山，但阴人为祸。<br>六、冠巾挂木上：求去之象；又有乐之象。",
+            x: "剥落，小人道长。厚下安宅。<br>初六：剥床以足，蔑贞，凶。<br>六二：剥床以辨，蔑贞凶。<br>六三：剥之，无咎。<br>六四：剥床以肤，凶。<br>六五：贯鱼，以宫人宠，无不利。<br>上九：硕果不食，君子得舆，小人剥庐。",
+            h: "【先天】：家人离，财禄散。生不逢时天注定。父母失和。人丁少。性情孤僻，志善变。行事取巧，事倍功半。只可守株待兔。不可缘木求鱼。<br>【后天】：退早无功仍招讼，阴人生害不自知。尤以富阴更可怕，知人知面不知心。守成不逾矩，一动贪念必招凶。<br>【流年】：①婚事不成。②科甲不中。③考试不会上。④越理越乱。剥出现的时候，你越去帮忙，愈理愈乱。这个剥一定是自内生，从内部发生的。那遇到这种情形，你不要理他。等到那一年逢到这个卦的时候。⑤乃因女子害。被女人害了。女命妨夫，克到先生，闭门造车，其果自食。自己害到自己。",
+            d: gd('SW')+"三子居西南。剥有耗尽之象，有人家财万贯，但出一子耗尽家财，所谓富不 过三代，其因何在？有时见三老人，居老人院中，本是安养天年与 世无争，三人结拜兄弟后，长幼有序分列，此时如剥卦现，则其中 一人必散尽三人之财务，终至引发自杀或仇杀事件，其因皆为财， 世人但知为财杀，却永远无法深入了解，为何贪财如此？为何年至 古稀，仍无法摆脱财利之惑？皆不知卦局之影响，乃能深入人心， 使当事人蜕变而不自知，终致晚节不保，学者须戒之，一旦发现此局已成，必极尽人事破坏此局，免生大害，徒呼奈何？ 一、家有剥卦，主耗破家业，伦理丧失，伤风败俗。 二、性毒暗生，害人而人不知。三、婚事不成，同时生人即令流年红鸾星动，亦无法成婚。 四、科甲不顺，考试必败。五、身体灾病多，折损阳寿。此局大凶，学者须能于事初即可判读出，必可趋吉避凶，乃至 大吉，功德无量，同道须知，助人于无形，受助人不自知，无法察 觉到你的功劳，此其功德也，即阴德。今人捐募善款，为穷人洗 衣、做饭、只是阳德，并非真功德。圣人治世，天下百姓，只知平 安，无乱，无法感受到圣贤的功劳，庸才治世，天下大乱，其派人 平乱后，人民见此，即认定其功劳很大，所以本书之出世，有警世 教民之无知功效，同道共勉之。",
+            c: "官：求去之象，风中残烛，一团乱丝，冗杂事务难以处理，危也，辞官。不升之象。<br>财：风中残烛，危险也，不要做事。<br>婚：风中残烛，危险也，阴人床上，暗灾也，不要结婚，赶紧跑。<br>科：冠巾挂木上，不中也。<br>病：风中残烛，危险也，葫芦在地，无药救也。"
+        },
+        24: {
+            n: "地雷复",
+            t: "一、官人乘车：使节也；车姓、连姓也；军队也；官大也；调职也。<br>二、上两只旗：斗也；将、帅也；一方之主也。<br>三、堠上东字：猴发木形人。东：有心约束，十八日至。十日来人封侯象。<br>四、一将持刀立：武威之人，司法执行人。<br>五、一兔：肖兔之人，刘姓之人。<br>六、一虎：肖虎之人，王姓之人。",
+            x: "一阳来复，循环往复。至日闭关。<br>初九：不远复，无祇悔，元。<br>六二：休复，。<br>六三：频复，厉，无咎。<br>六四：中行独复。<br>六五：敦复，无悔。<br>上六：迷复，凶，有灾眚，用行师，终有大败，以其国君凶，至于十年不克征。",
+            h: "【先天】：天生神武，好勇之人。女人逢之，为英雌。虎兔之人化为将。手握生杀之权。猴向东行出外地。一父双母，璞玉不相识。淘沙始见金。<br>【后天】：官爵显耀，发猴虎兔（虎可姓王，兔可姓刘，猴可姓侯）。一人两妻，反复往来，逢刘逢宋遭遇阻。迁往他处可平安。<br>【流年】：行年至此，升将官。木形肖猴人成格，化将。不成格者升上校，不升将。再遇虎兔寅卯年，必可复职任大使。",
+            d: gd('E')+"母居东。吾人常见已婚之妇人，婚事不佳，独立支撑家运，允文允武， 属木兰型之人，必为复卦之局。一、有女身男人性格之征。二、此卦局尤利发武官，即军、警、法、外交等工作之人。 三、代夫出征，丝毫不让须眉。四、此局发官人，不发商人，尤以肖虎、兔人大吉，更旺。五、与夫之对应局为无妄卦，故夫妻必不和，其因乃生于妻志 过丈夫，丈夫无法与其匹配，屋漏偏逢连夜雨，加上夫有官司是非 缠身，所以对婚姻来说是加凶。",
+            c: "官：东字候，十八日来人封官，升。尤利虎，兔等武将。<br>财：虎、兔，逢虎兔生肖或者年限时间可做，或者姓刘王可做。<br>婚：逢虎兔生肖或者年限时间可成，或者姓刘王可成。<br>科：虎兔生肖或者年限时间可成，或者姓刘王可成。<br>病：虎兔生肖或者年限时间可好，或者姓刘王可好。得复之时易有轻度好转，需注意后续变化。"
+        },
+        25: {
+            n: "天雷无妄",
+            t: "一、官人射鹿：自乱阵脚。<br>二、鹿啣文书：财讯至也。<br>三、钱一堆在水中：得财遇险之象。险中求财，忧心忡忡也。<br>四、一鼠一猪：遇子、亥年吉，肖鼠人阴谋，肖猪人黑心。",
+            x: "不妄为，意外之灾。茂对时育万物。<br>初九：无妄，往。<br>六二：不耕获，不菑畬，则利有攸往。<br>六三：无妄之灾，或系之牛，行人之得，邑人之灾。<br>九四：可贞，无咎。<br>九五：无亡之疾，勿药有喜。<br>上九：无妄，行有眚，无攸利。",
+            h: "【先天】：肖鼠肖猪须防。偌大家业分东西。个性刚断用事，做事果决。险种求财。商人合伙，防陷。有大禄至，须戒盛。<br>【后天】：猪年人进禄为天数（猪年，或猪人）。少缺一半，阴人有谋略。做事不抱侥幸，可脱险。可告之曰：留得青山在，不怕没柴烧。<br>【流年】：险中求财。得财有半。自乱阵脚。防窃。忧心父病。",
+            d: gd('E')+"父居东。此名无妄，犹无妄之灾意，居此局之丈夫成此格，即令已离婚 但有子女同住，只要象存在，其局不变。须注意此点。一、必须为从商较吉，但须防阴人暗客，有得财遇险之象，肖 猪肖鼠人成格，主大财入，但皆有阴谋其中。二、如为公职人，则易流于利欲而挺身走险。三、求财招险事，住满第二年，局再不动，必见之。 四、性刚固执，不听人言，故生小人，自乱阵脚。五、須防子災，故同時生人，有人無子，有人有子，但主夭折 或叛逆，此其真因也。因強住長子位，致令長子無宮位，故生禍害。",
+            c: "官：文官贪污，不升或者受到官司困扰。其余升。<br>财：官人射鹿，得财，财被分走一半。<br>婚：可成，但要小心算计钱财等。<br>科：鹿衔文书，高中。<br>病：钱财水中，丧象，尤其是孩子。"
+        },
+        26: {
+            n: "山天大畜",
+            t: "一、一鹿一马：禄马交驰，大富之象。<br>二、月下有文书：明而有往，中秋时节，文书在空中尚未到手。<br>三、官人凭栏：无事状，遥望所失之国度。又栏为木，人靠木，休也。棺也。<br>四、花在盆中：有限也。",
+            x: "大积蓄，利涉大川。多识前言往行。<br>初九：有厉，利己。<br>九二：舆说輹。<br>九三：良马逐，利艰贞，曰闲舆卫，利有攸往。<br>六四：童牛之牿，元。<br>六五：豶豕之牙，。<br>上九：何天之衢，亨。",
+            h: "【先天】：生来注定富贵人。红楼之中有科名。马人大吉。求官不利。求财吉。经营交易，一生富足。<br>【后天】：休辞官位，专心从商。得祖业，但守成不易。男防桃花，然果必犯。财禄富足一生。<br>【流年】：遥望国土思故乡，身在异乡为异客。财禄兴旺，禄马交驰，滚滚而来。文书至。天机：必度势而进，莫要猛躁而进。看势而进，不可退，不可犯灾而行。官人逢之，贪禄休官。",
+            d: gd('NW')+"三子居西北。君不见有子为家不顾一切的工作，处处为家着想，甚至放弃婚事亦在所不惜，固然此象不一定在三子身上发生，但大畜卦必现于 三子身上。一、代父之职守，负担一家之生计。二、节俭至矣，绝不招待花钱买奢侈品，故颇有积蓄。三、有婚也短暂，必不足三月而破，比同时生人提前二年结婚。四、此局不利公职发展，必困于工作，堆积公文如山。人言有积乃大，诚不欺人也，许多人在婚前极尽节俭，往往婚 后无法忍受妻子之奢侈浪费，终致离婚，故积的观念产生在自己身 上而不自觉，乃致婚后，硬要加诸于对方身上，終於破裂，吾人當 於始時，即已察覺知曉，方不愧為習易之人。",
+            c: "官：文书空中，可升也。贪图财禄会导致官不升。<br>财：一鹿，一马。大利。大发马人。<br>婚：文书在空中，成也。<br>科：文书在空中，可中。<br>病：官人凭栏，官+人=棺，人+木=休，重病则休。"
+        },
+        27: {
+            n: "山雷颐",
+            t: "一、雨下：受恩泽也。<br>二、三小儿：乃合心之象，有德之国也。<br>三、日当天：君明之象。父全。<br>四、香案：求取之象。<br>五、金紫官人：天子身侧之人。",
+            x: "颐养，病从口入。慎言语节饮食。<br>初九：舍尔灵龟，观我朵颐，凶。<br>六二：顚颐，拂经，于丘颐，征凶。<br>六三：拂颐，贞凶，十年勿用，无攸利。<br>六四：顚颐，，虎视眈眈，其欲逐逐，无咎。<br>六五：拂经，居贞，不可涉大川。<br>上九：由颐，厉，利涉大川。",
+            h: "【先天】：生则从父，母有凶。妻一子，妾二子。少受封禄，才艺高。一生从事正官带，求官得官。得父荫。兄弟齐心，相互呼应。官发长房，余发禄。尤其出盖头丁人，日明明德。<br>【后天】：得众望，受天子禄命，民选吉。平步青云近天子侧。位列三台。<br>【流年】：父吉，母凶。此年逢贵上青云。求财平安求官大利。婚事必成。",
+            d: gd('E')+"三子居东。颐有饮食养身之意，如何养人？如何养正？如何知养之正确与 否？何时可养？这些零碎复杂的问题，如要一一解释，不一定全部 都能知道了解，八卦之入宅变局，就是取自然颐养之道，使萌生之 始念，由己之所需要，人之性在其认为极需要之时，你提供所需方 可真正受用，如果他本身不想要，即令是你的亲人也无法改变他， 只造成热脸贴到冷屁股的结果。故吾人能参透易经，用阳宅方式， 自然而然的大幅改变，其本人而不自知，相信是最有效的方法。此 卦现则可见：一、少年得志，早来兴发之象。二、身体健康平安，故同时生人如身体差，吾人可利用此局来 化解，协助他吸取自然之精华，并能包含其情绪在内。三、婚姻当较同时生人提前五年，有早婚之倾向。四、如不经吾同道之人指点（属易派象术宗），自然居此，有 时甚至于为其他风水地理师所改，皆主同父异母之人，反观之，为 同父异母之人，却居此局中，屡见不鲜。",
+            c: "官：金紫官人引荐，升官之象。<br>财：雨下，润泽也，有利，可做。<br>婚：三小儿，和合之象，可成。<br>科：三小儿，金紫官人引荐，求取之象，可上。<br>病：日当天，祭拜，女性健康堪忧，甚防心脏病。"
+        },
+        28: {
+            n: "泽风大过",
+            t: "一、官人乘车上插两旗：车至官来，必有官司诉讼，军人象。<br>二、旗上有喜字且分开，乃喜有破损象，舍去婚姻象。<br>三、入朱斗：乃豪门世家相请，或朱姓人。<br>四、门外贵人立：被弃于外象。<br>五、文书在地：合约，契约，不成之象。<br>六、一合子：先成后破之象。",
+            x: "栋桡，压力大。独立不惧。<br>初六：藉用白茅，无咎。<br>九二：枯阳生稊，老夫得其女妻，无不利。<br>九三：栋桡，凶。<br>九四：栋隆， ，有它吝。<br>九五：枯杨生华，老妇得其士夫，无咎无誉。<br>上六：过涉灭顶，凶，无咎。",
+            h: "【先天】：北人南相主大贵，一人两母为定数。南人北相主大富，姐妹共事一夫。八牛之人终成空。八牛（如朱）人，先官后商大吉。外柔内刚，仁心之人。<br>【后天】：有栋梁之才。无科甲之时。受人重用，处事不真，不够坚心。婚事有破，不知取舍。<br>【流年】：官司有讼，婚事不成。当官先成后破。女命逢之，嫁入豪门。",
+            d: gd('SE')+"三女居东南。大过之卦，于人事上分二解，一为犯下大过，二为立下大过于 常人之功。地脉道比较偏狭，往往见到小妹最早嫁人，也嫁的最 好，必为此卦。至于何时为大过，如何用大过之道，其进退之机， 读者可参看人间道部份，此不详述。一、比同时生人早婚三年，且嫁夫有长十岁以上之状况。 二、身进豪门世家，享尽荣华富贵。三、性过刚，任意而为，婚前婚后都一样。四、如婚之对象，年纪相近，必主凶，易破。。",
+            c: "官：文书在地，不升，有官司。<br>财：文书在地，不成之象。<br>婚：文书在地，一盒子，不成，即使成也会离婚，甚防离婚。<br>科：文书在地，不中。<br>病：文书在地，烧纸之象，丧事，重病凶。"
+        },
+        29: {
+            n: "坎为水",
+            t: "一、人在井中：官司，牢狱，陷入险地象。<br>二、人用绳引出：责人出手相救状。<br>三、一牛：劳苦也，春夏凶，秋冬吉，亦肖牛人。<br>四、一鼠：肖鼠人，阴谋暗害者，暗藏也。<br>五、人身虎头：有权威之人，贵人也。",
+            x: "重险，习坎。行险而顺。<br>初六：习坎，入于坎窞，凶。<br>九二：坎有险，求小得。<br>六三：来之坎坎，险且枕，入于坎富，勿用。<br>六四：樽酒，簋贰，用缶，纳约自牖，终无咎。<br>九五：坎不盈，衹。既平，无咎。<br>上六：系用徽纆，寘于丛棘，三岁不得，凶。",
+            h: "【先天】：重险。出入艰险，祸害暗生，处险乃不止。牢狱官司难逃。不做官人爵禄显，只在绿林称英雄。外地吉。迁向西方，天机：逢牛逢鼠可得助，贵人为一大头人。<br>【后天】：牢狱之灾难免，失却家人又行险。任劳任苦怨尤，安分守己可平安。虎头人可脱险，牛鼠人必陷。<br>【流年】：必有官讼。牢狱灾。秋冬吉，春夏凶。鼠有伤，牛平安。虎人逢之反吉（肖虎，长似老虎，姓王以外，还有司法官，律师，此种人反吉，乃因其本主官司诉讼）。其余九生肖人有大限之虞，重险也。不动可平安。",
+            d: gd('N')+"次子居北。本坎卦有险之象一、儿子喜欢冒险，诸如赌博、毒品等举凡惊险刺激都有兴趣。二、唯肖虎，肖牛人住吉。三、如此子肖鼠，又成此局，则暗中生害，为祸家人，母亲必 首当其冲。四、婚姻较同时生人，延后二年。五、此格之人，常犯官司，牢狱之灾。解此局惟水火既济卦可成，可令其脱胎换骨。",
+            c: "官：人在井中，敲响警钟，遭诬陷，官司，纠纷。不升反降。虎年月时虎王人平安无灾。<br>财：人在井中，遇险也。<br>婚：人在井中，遇险也。<br>科：人在井中，不中。<br>病：人在井中，此为病危灾巨之象，虎人平安，牛人受灾终平安，王朱姓终平安。非死即伤。牛人朱人秋冬比春夏好。"
+        },
+        30: {
+            n: "离为火",
+            t: "一、人在虎背上立：行危不惧；难下也。<br>二、一船在江心：口舌相争，无所适从也。<br>三、官人执箭岸上立：在位之人，欲杀之象。<br>四、执箭：争。",
+            x: "丽也，附丽，光明。继明照四方。<br>初九：履错然，敬之，无咎。<br>六二：黄离，元。<br>九三：日昃之离，不鼓缶而歌，则大耋之嗟，凶。<br>九四：突如、其来如、焚如、死如、弃如。<br>六五：出涕沱若，戚嗟若，。<br>上九：王用出征，有嘉。折首，获匪其丑，无咎。",
+            h: "【先天】：性喜飘荡，无所事成。雨中鸡鹤；腿很长。父留母失，两地相隔。文章才艺出众，不聚财，一生凭才艺走提天下。婚姻结而离，又结，婚事无定居。<br>【后天】：虽无方向，需行危不俱。去吉，止凶。婚有失妻之虑。特例：寅年遇虎（或姓王）有大变，财散人离。<br>【流年】：心有忧虑，方向不明。行危不惧方是真。从官逢暗箭。财禄婚事两不吉。",
+            d: gd('S')+"次女居南。此局常见，离卦本示人中虚为明，今人但以为自己很明，其实 一直都没进步，屡错不改，茫然不知，皆肇因于不明，易经提出之 中虚为明，就是随时把自己变成空杯子，那才可以真明。家中有 女，天生好手，明事理，知进退，必为此局，读者须注意要知利用此局方是，不知运用，空言易经，吾所不耻。一、此女必心在迁移外地，不喜在本地。二、命格上如二十八岁婚，则宅局如此，必然不出二十八岁婚。三、天生明理而不惧。四、不守财禄，不重利之人。五、科甲高中，往往都是第一志愿。",
+            c: "官：下属背叛，易有官司。逢虎年时加凶。<br>财：口舌相争，财不进也。<br>婚：官人执箭，口舌之争，不成或者结婚会离婚。<br>科：一人虎背上立，官人执箭，难象，推荐象，虽得到推荐却难成。<br>病：一人虎背上立，难象，遇难也。"
+        },
+        31: {
+            n: "泽山咸",
+            t: "一、 空中有一拳：贵人提拔，凭空而得。<br>二、钱宝一堆：求财得财。<br>三、贵人在山顶：孤立状，即将下坡，退休状。<br>四、女人上山：夫妻吉，阴人卜之知走马上任。<br>五、合子：先成后破，因诚感方吉，物感必凶。",
+            x: "感应，速也。虚受人。<br>初六：咸其拇。<br>六二：咸其腓，凶，居。<br>九三：咸其股，执其随，往吝。<br>九四：贞，悔亡，憧憧往来，朋从尔思。<br>九五：咸其脢，无悔。<br>上六：咸其辅，颊，舌。",
+            h: "【先天】：生即带财来。注定继子承家业。巳年命，子亦当无。财禄日丰，田园必增。午火之时婚事成。女有贵夫。男有美妻。<br>【后天】：官至一方之主（市长、县长、院长、校长），孤立无援。贤妻助力大。内助吉，外助得之反为凶。女命逢之，助夫反害夫。<br>【流年】：凭空而得权禄位。商人逢之得财。女人升职。官人逢之须退，否招凶，定是官位至顶，而后行下坡道。",
+            d: gd('NE')+"三女居东北。此卦局过去常见，今人不多，但读者亦明了，其变化如后： 一、婚成于媒妁之言，并非自由恋爱。二、婚事先成后破，凶。三、对象必为豪门世家，比同时生人早一年婚，逢单岁婚。 四、财禄事业顺利，工作野心大，但科甲不兴。",
+            c: "官：贵人山顶，女人上山，女人升官，男人不升。<br>财：财宝一堆，有利可做。<br>婚：一盒子，和合也，但要防止离婚。<br>科：两串钱，忧心忡忡之象，不上。<br>病：云中拳现，人隐云中，钱财两串在地，重病走人。"
+        },
+        32: {
+            n: "雷风恒",
+            t: "一、日在云中：昏暗之象，君主不明象。<br>二、凤啣书：喜讯至，金榜题名也。<br>三、官人行路：将至也，贵人至。官人，倌人，丈夫也，人傍为倌也。<br>四、道士手指斗：入空门也，闪也。<br>五、鼠下两口：阴谋在后之象；两口，回也，吕姓也。<br>六、时机：在春末，日为春之末尾也。",
+            x: "恒久，立不易方。夫妇之道。<br>初六：浚恒，贞凶，无攸利。<br>九二：悔亡。<br>九三：不恒其德，或承之羞，贞吝。<br>九四：田无禽。<br>六五：恒其德，贞，妇人 ，夫子凶。<br>上六：振恒，凶。",
+            h: "【先天】：肖鼠，两口人，早年入空门，因无日头。明心见性，说法谈经，生具佛性。若此生不入官家门，必然为僧林。<br>【后天】：政局不清，君不明。严重者，可身入空门免遭凶。待得子年方出头。子年有凤来仪，明且吉。<br>【流年】：婚事成。科甲无。官运变动，远方吉。看似升官，实有险。早早脱身免遭陷。此为定数。",
+            d: gd('SE')+"长子居东南。今人最常见此局，化解局式，如雷地豫卦等都吉。 一、易从宗教信仰，但不是正道之宗教。二、比同时生人晚婚一年。三、智慧被压抑，常不知取舍，失去坚持。四、肖鼠人有吉，阴谋不生。五、官运不佳，商场不顺，惟科甲旺，利教职自由业人。",
+            c: "官：道人手指门，门+人=闪，闪人，辞官或者不升。<br>财：道人手指门，门+人=闪，闪人，无利可图，反受其害。<br>婚：有凤来仪，婚姻可成。<br>科：有凤来仪，金榜题名也。<br>病：入道门有救。逢子年月时为凶，被暗算也。"
+        },
+        33: {
+            n: "天山遁",
+            t: "一、一山：阻也。<br>二、一水：险也。<br>三、酒旗上文字：酒为忘忧之物，文在旗上，受人提携也。<br>四、官人踏龟：归，鬼也；玄武自来，水上求财。<br>五、幞头上树：求去辞官也。<br>六、月在云中：主半清半浊象，事未明晰。<br>七、人在水边：等待平安状，莅临也。",
+            x: "退避，隐居。远小人不恶而严。<br>初六：遯尾，厉，勿用有攸往。<br>六二：执之用黄牛之革，莫之胜说。<br>九三：系遯，有疾厉，畜臣妾，。<br>九四：好遯，君子，小人否。<br>九五：嘉遯，贞。<br>上九：肥遯，无不利。",
+            h: "【先天】：父不全，母亦半。盖头（如高，宋）高耳有，人成格。有险有阻，劳多功少。成格人，半母多病。中年失官。餐饮吉。女命逢之，中年丧偶。<br>【后天】：女命夫先失，辛劳成家，不再有婚，外阻内险。男命辞官归隐，无所事。中华文化才艺好，有麻烦。求财遇险，防人不成，渔业平安。<br>【流年】：父凶之年，官运停滞，财禄无。险在南山。女命逢之，夫凶。事业不明。遇灾需小心，险中有险。学习平安。",
+            d: gd('NE')+"父居东北。吾人常见一家之主终日唉声叹气，中年即无斡劲，且工作上付 出劳力很多，却往往功给他人，仕途原地踏步，毫无进展，必为此 卦而所约束也。一、萌生退意，肇因于该升不升，有无力感二、夫妻感情退化，终致离婚。三、事事回归原地，必须重新出发。四、身体亦有退化现象，中年即得老年病。",
+            c: "官：一山，一水，险阻也，不升，或者升也不长久。<br>财：官人踏玄武，一山，一水，险阻也，不能做。渔业可正常营收，酒旗，可开酒馆，其余不能做。<br>婚：踏玄武而去，婚姻不成或者离婚。<br>科：文在高处，高中也。<br>病：玄武归去，归去也，重病为凶。"
+        },
+        34: {
+            n: "雷天大壮",
+            t: "一、北斗星：帝君，老板，主事之人。<br>二、天神执剑：民意归向，人心也。<br>三、一官人烧香拜：拜求于天，而不求人，凶。<br>四、一猴、一兔、一犬：侯，刘，狄姓，在野之人。<br>五、猴回头：回吼。<br>六、兔回头：回吐。<br>七、羊回头：回阳。",
+            x: "壮也，非礼弗履。雷在天上。<br>初九：壮于趾，征凶，有孚。<br>九二：贞。<br>九三：小人用壮，君子用罔。贞厉，羝羊触藩，羸其角。<br>九四：贞，悔亡，藩决不羸，壮于大舆之复。<br>六五：丧羊于易，无悔。<br>上六：羝羊触藩，不能退，不能遂，无攸利，艰则。",
+            h: "【先天】：猴羊犬成格，长男更壮。女不成，招凶，过刚。凡成格者，逢凶不为凶，四海扬名。文武双全，官比父大。九重禄命，位至三公。<br>【后天】：中年后平步青云。一念之间，天地反覆。猴羊犬加贵。女命逢之，官比夫大。若受天子禄命，得人心却背利（被利用）。给君八字：争时宜远。和时宜近。<br>【流年】：贵人来助得快利财，逢猴羊犬，加吉。官人升迁，求之不得。男子逢之妻重病，但无灾（可解）。",
+            d: gd('NW')+"长子居西北。此卦局也常见不鲜，吾人须知何局为大壮局，如何利用大壮局，何时可用大壮为最利。何时须离开此局。 一、性刚为一家之主，有越居父位之象。二、家庭责任感重。三、不婚，与同时生人不同。四、如有婚，必为猴，兔，犬三肖属之人，但常不足三月婚破。五、事业独立自主，自由业人可为一方之主，声名远播。",
+            c: "官：猴兔犬（一说法为候兔羊），逢猴兔犬人年月时升官，其余不升。<br>财：逢猴兔犬人年月时可得神人助力，得大财。其余不做。<br>婚：逢猴兔犬人年月时可婚，其余不婚或婚期短暂。<br>科：逢猴兔犬人年月时可中，其余不中。<br>病：逢猴兔犬人年月时有救，否则重病有危。"
+        },
+        35: {
+            n: "火地晋",
+            t: "一、文字破：官事不成，退位象。<br>二、官人掩面：无颜见人，悲象。<br>三、球在泥上：所求必陷险也。<br>四、鸡啣秤：鸡，酉也，肖鸡人也，落日之象。秤：示公平，称心也。<br>五、枯木生花：晚发也。<br>六、鹿啣书：禄与命到也。",
+            x: "进也，日出地上。自昭明德。<br>初六：晋如摧如，贞，罔孚，裕无咎。<br>六二：晋如愁如，贞。受兹介福，于其王母。<br>六三：众允，悔亡。<br>九四：晋如鼫鼠，贞厉。<br>六五：悔亡，失得勿恤，往，无不利。<br>上九：晋其角，维用伐邑，厉，无咎，贞咎。",
+            h: "【先天】：流浪在外无家可归。父不全，母散。切记赌不兴家。唯酉人称心如意，余生肖官事阻，反求于下，中年后大吉。富贵催人老。<br>【后天】：婚凶。手下犯上（包括子女犯父母）。三度梅开。逢鸡必成。从商大吉，当官者不必留连，可去官从商。<br>【流年】：婚事凶，升迁无望。失权位。反求手下。恰逢酉年，或者鸡人，必可称心如意，财禄大进。",
+            d: gd('SW')+"次女居西南。此局之现，读者可以立判出。一、性柔有母爱之人。二、婚姻常晚，约四十岁以后。三、守财不花，性极节省之人。四、偏房之人，同时生人有婚为正房。五、婚嫁对象若肖鸡，则大吉，但大年长多多。",
+            c: "官：文字破，官司纠纷，不升。<br>财：鹿衔文书，财禄至也。<br>婚：球在泥中，文字破，不成或结婚之后再离婚。<br>科：文字破，不中。<br>病：球在泥中，官人掩面而哭，文字破，丧事也。逢到鸡人酉年月转凶为安，大吉。"
+        },
+        36: {
+            n: "地火明夷",
+            t: "一、妇人在井中：女人招灾，或颈部灾，家内有灾。<br>二、虎在外：外人虎视眈眈。<br>三、钱缺：财伤也。<br>四、人逐鹿：财失也，争相为禄，逐鹿中原。<br>五、堠在人鹿中：猴作梗也。<br>六、「：尺也，工匠独有，匠，将也，武官人。<br>七、堠：不动也，尊位也，姓侯，肖猴",
+            x: "晦其明，艰难之时。莅众用晦。<br>初九：明夷于飞，垂其翼。君子于行，三日不食，有攸往，主人有言。<br>六二：明夷，夷于左股，用拯马壮，。<br>九三：明夷于南狩，得其大首，不可疾贞。<br>六四：入于左腹，获明夷之心，于出门庭。<br>六五：箕子之明夷，利贞。<br>上六：不明晦，初登于天，后入于地。",
+            h: "【先天】：父不全母全，生逢家业没落时，又逢寅年，雪上加霜，母有凶。申猴有回禄（即火灾）。破财又损人。回天乏力，大限数终寅，有颈之戒（屌丝、勒死，淋巴癌等）。<br>【后天】：无力回天。人财损伤。妻先招凶。慎防虎人。回禄之灾需注意。守成，正财，为人工作，安安分分，谨言慎行方可无忧。<br>【流年】：大限数已终。不逢血光也有火厄。",
+            d: gd('S')+"母居南。此卦很凶，宅局逢之，必主母先亡，且生前血光连年，希读者 遇之必力求其变局，功德无量，人不知其功，乃所谓阴德也。一、妻生隐疾不好告人。二、破财且诸事不顺。三、易受小人言，招人暗害。四、一旦见血光，必终致凶。五、唯肖虎人，可平安渡过。",
+            c: "官：妇人在井中，人逐鹿，候在中，暗中招灾，有人从中作梗，不升，反招陷害。<br>财：钱破，财不全不利也。<br>婚：女人井中，不利婚姻也。<br>科：人拿树枝，尺折，候在中，不中之象。<br>病：妇人井中，防勒死，吊死，淋巴癌，木+人=休，将休之象，恐有血光之灾。逢虎平安。"
+        },
+        37: {
+            n: "风火家人",
+            t: "一、一人张弓：暗算，破坏也。<br>二、一带在水边：事滞也，弃官也。<br>三、云中文书：突而来之喜讯也。<br>四、贵人拜受：绶命也。<br>五、妇人携手：家和之象，此卦卜婚姻大吉。",
+            x: "家和万事兴。言有物行有恒。<br>初九：闲有家，悔亡。<br>六二：无攸遂，在中馈，贞。<br>九三：家人嗃嗃，悔厉，妇子嘻嘻，终吝。<br>六四：富家，大。<br>九五：王假有家，勿恤，。<br>上九：有孚威如，终。",
+            h: "【先天】：家族和睦，事业兴盛。田财广进。科甲高中。生而为官。妻妾各一。兄弟一文一武，严母持家。<br>【后天】：事业由武转文，受封印，先有阻滞，事后成。妻助大，唯逢水年凶。婚事吉，主得二子。<br>【流年】：逢之有科甲。官人受印。大贵之年。婚必成。恰逢水年，防人生暗害。",
+            d: gd('S')+"长女居南。今日常见之卦局，读者可知如后： 一、 从官职必无法升职。二、 科甲功名无虑。三、 婚延后五年与同时生人不同。四、 与家人相处和睦，且非常顾家。五、 多妇人病。",
+            c: "官：官人授文书，第一次不升第二次会升。<br>财：水旁有带，滞也。财路不通。<br>婚：妇人拱手，婚姻大吉。<br>科：官人授文书，可高中。<br>病：跪接文书，跪寿也，丧象。<br>其他：家人最利婚姻。"
+        },
+        38: {
+            n: "火泽睽",
+            t: "一、人执斧在手：求快也，行刑之人，执法之人，有权柄也。<br>二、文书半破：无望象，毁约也。<br>三、牛鼠：秋冬吉，春夏凶。<br>四、桃开：逃开也。<br>五、门掩：牢狱之灾，闭也，隔也。",
+            x: "睽违，背离。二女同居志不同。<br>初九：悔亡，丧马勿逐，自复；见恶人，无咎。<br>九二：遇主于巷，无咎。<br>六三：见舆曳，其牛掣，其人天且劓，无初有终。<br>九四：睽孤，遇元夫，交孚，厉无咎。<br>六五：悔亡，厥宗噬肤，往何咎。<br>上九：暌孤，见豕负涂，载鬼一车，先张之弧，后说之弧，匪寇婚媾，往遇雨则。",
+            h: "【先天】：生逢家道衰，父母不和有牢灾。与母无缘。求财不择手段。逢鼠逢牛避之吉。<br>【后天】：一事无成。家人背离。有牢狱之灾。唯鼠牛人可避。其余多凶。南迁吉。<br>【流年】：侥幸得财。逢牛鼠主破（如鼠月，鼠人），婚破，事破，不逃入牢门。南行吉。遇刚强之贼。",
+            d: gd('W')+"次女居西。我们常见有小女孩，背离家人，自顾自私，使父母深为苦恼， 而无法改变，只有任其任性而为，终致一生皆凶，坎坷，实因自内 生。一、性刚僻倔强，任性胡闹，以致家无法容。二、肖牛肖鼠人见之，更凶。三、科甲不兴。四、婚姻不成。五、招凶事，官司，災禍連連。六、有同性戀傾向。",
+            c: "官：文书半破，官事不升，官司纠纷也。<br>财：桃开，逃开，不要做，抓紧跑。<br>婚：文书破，不成或者离婚，再一个刀斧手在旁边，可能被控制，要小心。<br>科：文书在地破，不中。<br>病：文书在地，烧纸之象，恐有血光之灾。逢到老鼠、牛人时间加凶。"
+        },
+        39: {
+            n: "水山蹇",
+            t: "一、日当天：君明之象，吴姓。<br>二、旗一面只有使字：出使，和平之象，使—二人一口，示单人也。<br>三、鼓五面者：时为五更天，占五面地，王为君王，一方之主，有多国或多岛之象。<br>四、中有一鹿：携财福至，旅客带财来状，商人至也。<br>五、堆子千里字：行西南，千里封候，候姓也。<br>六、千里为重：有第二次方吉。",
+            x: "难也，止也。反身修德。<br>初六：往蹇，来誉。<br>六二：王臣蹇蹇，匪躬之故。<br>九三：往蹇，来反。<br>六四：往蹇，来连。<br>九五：大蹇，朋来。<br>上六：往蹇，来硕，，利见大人。",
+            h: "【先天】：生于官家，日头正旺。两人一大口，六亲数在五人。但出一卜、一商人。外地封侯。一方之主。不为使节，为儒林。<br>【后天】：夫妻同出外地，五人相从。夫来从官，妻生财。三子去一发二房。女命逢之，千里单骑，出外求财。岛中居。<br>【流年】：夫当外出，求禄必兴，官人逢之，出外使节。女命逢之，须防子劫，偷天换日（子被抱走，子被窃盗）。",
+            d: gd('NE')+"次子居东北。此局利从武官之人，如军人、员警、外交、司法人员等，也可 以刻意布出此局如果你想儿子从此类公职的话。一、求财亨通，且无功利之心。二、官调他乡，与六亲远离。 三、婚姻较同时生人延后七年。四、科甲吉，故考试资格必顺心。五、独自发展亦特立独行也。",
+            c: "官：千里，使旗，候，逢候之象，当局长之象，升官之象。可能为外地调职，一次不升最多两次。<br>财：一鹿，五个鼓，拥有多个进项。<br>婚：日当天，一使旗，一鹿，男命夫唱妇随，一官一商。女命千里走单骑，这是不好的地方。<br>科：重，候，一次不中就再考一次，必中。<br>病：男平安，女要防心脏病，可求助与卜人，孩子有被偷换之嫌。"
+        },
+        40: {
+            n: "雷水解",
+            t: "一、旗上提字：指名提凶，不利。有远走他乡之象。<br>二、一刀插地：求快也，刘姓之人也。<br>三、一兔走：卯年，刘姓。<br>四、一鸡在边鸣：有竞争象，酉年适逢贵人救。<br>五、贵人云中：不及救也。<br>六、道士手指门：入空门也，逃亡方向，出家也。",
+            x: "解脱，赦免。赦过宥罪。<br>初六：无咎。<br>九二：田获三狐，得黄矢，贞。<br>六三：负且乘，致寇至，贞吝。<br>九四：解而姆，朋至斯孚。<br>六五：君子维有解，，有孚于小人。<br>上六：公用射隼于高墉之上，获之无不利。",
+            h: "【先天】：生于患难。后平安。逢兔而走。失一兄。弃武从文数中定。逢鸡则主入空门。正官带印。卯金一刀人（如姓刘），大吉。<br>【后天】：大志消磨日沉沉。难舍众生一兔人。逢鸡有机展长才。日在床头不须虑。<br>【流年】：是非之年。兔人一刀走他乡，身在逆旅。不意逢鸡反得利，日出山头。",
+            d: gd('N')+"长子居北。此卦局常见，也相当特殊： 一、为性刚武勇之人。二、总是官司是非不断。三、无婚。四、肖兔人，刘姓人，柳姓人，主凶。",
+            c: "官：道人指门，闪人（门+人=闪）。官不升，酉年鸡人升。<br>财：道人指门，闪人（门+人=闪）。财不利，酉年鸡人得利。回兔，股票赶快吐掉，逢鸡除外。<br>婚：道人指门，闪人（门+人=闪），结婚不利，不婚。<br>科：鸡人云中，一兔，刘姓，鸡人兔人，酉卯年时皆吉。<br>病：旗上提字，提名指凶。逢鸡可得救，但属鸡有凶，叫鸡也凶，鸡的时间可得救。"
+        },
+        41: {
+            n: "山泽损",
+            t: "一、二人对酌：二人夹木，来也。<br>二、酒瓶倒案之：目前无指望也。<br>三、球在地上：所求不成状。<br>四、文书二策有再告二字：再次求，方成。",
+            x: "损下益上，惩忿窒欲。<br>初九：已事遄往，无咎，酌损之。<br>九二：利贞，征凶，弗损益之。<br>六三：三人行，则损一人。一人行，则得其友。<br>六四：换其疾，使遄有喜，无咎。<br>六五：或益之，十朋之龟，弗克违，元。<br>上九：弗损益之，无咎，贞，利有攸往，得臣无家。",
+            h: "【先天】：三人损一人。攀龙附凤求功名。始成终败为定数。举人终身。不贪可平安。父不父，子不子，中间有个不完妻。<br>【后天】：明月当空，清闲度日。遇事力求反失（想争取，反失去），再次可成。<br>【流年】：二人同力，所求初不成，再次吉。官事不升，财禄不求反吉。",
+            d: gd('W')+"三子居西。损局在阳宅上造成儿子问题多多，父母总是烦心担忧。 一、与同时生人，婚事延后一年方成，对方同一人。二、官运不通，所求不成。三、性喜求乐，不求进步，须经二次大灾，方能悟。四、对家庭态度，只会花钱，不会赚钱，无所事事。",
+            c: "官：再告文书，初次不成，再次成。<br>财：再告文书，初次不成，再次成。<br>婚：再告文书，初次不成，再次成。<br>科：再告文书，初次不成，再次成。<br>病：明月当空，无灾。如有重病求治，初次不成，再次成。"
+        },
+        42: {
+            n: "风雷益",
+            t: "一、官人抱合子：倌人，丈夫也，事必先成后破。<br>二、一人推车：因时而动之象，空坐相请。<br>三、一鹿一钱：才禄俱备，有回禄之灾，财有破损，忧心忡忡。<br>四、不为财货，不畏时尚之变，明知先成后破，仍走马上任，以损上益下之道，天下或事业亦能平治。",
+            x: "增益，见善则迁，有过则改。<br>初九：利用爲大作，元，无咎。<br>六二：或益之，十朋之龟，弗克违，永贞，王用享于帝，。<br>六三：益之用凶事，无咎。有孚中行，告公用圭。<br>六四：中行，告公从，利用爲依迁国。<br>九五：有孚惠心，勿问元，有孚惠我德。<br>上九：莫益之，或击之，立心勿恒，凶。",
+            h: "【先天】：才禄具备，身在贵门。承继祖业，发扬光大。数中单传，有弟须防。寿如松柏。<br>【后天】：运至时行，无往不利。逢官后破，求财大利。八字：似凶还吉，夫妻平安。<br>【流年】：时来运转。求财求官皆得。逢赌反凶。可进不可退。退凶。须防火厄，防窃。",
+            d: gd('E')+"长女居东。一、长女之婚事不成，或成后又破。二、财禄足，有祖业，工作则又过于男性。三、女身男性，贵人为男人，小人为女子。四、从官运则吉，切不可贪禄，主凶。",
+            c: "官：官人报盒，一车来接引，求官得官。<br>财：一鹿，财禄也，一盒子，防止先成后破。串钱在地，被偷切之象，防窃。<br>婚：一盒子，和合也，可婚，防止离婚。<br>科：财鹿具备，才禄具备，有车接引，有位置可上也，可中。<br>病：金钱在地两串，忧心忡忡，烧纸钱之象。"
+        },
+        43: {
+            n: "泽天夬",
+            t: "一、二人同行：相辅相成，可成事也。<br>二、前水后火：前险而后明，宜进取象，土生金象。<br>三、虎蛇当道：虎，有权威之人。蛇—险奸之小人阻道。<br>四、一人斩蛇：勇士也，得名将也。<br>五、竿上有文字：扬竿而起，正名出师。<br>六、竿下有钱：行动有利也。<br>七、钱下有火：烧钱状，主丧服。",
+            x: "决也，刚决柔。施禄及下。<br>初九：壮于前趾，往不胜爲咎。<br>九二：惕号，莫夜有戎，勿恤。<br>九三：壮于頄，有凶。君子夬夬，独行遇雨，若濡有愠，无咎。<br>九四：臀无肤，其行次且，牵羊悔亡，闻言不信。<br>九五：苋陆夬夬，中行无咎。<br>上六：无号，终有凶。",
+            h: "【先天】：一生辛苦。白手成家。求科甲吉，求财利少。女命为师道，终身可吉，男为武官吉。求官求富，招害难免。婚事难成。逢虎刚断乃亨。<br>【后天】：逢土金之年，前险路阻。商人求财不利，只发武将。遇虎大贵，可逢凶化吉。夫妻相助。无子相继。<br>【流年】：婚事易成。外圆内方，天地交泰（需外圆内方）。财气欠旺，得利二三分。家有丧服。",
+            d: gd('NW')+"三女居西北。一、婚事延宕不成。二、性刚从武，性柔从宗教，吾人可从八字中看出。 三、事业先主凶后吉，主自行发展。四、科甲不兴。五、身体健康差，不长寿，三十岁前有凶险。",
+            c: "官：虎蛇挡道，小人挡道，勇士斩蛇，得人帮助，火明前水，官可升，最好以明而动。<br>财：火下三钱，此为火土生锻金之象，可做。<br>婚：两人拱手，和合也，婚事可成。<br>科：旗上高挂文字，高中也。<br>病：重病者火烧三钱，纸钱也，有丧葬之虞。"
+        },
+        44: {
+            n: "天风姤",
+            t: "一、官人射鹿：丈夫也，取禄状，野外之财，射，发也。<br>二、文书上有喜字：摇摇欲坠，根只一线，夫妻凶。<br>三、二人执索：互相牵累。<br>四、绿衣人指路：掌生死簿之人，信差（今日）。<br>五、二重山：重阻也。出也。",
+            x: "遇也，女壮，勿用取女。<br>初六：系于金柅，贞，有攸往，见凶，羸豕孚蹢躅。<br>九二：包有鱼，无咎，不利宾。<br>九三：臀无肤，其行次且，厉，无大咎。<br>九四：包无鱼，起凶。<br>九五：以杞包瓜，含章，有损自天。<br>上九：姤其角，吝，无咎。",
+            h: "【先天】：外柔内刚。男主一妻又一妻。女主一夫又一夫。身短才高。财官双美。唯有婚姻如线，易断。数中四人。一外、二官、一凶。<br>【后天】：终身忙碌。夫妻同床异梦。侥幸得财，却防官累。合伙有事且不宜。<br>【流年】：得意外财。婚事已成。出行大利。大头贵人，小头事凶，科甲吉。",
+            d: gd('SE')+"父居东南。吾人常见丈夫在外风流多事，桃花运不断，就是此局生成。 一、 商人财禄丰盛，只旺六年，须注意假像。二、 官司受牵连，同时生人可能没事。三、 外有妾及多位女友。",
+            c: "官：喜字文书，官人摆手，绳索牵连，可升，但勿要上任，受牵连也。贪污加凶。<br>财：一鹿在野，发野外之财，可做，尤其利股票等。<br>婚：可婚，婚后易出轨，男女皆是。离婚欲不离婚只在一线之间。<br>科：文书有喜，远射，可中。<br>病：绿衣人指路，此为牛头马面指引也。小心心脏病，中风。"
+        },
+        45: {
+            n: "泽地萃",
+            t: "一、贵人磨玉：进修也，专心一致也，免破损也。<br>二、一僧指：指引也，局外人也，光头人也，曾姓人也。<br>三、小儿山路：退引山林，以退为进象，示上坡也。倪姓。<br>四、一人救火：救灾祸也；犹行医济世救人之道也。<br>五、一鱼在火上：得救状，或餐饮业。<br>六、一凤啣书：喜讯至也。",
+            x: "聚也，顺天命。除戎器戒不虞。<br>初六：有孚不终，乃乱乃萃，若号，一握爲笑，勿恤，往无咎。<br>六二：引，无咎，孚乃利用禴。<br>六三：萃如磋如，无攸利，往无咎，小吝。<br>九四：大无咎。<br>九五：萃有位，无咎。匪孚，元永贞，悔亡。<br>上六：赍咨涕洟，无咎。",
+            h: "【先天】：石中隐玉。小时遇名师。一子内人，一子外人。平步青云，灾难平，科甲顺，多才艺，救人事业（如消防队），始终如一。发光头与曾人，鱼下日，鲁。玉在其中，遇此种人，加吉。<br>【后天】：中年成就。禄命九重来。本待退隐，天不由人，丰厚之时。一僧一尼逢贯鱼，功成名就。<br>【流年】：进德修业，耐心待时机。必吉。求科高中，可创新事业。",
+            d: gd('SW')+"三女居西南。较不多见，但亦有之。一、女儿不想成婚，对异性没兴趣。二、终日进德修业。二、退居家内，代母行职，为良母型之人。四、如从事餐饮业则大利，为唯一带喜之路。",
+            c: "官：凤凰来仪，官升。<br>财：石中隐玉，谨慎打磨，可成，但要小心。餐饮业大成。<br>婚：凤凰来仪，婚成。<br>科：此为遇名师或者己为名师之兆。科甲高中。<br>病：鱼被水救，有救也。"
+        },
+        46: {
+            n: "地风升",
+            t: "一、云中雨点下：沾衣恩泽之象，昏暗之时将过也。<br>二、木匠下墨解木：有尺度法则，有依据之象。匠—将也。以武力去灾也有改朝换代之象也。<br>三、一人磨镜：可成始得之象。<br>四、一架子负大木：有不小之财也。<br>五、有镜：指明镜高悬，于商事指有竞争也。<br>六、蓝：难也，百废待与之象。",
+            x: "进也，积小成大。顺德。<br>初六：允升，大。<br>九二：孚乃利用禴，无咎。<br>九三：升虚邑。<br>六四：王用享于岐山， ，无咎。<br>六五：贞，，升阶。<br>上六：冥升，利于不息之贞。",
+            h: "【先天】：久旱逢雨，光耀祖宗。六人兄弟，四明二暗。任重道远之才。改朝换代，才高八斗。逢木有争，不废规矩，逢凶也吉。即是陋规，亦不可违反。<br>【后天】：昏暗将过，出雨木子人。逢金相克。改朝换代。夫妻兴家家业好，有规有矩。<br>【流年】：鲁班门中，喜得麟儿。雨过天青，兴家有望。坚心向道，终必吉果。婚事吉。得女主贵。天机：卖家具之人大贵。",
+            d: gd('SE')+"母居东南。其为姤卦之对应卦，在地脉道之屡见不鲜，学者当已娴熟于卦 局之变化，立可知晓。一、官职大利，平步青云。二、事业财禄丰盛。三、能承继祖业，更新门面。四、夫妻有竞争，不和之象。五、此局不变，婚姻进入第七年必有凶，同时生人不一定会发 生，故阳宅影响一人至大，而人们却茫然不知。",
+            c: "官：一篮子，一匠人，开始难，终升。<br>财：一木，巨财也。<br>婚：磨镜，要小心才会成，否则不成。防止离婚。<br>科：一镜高架上，磨镜，要小心谨慎才会上。<br>病：一木+一人=休，一官+一木等于棺，重病将休。"
+        },
+        47: {
+            n: "泽水困",
+            t: "一、一轮独在地下：独行也无依也，方向不明也。<br>二、一人卧病，招危难也。<br>三、药炉：有人来救，待时缓进也。<br>四、贵人倾水救旱池鱼：旱池，无财也，有贵人资援。<br>五、池中青草：仍有生气状。",
+            x: "困境，才智难展。致命遂志。<br>初六：臀困于株木，入于幽谷，三岁不觌。<br>九二：困于酒食，朱绂方来，利用享祀：征凶，无咎。<br>六三：困于石，据于蒺藜，入于其宫，不见其妻，凶。<br>九四：来徐徐，困于金车，吝，有终。<br>九五：劓刖，困于赤绂，乃徐有说，利用祭祀。<br>上六：困于葛藟，于臲卼，曰动悔。有悔，征。",
+            h: "【先天】：父全母不全，病重。势单力薄，求救无门。巧艺安身（如福德宫坐七杀，巧艺安身）。有志不成。一足有疾，前生已定。逢水主大贵人助。<br>【后天】：鳏居之人，一人卧病。独行无依，偏偏有生气，不死。不生贪念，正财到老，可到老平安。<br>【流年】：行不得也。家人有灾。事乃招困。婚事不成。不贪不求，唯悦可解。",
+            d: gd('N')+"三女居北。困之于人大矣，吾道人士能为众生解开此局，亦无量功德也。 一、体弱多病，限不过三十岁。二、性刚烈，独行独断。 三、婚事不成，多有阻滞。四、财禄不守，只有一线生机，故从商必凶。",
+            c: "官：鱼被困无水，此为被困不升，车轮一个，无依无靠不升。<br>财：池中无水，无财也。鱼被困，遇大险也，不做。<br>婚：池中水不足，当前无希望。仍有人来救，尚有可能。<br>科：池中水不足，当前无希望。仍有人来救，尚有可能。<br>病：一人卧床，一人救鱼，此为重病尚有救治希望。"
+        },
+        48: {
+            n: "水风井",
+            t: "一、金甲神执符：贵人在空中，祥瑞之兆也。<br>二、女子抱合：好也，但先成后破。<br>三、钱宝有光起：财不失，不露之象，不久有丧也。<br>四、人落井中：病重象，官司沈陷象，招陷害也。<br>五、官人用绳引出：贵人为官人，欲相救也。<br>六、符：符乃策略有傍人作对。",
+            x: "井养，养人。劳民劝相。<br>初六：井泥不食，旧井无禽。<br>九二：井谷射鲋，瓮敝漏。<br>九三：井渫不食，爲我心恻，可用汲，王明并受其福。<br>六四：井甃，无咎。<br>九五：井洌，寒泉食。<br>上六：井收勿幕，有孚元。",
+            h: "【先天】：四十有八头九口（如朱）。大限不出四十。一生财来财去。唯有官是贵。逢申总是凶。遇女则吉。<br>【后天】：安身勿动，守道无亏。井颈之戒。诸事不顺。逢申年尤凶。大限数终。夫留妻不留。<br>【流年】：病危之时，即有贵人助。徬人作对。丧事不久。先成后破。有财不失。大限数终。",
+            d: gd('SE')+"二子居东南。一、婚事娶二婚妻，且妻长。二、心志不坚，受外在诱惑，无法自拔。三、从商吉，有祖业更吉。四、从官招陷，是非不断，升迁受阻。",
+            c: "官：官人井中，遇险也，招凶。不升。官司，传票等等。<br>财：金宝一堆，有利可守。官人井中，冒进遭陷害，亦守不亦进。<br>婚：女人抱盒子，婚姻可成，但婚后遇险，恐有离婚。<br>科：官人执符，有希望中也。<br>病：钱宝光起，丧纸之象，人在井中，甚防自杀或者宫颈癌，肺癌等。"
+        },
+        49: {
+            n: "泽火革",
+            t: "一、一人把柿全，乃人肺腑之言。<br>二、一人把柿不全，一人半真言也。<br>三、一兔：跃进之象。<br>四、一虎：威权之象，大人之象，肖虎也。<br>五、官人推车有一印：如为武官，则讼至。今为文官带印，主得挂印封帅，须力求变革，果必成。丈夫推车，乃求婚也，带印必成。<br>六、虎兔向山行：贤良大人退，后继有人跃进同行。<br>七、山头四点：上位之人，黑暗不明之象。八、大路：转变为新且顺之象。",
+            x: "改革，去旧。治历明时。<br>初九：巩用黄牛之革。<br>六二：巳日乃革之，征 ，无咎。<br>九三：征凶，贞厉。革言三就，有孚。<br>九四：悔亡，有孚，改命，。<br>九五：大人虎变，未占有孚。<br>上六：君子豹变，小人革面，征凶，居贞。",
+            h: "【先天】：兄弟二人，发一人，一人不全。百里侯，得印信。不可以黑心为己。逢虎逢兔可堪大任。再上一层赖其功。<br>【后天】：努力有成。晚得印。逢虎贵人助更吉，运转四方随心意。心想事成。夫妻吉。<br>【流年】：升职外调掌权年。逢虎逢兔为贵人。求财不利利求官。守在一方待时机。",
+            d: gd('S')+"三女居南。一、 此女天生刚勇，且明事理。二、 感情困扰多。三、 婚姻比同时生人早二年，且比姊早婚。",
+            c: "官：带印上任，升官。虎兔山头，虎兔王刘人年退隐，不升。<br>财：土上四点黑也，上位之人黑心，不能做。一人把式全，一人把式不全，信息不足，不能做。<br>婚：一人把式全，一人把式不全，一人说真话，一人说假话，嫁给说真话那个人。带印求婚必成。逢虎兔不成。<br>科：带印科甲可中。<br>病：大路推车，一树枝繁叶茂，有生命力，由旧转新之象，有救。逢虎兔无救。"
+        },
+        50: {
+            n: "火风鼎",
+            t: "一、云中月现：显象，拨云见月之象，清明也。<br>二、鹊南飞：冬至来临，北人执政。<br>三、一子裹席帽，不明之人，无知之人。果喜也。<br>四、一人执刀：武官也，护卫将军。<br>五、贵人端坐无畏：君王，老板等人，至公无私。<br>六、一鼠：子年，暗谋之人，内有阴谋，肖鼠人也。",
+            x: "取新，正位凝命。稳固。<br>初六：鼎顚趾，利出否。得妾以其子，无咎。<br>九二：鼎有实，我仇有疾，不我能即，。<br>九三：鼎耳革，其行塞，雉膏不食，方雨亏悔，终。<br>九四：鼎折足，覆公餗，其形渥，凶。<br>六五：鼎黄耳，金铉，利贞。<br>上九：鼎玉铉，大，无不利。",
+            h: "【先天】：家世清白，声名显赫。天生官人不为商。妻无子，妾有子。是非分明。逢鼠招害向南迁。忌妻为鼠，有凶招灾。<br>【后天】：受禄命未清官。权主生杀。南行时有暗害。逢鼠加凶。退吉。有子无婚数中定。<br>【流年】：官人迁南在冬至。调动。侥幸得财。遭人暗害。妒忌陷害。婚事不成，对方表里不一，要防陷。不利鼠人。",
+            d: gd('SE')+"次女居东南。此局最利未婚小姐，我常利用此局助人无数。一、 其必嫁贵夫。二、 果决刚断，不易受惑。三、 婚比姊早婚，且冬天方成。四、 官运亨通，财不利。五、 鼠生人凶，不吉。 六、 科甲吉，考试顺利。",
+            c: "官：雀南飞，喜讯至也。拜见官人，官升。<br>财：雀南飞，可得利也。逢冬至最佳。<br>婚：雀南飞，婚姻喜讯至，一鼠，小心后面有图谋。<br>科：雀南飞，喜讯至，高中。<br>病：月有光，三台星亮，雀南飞，有救。"
+        },
+        51: {
+            n: "震为雷",
+            t: "一、人立岩上：特立独行，摇摇欲坠也。危险也。<br>二、一树开花：有果也，惜乎过于短暂，少部份之人。<br>三、一文书：消息至，公文至。<br>四、一人推车：转变之象，执行命令象。<br>五、上有文字：得官令也。<br>六、一堆钱财者：钱财散于地状，忧心也，丧事也，求财不利，占疾病凶。",
+            x: "震惊百里，恐惧修省。<br>初九：震来虩虩，后笑言哑哑，。<br>六二：震来厉，亿丧贝，跻于九陵，勿逐，七日得。<br>六三：震苏苏，震行无眚。<br>九四：震遂泥。<br>六五：震往来厉，亿无丧有事。<br>上六：震索索，视矍矍，征凶。震不于其躬，于其邻，无咎，婚媾有言。",
+            h: "【先天】：生有一口好辩才，长子成格。乡里之间有名声，白手兴家。一朝得禄命。运转四方。只惜不知道居安思危，故好景不长。大起大落。<br>【后天】：位高不稳。所求必至，忧心不断。求财得财，惜不长久，戒之在盛。<br>【流年】：财官双美，逢五戴孝。一、四得令。",
+            d: gd('E')+"长子居东。生局之中，此局很特殊，未经吾派之人改，自然居此局中人， 其必天生好手，在家为贵子无疑。一、 有承继祖业，发扬光大之实力。二、 科甲兴旺，名列前茅。三、 官运通顺，只限未婚前。 四、 从商亦吉，但须为负责人。五、 婚姻按命中走，红鸾星动之年，即成婚之年。六、 须注意此局只现在婚前，婚后必不见。惟天卦可继续其运势。",
+            c: "官：公文，一人推车，转任四方之象，升官之象。<br>财：一树开花，财宝若干，时间短暂或者数量较少，但有利可图。<br>婚：文书至，婚书也，可成。<br>科：一人推车，文书至，可高中。<br>病：金钱在地，纸钱丧象。"
+        },
+        52: {
+            n: "艮为山",
+            t: "一、堠上东北字：候也，停滞等候也，陈姓。<br>二、猴执文书：候其时，待公文命令至也。<br>三、官吏执镜：清明之法官，政治清明。<br>四、三人绳相系缚：三人相牵连招讼事也。",
+            x: "止也，动静不失其时。思不出其位。<br>初六：艮其趾，无咎，利永贞。<br>六二：艮其腓，不拯其随，其心不快。<br>九三：艮其限，列其夤，厉薰心。<br>六四：艮其身，无咎。<br>六五：艮其辅，言有序，悔亡。<br>上九：敦艮，。",
+            h: "【先天】：五房兄弟二房贵。数中猴子，三子成格，主官格。成格者非富即贵。生猴，逢猴发黄甲（金榜题名），尤其司法人大吉。不入格人主是非，多讼多灾数中定，不贪不求等待时机，不为医林即为儒林。<br>【后天】：官止不进。逢猴封侯，外出当主管。求财从商，官讼连连。申年大忌。不求侥幸，大吉。<br>【流年】：猴人逢之主大吉。身绶禄命。合伙必凶。受人连累。科甲逢之大吉。婚事亦吉。",
+            d: gd('NE')+"三子居东北。一、科甲顺利，必中理想之学校。二、 健康平安，为孝子。三、婚姻顺利，进入八字中红鸾星之年必婚。四、 公职大利。五、 知进退，为天生受人喜欢之人。。",
+            c: "官：官人捧镜，猴执文书，候等文书，逢猴年、人大利，升。<br>财：候人大利，其余牵连官司，不吉。合伙大凶，不论何人。<br>婚：猴年可成，要问时间猴年或者后年也对。<br>科：候人高中，逢猴高中，其余普通地方考试可中。<br>病：三人牵连，猴执文书，候年人有救，多人无有办法，可求助候人或者名字带静之人。"
+        },
+        53: {
+            n: "风山渐",
+            t: "一、一望竿在爽高处：家人望归象。<br>二、一药炉在地：平安，无灾也。<br>三、一官人登梯：升官之象，衣锦还乡也，棺也。<br>四、一枝花在地：落第象，不久之象。",
+            x: "渐进，女归吉。居贤德善俗。<br>初六：鸿渐于干，小子厉，有言，无咎。<br>六二：鸿渐于磐，饮食衎衎，。<br>九三：鸿渐于陆，夫征不复，妇孕不育，凶，利御寇。<br>六四：鸿渐于木，或得其桷，无咎。<br>九五：鸿渐于陵，妇三妇不孕，终莫之胜，。<br>上九：鸿渐于陆，其羽可用爲仪，。",
+            h: "【先天】：渐进之象，排名第二，科甲高中。二人久分。从医从官两相宜。婚姻短暂。夫妻聚少散多可吉。<br>【后天】：官运亨通。求财不成。佐才平安。主官多病灾。<br>【流年】：官人逢主升迁。疾病有救。求财短期有利。长期凶。婚事必成。花落于地，落第科甲。",
+            d: gd('NE')+"长女居东北。一、科甲不顺，缺临门一脚。二、工作心念不定，常思变动。三、 身体平安，灾少。四、 对婚姻不采主动，婚事难成。五、 出任公、教职大利。此局变化多，随时成之故学者须注意。",
+            c: "官：官人登梯，升官。<br>财：花开一枝，花期短暂，短暂之利。<br>婚：望者，有望结婚，但婚期短暂，如为观望之人，则不婚，看自己和对方是什幺样的人。<br>科：一枝花落地，落第不中。<br>病：一药芦，无病，不需用药，亦或者重病有救。"
+        },
+        54: {
+            n: "雷泽归妹",
+            t: "一、官人骑鹿指云：浮云蔽日，乘乱而欲进。<br>二、小鹿子在后：生意人，随从状。<br>三、望竿上有文字：旦夕而亡，揭竿而起，正名也。<br>四、人落刺中：如鲠在喉，去之不得。<br>五、一人拔出：一人相救示宠状。<br>六、此卦问病凶，问财吉，问政凶",
+            x: "征凶，无攸利。永终知敝。<br>初九：归妹以娣，跛能履，征。<br>九二：眇能视，利幽人之贞。<br>六三：归妹以须，反归以娣。<br>九四：归妹愆期，迟归有时。<br>六五：帝乙归妹，其君之袂，不如其娣之袂良，月几望， 。<br>上六：女承筐无实，士刲羊无血，无攸利。",
+            h: "【先天】：二男二女并行，父母不全。盖头高人成正格，财官双美。不成格者，商机大利，左右进财。求官不利。婚主二妻，女主日不出头。<br>【后天】：浮云蔽日，弃公从商。子从父业荫泽大。防金刀人约束。火人大贵。<br>【流年】：财禄丰收。求婚不利。求婚需二男二女同行方吉。投金不利。盖头高人吉。",
+            d: gd('W')+"长子居西。现代人为爱滋病所苦，目前医学界虽仍无法认定其必由同性恋 传染来的，我也不否定其是否正确，但可以肯定的是，其行为必不 为父母所能接受的，此局无人发现，自古以来因道德束缚力很强，家族同住，故较不易发生，史有明载其断袖之癖即言同性恋，但不 似今日之普遍，世界各国皆为此苦恼不已，其实易经中早已明确指 出其从何而来？为何有人如此，有人不苟同？如何化解？男同性恋 出归妹卦，女同性恋出益卦、旅卦、渐卦、鼎卦等变化较多，其化 解只须正位即可改变。男同性恋，父母烦忧，终致离家出走。二、 委曲以求禄。三、 无婚。四、 诸事不顺，但多才多艺，走艺术路线佳。",
+            c: "官：浮云蔽日，不升。盖头人升，如高，文等。<br>财：有利可图，需要二人并行，跟随他人求利。<br>婚：刺落喉中，不吉，勿婚。<br>科：文字高处，高中也。<br>病：刺落喉中，望在杆头，有伤亡之风险，问病者凶。"
+        },
+        55: {
+            n: "雷火丰",
+            t: "一、竹简灰起：简姓，竹有顺象，坚节不变之象，灰起，中空之象。<br>二、龙蛇交错：辰巳之年，正邪相争，蛇虺乃毒谋暗算也。<br>三、官人着衣裳立：官人、倌人、丈夫也，藏于内也。<br>四、一合子：先成后破。<br>五、人吹笙竿：闲情逸志，主喜事临门。<br>六、脚踏虎：临危不乱也，险在下也。<br>七、旱沼之旁：心力交瘁也。<br>八、池中无水：旱象，破财也。<br>九、珠落盘中：先聚后散也。",
+            x: "丰盛，日中则昃。折狱致刑。<br>初九：遇其配主，虽旬无咎，往有尚。<br>六二：丰其藓，日中见斗，往得疑疾，有孚发若， 。<br>九三：丰其沛，日中见沫，折其右肱，无咎。<br>九四：丰其薜，日中见斗，遇其夷主，。<br>六五：来章，有庆誉，。<br>上六：丰其屋，蔀其家，窥其户，阕其无人，三岁不觌，凶。",
+            h: "【先天】：虎蛇龙三人，先聚后散。外实内虚。官运不明，停在那边，进退不得。动弹不得。至丰之道，不求则丰。龙蛇之年变化多。父夫受累。外喜内忧。独立工业。无人争利。<br>【后天】：夫妻凶，外喜内忧。商机不利，慎防破损，因识人不明。时机丧失。<br>【流年】：贵人小人同时在侧。外喜内忧。官事受累。诸事不宜进，守成莫贪多。财破。",
+            d: gd('S')+"长子居南。此卦常出现在儿子身上一、 未经本派之人指点，乃自然居此局中之人，其与同时生人不同，婚事必先成后破。二、 科甲考试顺利。三、 性刚且坚，易与人争，必为感情困扰。四、 从商必破财。五、 從官職吉。",
+            c: "官：官人旁盒，着衣和合升官之象。<br>财：池中无水，无财。<br>婚：一盒子，和合之象，只是要防止离婚。<br>科：人吹笙竽，喜事来临，高中。<br>病：竹中灰起，重病结果为灰，有离世之象。"
+        },
+        56: {
+            n: "火山旅",
+            t: "一、三星者：三台贵人，相位之人。<br>二、贵人台上垂钓：君主相求，老板相求人才。<br>三、牵水畔人：贤能之人，离野入朝封候。或慕权势而变志。<br>四、一猴一羊：肖猴，肖羊，候、杨姓人，未申年应之。<br>五、大溪：脱险也，港口也，水侧也。",
+            x: "旅行，漂泊。明慎用刑。<br>初六：旅琐琐，斯其所取灾。<br>六二：旅即次，怀其资，得童仆贞。<br>九三：旅焚其次，丧其童仆，贞厉。<br>九四：旅于处，得其资斧，我心不快。<br>六五：射雉，一矢亡，终以誉命。<br>上九：鸟焚其巢，旅人先笑后号咷，丧牛于易，凶。",
+            h: "【先天】：生为公门人。中年前（45前）平步青云。逢猴羊成格。大利西南。外动频。猴得长一人助，逢羊开泰，位列三台。<br>【后天】：位近三台贵人，不求自来。离野入朝。未中得利。未年。逢猴羊主利。防乐极生悲。<br>【流年】：升迁在八月，大利西南。不利婚事、求财。女命逢之，须防一目人。逢猴羊须忌。有险。吉处藏凶。特例：本命猴羊反主大吉。",
+            d: gd('NE')+"次女居东北。此局特殊，学者须识。一、 科甲兴旺二、 女身男态三、 婚事不成，须逢肖羊、肖猴或于未、申之年方有成。四、 城府较深，终自取咎。",
+            c: "官：三星官人垂钓，升官之象。<br>财：求财不利，逢候羊人时间有利。<br>婚：有相求之象，可婚。逢候羊加吉。甚防一目人，有险，不婚。<br>科：有上榜之机，逢候羊年月时间人等可中。<br>病：三星明照，有救。找医生不要找一目人。"
+        },
+        57: {
+            n: "巽为风",
+            t: "一、贵人赐衣：先破后成象。<br>二、一人跪受：贵绶也。如占疾病，则主寿衣，凶象。<br>三、云中雁传书：意外喜讯。<br>四、人在虎下坐：身处险而不知。<br>五、一人射虎中箭：贵人相救。<br>六、虎走：脱险，寅年也。",
+            x: "顺也，申命行事。利市三倍。<br>初六：进退，利武人之贞。<br>九二：巽在床下，用史巫纷若，，无咎。<br>九三：频巽，吝。<br>六四：悔亡，田获三品。<br>九五：贞，悔亡无不利，无初有终，先庚三日，后庚三日，。<br>上九：巽在床下，丧其资斧，贞凶。",
+            h: "【先天】：三人之中伤一人。三才防虎又防寅。正官带印。安分守己。见机而进，不招耻辱，机在量力。<br>【后天】：出将入相，临绶禄命，须防暗箭。虎人难逃。其余平安。女命逢防暗害，吉中有险，夫有难。<br>【流年】：虎人招害，诸事先成后破。知止方吉。科甲高中。婚事不逢寅，可成。遇寅不成。五短人大吉，诸事顺遂。",
+            d: gd('SE')+"长女居东南。此局大利未婚女，吾每逢有未婚小姐来求教，都不厌其烦的希 望他能住在此局中，必主婚姻幸福。一、科甲兴旺，考试必中。二、 逢凶化吉，灾事不兴。二、婚姻必能嫁好夫婿，逢红鸾即动。四、 性情稳定，处忧不惧。五、 健康平安之人。",
+            c: "官：一人跪受，云中燕传书，喜讯至也，第一次不升第二次也会升。<br>财：云中燕传书，喜讯至，可做。<br>婚：云中燕传书，喜讯至，可成。甚防虎王人。<br>科：云中燕传书，一虎中箭走，虎王之人不中，其余高中，逢寅年不中。<br>病：一人跪受，跪寿也，重病为凶，逢虎王之人、时间更凶。<br>其他：得巽为风需要甚防虎王之人/之年。"
+        },
+        58: {
+            n: "兑为泽",
+            t: "一、人坐看一担：任务完成状，有人相助象，助人为乐之贵人。<br>二、月在天边：清明之治。<br>三、秀才登梯：金榜登科象。<br>四、一女在合边立：女人介入，先成后破。<br>五、文字上箭：得机而发，射：发象。",
+            x: "说也，悦也。朋友讲习。<br>初九：和兑，。<br>九二：孚兑，，悔亡。<br>六三：来兑，凶。<br>九四：商兑未宁，介疾有喜。<br>九五：孚于剥，有厉。<br>上六：引兑",
+            h: "【先天】：双亲有三人。生有四粒珠，此人身有科。尽是自由人。婚姻有破。婆媳不和为定数。<br>【后天】：遇名师，不登青云，也做商人。名师在后指点。逢女有破，莫自认生性风流，有妾生灾。桃李满天下。女命则求合吉。和睦到老，吉。若一意孤行，枯坐到老。<br>【流年】：金榜登科，科甲很旺，但事业停滞，唯儒林人发，可成一方之主。女命须防助夫有利，婚事反凶，夫有妾。",
+            d: gd('W')+"三女居西。一、 求婚事必不成，感情复杂又专一不二，如遇虎狼之人必伤害甚大。二、 有待婚中，夫凶之象，婚比同时生人，延后三年。三、 科甲顺畅，多才艺之女。四、 公职顺遂，但从商必主不利。五、 体健无灾，母荫重，有无父之虞。",
+            c: "官：秀才登梯，升官之象。<br>财：一盒子，一箭，得机而发，先成后破。<br>婚：妇人携手，婚姻大吉。有箭而射，一盒子，防出轨导致离婚。<br>科：月明，秀才登梯，高中之象。<br>病：月在天边，女人无忧，秀才登梯，人+木=休，担旁有人，休息之象。但重病将休（走人）。"
+        },
+        59: {
+            n: "风水涣",
+            t: "一、山上有寺：出家状，对峙状，寸土寸金象。<br>二、僧：化外之人，光头人，曾姓人。<br>三、一人随后：逃避，求助化外之人。<br>四、一鬼在后：为祸追缉之象，内心有鬼，处事不明象。<br>五、金甲人：正义之师，得民心也。<br>六、寺，土头人作对。等待时机也。",
+            x: "散也，离散。享于帝立庙。<br>初六：用拯马壮，。<br>九二：涣奔其机，悔亡。<br>六三：涣其躬，无悔。<br>六四：涣其群，元。涣有丘，匪夷所思。<br>九五：涣汗其大号，涣王居，无咎。<br>上九：涣其血，去逖出，无咎。",
+            h: "【先天】：生具慈悲心，莫恨人生害。天机：山桥曲转，八千女鬼（魏）。革故鼎信路是阻，好事多磨。婚姻亦有阻，然需耐心，终成眷属，二八之年。<br>【后天】：莫恨妻儿无缘分。命中唯带一孤冲。婚姻长短前生定。月（母，妻）缺花（女）残数不晓。<br>【流年】：患难将散，利涉大川。顺行而动。夫妻对峙。僧（如曾）贵防鬼。烟消云散，祸事远离。",
+            d: gd('N')+"长女居北。涣局亦常见之，吾人利用风卦可立解。一、心在宗教，不想结婚，但易入邪道。二、心中有鬼，诸事不成。三、祸事连连，官非牢狱灾难免。 四、出家化解灾厄，母亲终日担忧。",
+            c: "官：有鬼跟随，不成。<br>财：有鬼跟随，旁人作对，无利可图。<br>婚：有鬼，不能结婚。<br>科：有鬼跟随，不中。<br>病：有鬼跟随，可求助寺庙之人，或者曾姓人。<br>其他：遇到风水换要镇定，等待时机，不可冲动入场。"
+        },
+        60: {
+            n: "水泽节",
+            t: "一、大雨下：阴暗不明，凶象。<br>二、火中鱼跃：飞腾而徒劳无功，又餐饮业。<br>三、鸡在屋上：酉年肖鸡人，解救之时与人。四、犬在井中：招陷，动弹不得，不知节制而招如此。五、屋门开着：仍可开张，须鸡人来助大吉。",
+            x: "节制，苦节不可贞。制数度。<br>初九：不出户庭，无咎。<br>九二：不出门庭，凶。<br>六三：不节若，则嗟若，无咎。<br>六四：安节，亨。<br>九五：节，，往有尚。<br>上六：苦节，贞凶，悔亡。",
+            h: "【先天】：财帛丰茂，天意从酉，门庭吉庆。父吉母凶。财散无常。遇犬加凶。商机逢酉大利，开门得财。犬生暗害，余吉。天机：鸡独犬四，数中定，夫凶妻吉。<br>【后天】：酉人重立门户，且吉，得父资助。犬人自陷，皆不出节，唯鸡可救。<br>【流年】：哭笑不得。进退失据。夫凶妻吉。逢酉重生。逢犬陷井不拔。",
+            d: gd('W')+"次子居西。一、本人肖鸡，则必大贵。二、本人肖犬，则以小做大，招自陷。三、财无积余，行险招凶。婚事不成，犬人遇鸡则成，妻长一岁，与同时生人不同，且妻主大贵，助夫渡厄。",
+            c: "官：鱼被火烤，凶也，大雨下，凶也，不升。鸡在屋顶，逢鸡人/时间可升。<br>财：鱼被火烤，大雨下，阴暗不明，凶也，鸡在屋顶，逢鸡时间或人可做，烧烤等餐饮业可做，但需要鸡人主事，狗人或时间必败无疑。<br>婚：大雨下，阴暗不明，勿婚，鸡在屋顶，逢鸡转凶为吉。<br>科：大雨下，阴暗不明，鸡在屋顶，逢鸡可上，其余不上。<br>病：大雨下，阴暗不明，病危，鸡在屋顶，逢鸡有救，逢狗无救（时间，人等）。<br>其他：得到水泽节逢到狗时间/人大凶，唯有鸡时间/人可解。"
+        },
+        61: {
+            n: "风泽中孚",
+            t: "一、望子上文书：科甲高中，刑法更吉。<br>二、人击柝：预警也。<br>三、贵人用绳牵鹿：守成，不可攻也。<br>四、雁啣书：喜事将至，有南徙之象。<br>五、人立庭中：莅庭也，防官司或打官司保身也",
+            x: "信也，诚信。议狱缓死。<br>初九：虞。有它，不燕。<br>九二：鸣鹤在阴，其子和之，我有好爵，吾与尔靡之。<br>六三：得敌，或鼓或罢，或泣或歌。<br>六四：月几望，马匹亡，无咎。<br>九五：有孚孪如，无咎。<br>上九：翰音登于天，贞凶。",
+            h: "【先天】：兄弟分家，不相往来。父财必争。从官大吉。武为司法，文为财官，科名并茂。犹有一子，生是非。婚事成于财货，因利而结。亦凶于财货。<br>【后天】：望子上文书。节制财帛防人害，舍禄求官位上策。夫妻本是前世修，何必为财生争执。<br>【流年】：科甲大吉。禄受限，须防子劫。喜出望外之年，双喜临门。",
+            d: gd('W')+"长女居西。有女每试必为状元，即生此局之人一、科甲状元，每考必中。二、武职大利，女中豪杰，今见有女司法官如此。 三、双喜同临，常在婚姻中伴之而来金榜登科。四、喜事初不成，家中不同意，后成。但与同时生人延后三年。",
+            c: "官：望字上文书，燕来信，喜讯将至，升官，尤利司法。<br>财：鹿被牵引，禄受限制，尤其不能做小孩子相关的产业。<br>婚：燕来信，喜讯将至。<br>科：望字上文书，燕来信，喜讯将至，高中。<br>病：绳子打结，孩子劫难是也，燕来信，喜讯，有救也。"
+        },
+        62: {
+            n: "雷山小过",
+            t: "一、明月当空：政清状，入法庭，刑堂。<br>二、林下一人：林姓人。<br>三、人陷网中：不得脱身，受束缚。<br>四、一人弹冠：求去之象，但求去为形，束缚为神，合则有表里不一状。<br>五、一人割网：贵人解救，脱困状。<br>六、猴子在山头：从新开始之课(候再出山)。",
+            x: "小过错，宜下。行过乎恭。<br>初六：飞鸟以凶。<br>六二：过其祖，遇其妣，不及其君，遇其臣，无咎。<br>九三：弗过防之，从或戕之，凶。<br>九四：无咎，弗过遇之，往厉必戒，勿用永贞。<br>六五：密云不雨，自我西郊，公弋取彼在穴。<br>上六：弗遇过之，飞鸟离之，凶，是谓灾眚。",
+            h: "【先天】：父母双全，财禄临身，主富，次女成格。婚事逢田凶，重新开始，又逢田有解，天机也。田为贵人。不成格者，为官星。公教可成。唯防婚约，有女无子。<br>【后天】：官讼之后，重新开始。母荫临身，单身贵人。单亲养女，有婚反凶。<br>【流年】：防火厄，夫妻不和，陷入网中，动弹不得。唯强力可解。财不缺。女人逢之不利。加凶，易进难出。",
+            d: gd('NE')+"长子居东北。此局很多，吾人常不自知陷于局中。感情困扰，摆脱不了情关，为情不顾一切，此小人也。 二、肖猴，候姓人不忌。三、无法工作，神魂颠倒。四、常过失伤人，故婚事不成。",
+            c: "官：官人求去，不升之象，离职之象。肖猴或候人可待时而升。<br>财：人困网中，受困之象，不做，无财反被困。肖猴或候人不困，但无财。<br>婚：人困网中，婚后受困，逢到田姓之人跑路，即使不逢田人也受困。<br>科：肖猴或候人，或玥人等同音字的人可上。其余不上。<br>病：人困网中，待时有救。候人或者猴时间平安，其余者要待时而解。"
+        },
+        63: {
+            n: "水火既济",
+            t: "一、人在岸上：泣也，等待也，无目的也。<br>二、一船来：接引至也。<br>三、一堆钱：财禄无用也，忧心忡忡也，有窃象，抄家之象。<br>四、云中雨下：阴中有果也，夜间至凌晨时。<br>五、二小儿：主喜也，二人也，二人雨中行也。<br>六、文书一策：证件，命令也，资料也。",
+            x: "定也，初吉终乱。思患豫防。<br>初九：曳其轮，濡其尾，无咎。<br>六二：妇丧其茀，勿逐，七日得。<br>九三：高宗伐鬼方，三年克之，小人勿用。<br>六四：繻有衣袽，终日戒。<br>九五：柬邻杀牛，不如西邻之禴祭，实受其福。<br>上六：濡其首，厉。",
+            h: "【先天】：求官求科两相宜。少年登科。逢水得财命中定。两兄弟得祖业。官人受禄命于水年（戌亥年）。婚事吉。男有子，女命无子。<br>【后天】：得贵人助。求财大吉。求官亦得禄命。一人二水解灾。戌亥之年是既济，平步青云遂己志。<br>【流年】：有窃之年，禄命至，吉中小凶，夫妻和睦，防妻有病灾。逢官人迁调外地之年。",
+            d: gd('S')+"次子居南。此局吾常用于化解困卦之局一、不重财货，天性如此。二、官运人吉，从商亦得财，故财官双美。三、科甲亦吉，利考试。四、先有子，后有婚，如加上命中有妾，则必主正房一子，偏房一子。五、婚姻会比同时生人慢八年，也常先有妾后有婚。故吾人知如此，常俟事业安定后，用雷卦化解婚姻问题。",
+            c: "官：一船来，接引至，升官。<br>财：雨下，润泽也，有财。但需防盗窃。<br>婚：文书至，可婚。<br>科：文书至，可中。<br>病：钱散落地，纸钱，重病恐有血光。"
+        },
+        64: {
+            n: "火水未济",
+            t: "一、一人提刀斧：刘姓，武官，手有生杀之权。<br>二、一虎坐：肖虎人，王姓，虎坐乃无威之象。<br>三、一旗卓在山上：揭竿而起，正义之师。<br>四、一人取旗：代替也，高姓，宋姓，其人取代之象。<br>五、梯子有至字：无刀日至，桎梏受困象。六、（附注：峪：谷姓。旗扬：杨姓。)有谷、杨合乃招凶象",
+            x: "未成，慎辨物居方。<br>初六：濡其尾，吝。<br>九二 ：曳其轮，贞。<br>六三：未济，征凶，利涉大川。<br>九四：贞 ，悔亡，震用伐鬼方，三年有赏于大国。<br>六五：贞 ，无悔，君子之光，有孚，。<br>上九：有孚于饮酒，无咎，濡其首，有孚失是。",
+            h: "【先天】：虎王之人受桎梏。卯卓宋高得利人。高台倾覆，婚事不成，反招凶。求财求官两不利。一生武官主大利，余不吉。发于乱世。夫妇不和争执多，重则兵戎相见，有女为贵。<br>【后天】：东南西北，居无定所。凡事缺临门一脚。踏谷扬旗终凶，不贪不吝，正财可守终身。忧中见喜。<br>【流年】：未济之年，事多壅滞，慎处守成，吉。力争招是非。婚事不利。求财谨慎多防（小人）。虎人受困之时。",
+            d: gd('N')+"次女居北。一、女身男态，性刚易怒。 二、肖虎女子，必枯坐无成。三、刘、宋、高等姓人从武吉。四、婚事必不成，与同时生人婚时不同。五、从商求财是非多，甚而官司、争执不下。阳宅之局演绎到此，暂告一段落，下篇风不水篇，其中吾人已 将古来很复杂之理论简化后，并用易来解释计算，学者必能极易明 了，加上录影带之说明，必可一罗经在手，即堪天与地去也。。",
+            c: "官：一人取旗，宝盖头人可升，武将平安，其余不升。虎王之人受束，不利。<br>财：木+至=桎也，受困，无财。<br>婚：木+至=桎也，受困，不利，勿婚。<br>科：令在旗上，一人取旗，宝盖头人考试有利。肖虎人王人，或者虎年月日时皆不利。<br>病：木+至=桎也，受困，肖虎人王人，或者虎年月日时加凶。<br>其他：虽为未济，但天下合久必分，分久必合，终会济既，此乃自然之理。"
+        }
+    };
+
+    // 3. 界面生成逻辑
+    const ids = ['in1','in2','in3'];
+    ids.forEach((id, idx) => {
+        let h = '';
+        for(let i=1; i<=64; i++){
+            h+=`<div class="sel-row"><span class="lbl">第${i}步</span><select id="${id}_${i}"><option value="">-</option>`;
+            for(let j=1; j<=64; j++) h+=`<option value="${j}">${j}.${DB[j].n}</option>`;
+            h+='</select></div>';
+        }
+        document.getElementById(id).innerHTML = h;
+    });
+
+    function gen(){
+        const out = document.getElementById('out');
+        out.innerHTML = '';
+        ['天元局'].forEach((tt, idx) => {
+            let h = `<div class="res-col"><div class="res-t">${tt}</div>`;
+            let has = false;
+            for(let i=1; i<=64; i++){
+                let v = document.getElementById(`${ids[idx]}_${i}`).value;
+                if(v){
+                    has = true;
+                    let d = DB[v];
+                    h += `
+                    <div class="card">
+                        <div class="c-head"><span class="c-name">${d.n}</span><span class="c-step">第${i}步</span></div>
+                        <details><summary>1. 卦图解析</summary><div class="c-body">${d.t}</div></details>
+                        <details><summary>2. 卦义卦辞</summary><div class="c-body">${d.x}</div></details>
+                        <details><summary>3. 卦解—董德龙</summary><div class="c-body">${d.c}</div></details>
+                        <details><summary>4. 地理解析</summary><div class="c-body">${d.d}</div></details>
+                        <details><summary>5. 皇极论命</summary><div class="c-body">${d.h}</div></details>
+                    </div>`;
+                }
+            }
+            if(!has) h+='<div style="text-align:center;color:#999;padding:10px;">未选择</div>';
+            out.innerHTML += h + '</div>';
+        });
+    }
+</script>
+<script>
+// ========= 1. 卦名 -> 图片文件名映射（按你上传的文件名来） =========
+const GUA_IMAGE_MAP = {
+    "乾为天": "乾为天.jpg",
+    "坤为地": "坤为地.jpg",
+    "水雷屯": "水雷屯.png",
+    "山水蒙": "山水蒙.png",
+    "水天需": "水天需.png",
+    "天水讼": "天水讼.jpg",
+    "地水师": "地水师.png",
+    "水地比": "水地比.png",
+    "风天小畜": "风天小畜.jpg",
+    "天泽履": "天泽履.jpg",
+    "地天泰": "地天泰.jpg",
+    "天地否": "天地否.jpg",
+    "天火同人": "天火同人.jpg",
+    "火天大有": "火天大有.jpg",
+    "地山谦": "地山谦.png",
+    "雷地豫": "雷地豫.jpg",
+    "泽雷随": "泽雷随.jpg",
+    "山风蛊": "山风蛊.png",
+    "地泽临": "地泽临.jpg",
+    "风地观": "风地观.jpg",
+    "火雷噬嗑": "火雷噬嗑.jpg",
+    "山火贲": "山火贲.png",
+    "山地剥": "山地剥.png",
+    "地雷复": "地雷复.png",
+    "天雷无妄": "天雷无妄.jpg",
+    "山天大畜": "山天大畜.png",
+    "山雷颐": "山雷颐.png",
+    "泽风大过": "泽风大过.jpg",
+    "坎为水": "坎为水.jpg",
+    "离为火": "离为火.jpg",
+    "泽山咸": "泽山咸.jpg",
+    "雷风恒": "雷风恒.jpg",
+    "天山遁": "天山遁.jpg",
+    "雷天大壮": "雷天大壮.png",
+    "火地晋": "火地晋.jpg",
+    "地火明夷": "地火明夷.png",
+    "风火家人": "风火家人.jpg",
+    "火泽睽": "火泽睽.jpg",
+    "水山蹇": "水山蹇.png",
+    "雷水解": "雷水解.jpg",
+    "山泽损": "山泽损.png",
+    "风雷益": "风雷益.jpg",
+    "泽天夬": "泽天夬.jpg",
+    "天风姤": "天风姤.jpg",
+    "泽地萃": "泽地萃.jpg",
+    "地风升": "地风升.png",
+    "泽水困": "泽水困.jpg",
+    "水风井": "水风井.png",
+    "泽火革": "泽火革.jpg",
+    "火风鼎": "火风鼎.jpg",
+    "震为雷": "震为雷.jpg",
+    "艮为山": "艮为山.jpg",
+    "风山渐": "风山渐.jpg",
+    "雷泽归妹": "雷泽归妹.png",
+    "雷火丰": "雷火丰.jpg",
+    "火山旅": "火山旅.jpg",
+    "巽为风": "巽为风.jpg",
+    "兑为泽": "兑为泽.jpg",
+    "风水涣": "风水涣.jpg",
+    "水泽节": "水泽节.png",
+    "风泽中孚": "风泽中孚.jpg",
+    "雷山小过": "雷山小过.jpg",
+    "水火既济": "水火既济.png",
+    "火水未济": "火水未济.png"
+};
+
+// 如果图片和 html 在同一目录，用空字符串或 "./"
+const GUA_IMG_BASE = "gua_images/";   // 如果你放在子目录，比如 gua_images/，改成 "gua_images/"
+
+// ========= 2. 生成卦图图片的 HTML =========
+function makeGuaImageHtml(guaName) {
+    const file = GUA_IMAGE_MAP[guaName];
+    if (!file) {
+        // 没配置图片就什么都不加（也可以在这里显示“暂无卦图”）
+        return "";
+    }
+    const src = GUA_IMG_BASE + file;
+    return `
+        <div class="gua-img-box" style="
+            text-align:center;
+            margin-bottom:10px;
+            padding:8px;
+            background:#f9f9f9;
+            border-radius:6px;
+            border:1px solid #eee;
+        ">
+            <img src="${src}"
+                 alt="${guaName} 卦图"
+                 title="${guaName} 卦图（点击放大）"
+                 style="max-width:100%;max-height:260px;border-radius:4px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.15);"
+                 onclick="openGuaImgModal('${src}','${guaName}')"
+                 onerror="this.parentElement.innerHTML='(卦图图片加载失败：${file})';">
+            <div style="margin-top:6px;font-size:13px;color:#b35c1e;font-weight:bold;">【${guaName}】卦图</div>
+        </div>
+    `;
+}
+
+// ========= 3. 大图弹窗 =========
+function openGuaImgModal(src, title) {
+    const old = document.getElementById('gua-img-modal');
+    if (old) old.remove();
+
+    const wrap = document.createElement('div');
+    wrap.id = 'gua-img-modal';
+    wrap.style.cssText = `
+        position:fixed;left:0;top:0;width:100%;height:100%;
+        background:rgba(0,0,0,0.85);z-index:9999;
+        display:flex;align-items:center;justify-content:center;
+        cursor:pointer;
+    `;
+    wrap.innerHTML = `
+        <div style="position:relative;max-width:90%;max-height:90%;">
+            <img src="${src}" alt="${title}" style="max-width:100%;max-height:85vh;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,0.5);">
+            <div style="margin-top:10px;text-align:center;color:#fff;font-size:16px;">${title} 卦图</div>
+            <button style="
+                position:absolute;right:-18px;top:-18px;
+                width:36px;height:36px;border-radius:50%;
+                border:2px solid #fff;background:#333;color:#fff;
+                font-size:20px;cursor:pointer;
+            " onclick="document.getElementById('gua-img-modal')?.remove();event.stopPropagation();">×</button>
+        </div>
+    `;
+    wrap.onclick = () => wrap.remove();
+    document.body.appendChild(wrap);
+}
+
+// ========= 4. 重写 gen()：在“1. 卦图”里插入图片 =========
+// 利用你原来的 DB / ids，不改动它们，只是把原来的 gen 用图片增强版替换掉
+(function () {
+    if (typeof DB === 'undefined' || typeof ids === 'undefined') {
+        console.error('找不到 DB 或 ids 变量，请确认脚本顺序。');
+        return;
+    }
+
+    window.gen = function () {
+        const out = document.getElementById('out');
+        out.innerHTML = '';
+
+        const titles = ['天元局'];
+
+        titles.forEach((tt, idx) => {
+            let h = `<div class="res-col"><div class="res-t">${tt}</div>`;
+            let has = false;
+
+            for (let i = 1; i <= 64; i++) {
+                const sel = document.getElementById(`${ids[idx]}_${i}`);
+                if (!sel) continue;
+                const v = sel.value;
+                if (!v) continue;
+
+                has = true;
+                const d = DB[v];
+                const guaName = d.n || '';
+                const imgHtml = makeGuaImageHtml(guaName);
+
+                h += `
+                <div class="card">
+                    <div class="c-head">
+                        <span class="c-name">${guaName}</span>
+                        <span class="c-step">第${i}步</span>
+                    </div>
+                    <details>
+                        <summary>1. 卦图解析</summary>
+                        <div class="c-body">
+                            ${imgHtml}
+                            <div>${d.t || ''}</div>
+                        </div>
+                    </details>
+                    <details><summary>2. 卦义卦辞</summary><div class="c-body">${d.x || ''}</div></details>
+                    <details><summary>3. 卦解—董德龙</summary><div class="c-body">${d.c || ''}</div></details>
+                    <details><summary>4. 地理解析</summary><div class="c-body">${d.d || ''}</div></details>
+                    <details><summary>5. 皇极论命</summary><div class="c-body">${d.h || ''}</div></details>
+                </div>`;
+            }
+
+            if (!has) {
+                h += '<div style="text-align:center;color:#999;padding:10px;">未选择</div>';
+            }
+
+            h += '</div>';
+            out.innerHTML += h;
+        });
+    };
+
+    console.log('✅ 卦图图片功能已挂载，点击“点击生成”即可看到卦图。');
+})();
+</script><script>
+// ========= 1. 卦名 -> 图片文件名映射（按你上传的文件名来） =========
+const GUA_IMAGE_MAP = {
+    "乾为天": "乾为天.jpg",
+    "坤为地": "坤为地.jpg",
+    "水雷屯": "水雷屯.png",
+    "山水蒙": "山水蒙.png",
+    "水天需": "水天需.png",
+    "天水讼": "天水讼.jpg",
+    "地水师": "地水师.png",
+    "水地比": "水地比.png",
+    "风天小畜": "风天小畜.jpg",
+    "天泽履": "天泽履.jpg",
+    "地天泰": "地天泰.jpg",
+    "天地否": "天地否.jpg",
+    "天火同人": "天火同人.jpg",
+    "火天大有": "火天大有.jpg",
+    "地山谦": "地山谦.png",
+    "雷地豫": "雷地豫.jpg",
+    "泽雷随": "泽雷随.jpg",
+    "山风蛊": "山风蛊.png",
+    "地泽临": "地泽临.jpg",
+    "风地观": "风地观.jpg",
+    "火雷噬嗑": "火雷噬嗑.jpg",
+    "山火贲": "山火贲.png",
+    "山地剥": "山地剥.png",
+    "地雷复": "地雷复.png",
+    "天雷无妄": "天雷无妄.jpg",
+    "山天大畜": "山天大畜.png",
+    "山雷颐": "山雷颐.png",
+    "泽风大过": "泽风大过.jpg",
+    "坎为水": "坎为水.jpg",
+    "离为火": "离为火.jpg",
+    "泽山咸": "泽山咸.jpg",
+    "雷风恒": "雷风恒.jpg",
+    "天山遁": "天山遁.jpg",
+    "雷天大壮": "雷天大壮.png",
+    "火地晋": "火地晋.jpg",
+    "地火明夷": "地火明夷.png",
+    "风火家人": "风火家人.jpg",
+    "火泽睽": "火泽睽.jpg",
+    "水山蹇": "水山蹇.png",
+    "雷水解": "雷水解.jpg",
+    "山泽损": "山泽损.png",
+    "风雷益": "风雷益.jpg",
+    "泽天夬": "泽天夬.jpg",
+    "天风姤": "天风姤.jpg",
+    "泽地萃": "泽地萃.jpg",
+    "地风升": "地风升.png",
+    "泽水困": "泽水困.jpg",
+    "水风井": "水风井.png",
+    "泽火革": "泽火革.jpg",
+    "火风鼎": "火风鼎.jpg",
+    "震为雷": "震为雷.jpg",
+    "艮为山": "艮为山.jpg",
+    "风山渐": "风山渐.jpg",
+    "雷泽归妹": "雷泽归妹.png",
+    "雷火丰": "雷火丰.jpg",
+    "火山旅": "火山旅.jpg",
+    "巽为风": "巽为风.jpg",
+    "兑为泽": "兑为泽.jpg",
+    "风水涣": "风水涣.jpg",
+    "水泽节": "水泽节.png",
+    "风泽中孚": "风泽中孚.jpg",
+    "雷山小过": "雷山小过.jpg",
+    "水火既济": "水火既济.png",
+    "火水未济": "火水未济.png"
+};
+
+// 如果图片和 html 在同一目录，用空字符串或 "./"
+const GUA_IMG_BASE = "./";   // 如果你放在子目录，比如 gua_images/，改成 "gua_images/"
+
+// ========= 2. 生成卦图图片的 HTML =========
+function makeGuaImageHtml(guaName) {
+    const file = GUA_IMAGE_MAP[guaName];
+    if (!file) {
+        // 没配置图片就什么都不加（也可以在这里显示“暂无卦图”）
+        return "";
+    }
+    const src = GUA_IMG_BASE + file;
+    return `
+        <div class="gua-img-box" style="
+            text-align:center;
+            margin-bottom:10px;
+            padding:8px;
+            background:#f9f9f9;
+            border-radius:6px;
+            border:1px solid #eee;
+        ">
+            <img src="${src}"
+                 alt="${guaName} 卦图"
+                 title="${guaName} 卦图（点击放大）"
+                 style="max-width:100%;max-height:260px;border-radius:4px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.15);"
+                 onclick="openGuaImgModal('${src}','${guaName}')"
+                 onerror="this.parentElement.innerHTML='(卦图图片加载失败：${file})';">
+            <div style="margin-top:6px;font-size:13px;color:#b35c1e;font-weight:bold;">【${guaName}】卦图</div>
+        </div>
+    `;
+}
+
+// ========= 3. 大图弹窗 =========
+function openGuaImgModal(src, title) {
+    const old = document.getElementById('gua-img-modal');
+    if (old) old.remove();
+
+    const wrap = document.createElement('div');
+    wrap.id = 'gua-img-modal';
+    wrap.style.cssText = `
+        position:fixed;left:0;top:0;width:100%;height:100%;
+        background:rgba(0,0,0,0.85);z-index:9999;
+        display:flex;align-items:center;justify-content:center;
+        cursor:pointer;
+    `;
+    wrap.innerHTML = `
+        <div style="position:relative;max-width:90%;max-height:90%;">
+            <img src="${src}" alt="${title}" style="max-width:100%;max-height:85vh;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,0.5);">
+            <div style="margin-top:10px;text-align:center;color:#fff;font-size:16px;">${title} 卦图</div>
+            <button style="
+                position:absolute;right:-18px;top:-18px;
+                width:36px;height:36px;border-radius:50%;
+                border:2px solid #fff;background:#333;color:#fff;
+                font-size:20px;cursor:pointer;
+            " onclick="document.getElementById('gua-img-modal')?.remove();event.stopPropagation();">×</button>
+        </div>
+    `;
+    wrap.onclick = () => wrap.remove();
+    document.body.appendChild(wrap);
+}
+
+// ========= 4. 重写 gen()：在“1. 卦图”里插入图片 =========
+// 利用你原来的 DB / ids，不改动它们，只是把原来的 gen 用图片增强版替换掉
+(function () {
+    if (typeof DB === 'undefined' || typeof ids === 'undefined') {
+        console.error('找不到 DB 或 ids 变量，请确认脚本顺序。');
+        return;
+    }
+
+    window.gen = function () {
+        const out = document.getElementById('out');
+        out.innerHTML = '';
+
+        const titles = ['天元局'];
+
+        titles.forEach((tt, idx) => {
+            let h = `<div class="res-col"><div class="res-t">${tt}</div>`;
+            let has = false;
+
+            for (let i = 1; i <= 64; i++) {
+                const sel = document.getElementById(`${ids[idx]}_${i}`);
+                if (!sel) continue;
+                const v = sel.value;
+                if (!v) continue;
+
+                has = true;
+                const d = DB[v];
+                const guaName = d.n || '';
+                const imgHtml = makeGuaImageHtml(guaName);
+
+                h += `
+                <div class="card">
+                    <div class="c-head">
+                        <span class="c-name">${guaName}</span>
+                        <span class="c-step">第${i}步</span>
+                    </div>
+                    <details>
+                        <summary>1. 卦图解析</summary>
+                        <div class="c-body">
+                            ${imgHtml}
+                            <div>${d.t || ''}</div>
+                        </div>
+                    </details>
+                    <details><summary>2. 卦义卦辞</summary><div class="c-body">${d.x || ''}</div></details>
+                    <details><summary>3.卦解—董德龙 </summary><div class="c-body">${d.c || ''}</div></details>
+                    <details><summary>4. 地理解析</summary><div class="c-body">${d.d || ''}</div></details>
+                    <details><summary>5. 皇极论命</summary><div class="c-body">${d.h || ''}</div></details>
+                </div>`;
+            }
+
+            if (!has) {
+                h += '<div style="text-align:center;color:#999;padding:10px;">未选择</div>';
+            }
+
+            h += '</div>';
+            out.innerHTML += h;
+        });
+    };
+
+    console.log('✅ 卦图图片功能已挂载，点击“点击生成”即可看到卦图。');
+})();
+</script>
+</body>
+</html>
+
+            </div>
+        </section>
+        
+        <!-- 软件声明页面 -->
+        <section id="statement" class="page-content">
+            
+            
+            <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周易学习软件及课程 - 传承中华文明   走向世界</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+        
+        body {
+            background-color: #f8f5f0;
+            color: #333;
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f5f0"/><path d="M0,50 Q25,40 50,50 T100,50" stroke="%23e8e0d0" fill="none" stroke-width="0.5"/><path d="M0,30 Q25,20 50,30 T100,30" stroke="%23e8e0d0" fill="none" stroke-width="0.5"/><path d="M0,70 Q25,60 50,70 T100,70" stroke="%23e8e0d0" fill="none" stroke-width="0.5"/></svg>');
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(to right, #8B4513, #A0522D, #8B4513);
+            color: #f8f5f0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #8B4513;
+        }
+        
+        section h2 {
+            color: #8B4513;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #e8e0d0;
+            display: flex;
+            align-items: center;
+        }
+        
+        section h2:before {
+            content: "《";
+            margin-right: 5px;
+        }
+        
+        section h2:after {
+            content: "》";
+            margin-left: 5px;
+        }
+        
+        .author {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #8B4513;
+            margin-top: 20px;
+        }
+        
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .payment-table thead tr {
+            background-color: #8B4513;
+            color: #f8f5f0;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .payment-table th,
+        .payment-table td {
+            padding: 15px 20px;
+            border-right: 1px solid #e8e0d0;
+        }
+        
+        .payment-table tbody tr {
+            border-bottom: 1px solid #e8e0d0;
+        }
+        
+        .payment-table tbody tr:nth-of-type(even) {
+            background-color: #fcfaf7;
+        }
+        
+        .payment-table tbody tr:last-of-type {
+            border-bottom: 2px solid #8B4513;
+        }
+        
+        .payment-table tbody tr:hover {
+            background-color: #f8f5f0;
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        
+        .payment-method {
+            text-align: center;
+            margin: 15px;
+            padding: 20px;
+            background-color: #fcfaf7;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .payment-method h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .payment-placeholder {
+            width: 200px;
+            height: 200px;
+            background-color: #e8e0d0;
+            border: 2px dashed #8B4513;
+            border-radius: 8px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B4513;
+            font-weight: bold;
+        }
+        
+        .yin-de-explanation {
+            background-color: #fcfaf7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #8B4513;
+        }
+        
+        .yin-de-explanation h4 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+        
+        .important-note {
+            background-color: #fff9e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #ffcc00;
+        }
+        
+        .important-note h4 {
+            color: #b8860b;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .important-note h4:before {
+            content: "⚠";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .contact-info {
+            background-color: #f0f7ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4a6fa5;
+        }
+        
+        .contact-info h4 {
+            color: #4a6fa5;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e8e0d0;
+            margin-top: 30px;
+        }
+        
+        .tagline {
+            text-align: center;
+            font-style: italic;
+            color: #8B4513;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            .payment-table {
+                font-size: 0.9rem;
+            }
+            
+            .payment-table th,
+            .payment-table td {
+                padding: 10px;
+            }
+            
+            .payment-method {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+        
+        <div class="tagline">
+            "易经为亘古不变的自然规律，是社会发展不可或缺的明灯"
+        </div>
+        
+        <section id="announcement">
+            <h2>告各位同志书</h2>
+            <p>各位同志，我们都是中华民族的一员，我们都对中华民族的复兴有着历史责任和历史使命。千年的传承，无数仁人志士的浴血奋斗，终于有了今天我向你们讲述的课程内容和这个软件。</p>
+            <p>无数人想学习传承却没有合适的师承，没有合适的因缘。今特此公布此软件及课程，以求众生能有入门学习之法门。我们不必计较此法门为何人创造，只需精诚竭力，发扬光大，上慰先祖，下安中华。各行各业都可学习周易，运用周易，发展各个行业，以求百业兴盛。人人都可学习周易，运用周易，以求人人皆明天地之至理，自然之规律，言念君子，以致人人向往之大同社会。</p>
+            <br><p>何为大同，标准有二：</p>
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>第一，科学发达以致生产力发达此为一也。</li>
+                <li>第二，人心明纲常，敬五伦，以致多为君子是也。</li>
+            </ul>
+            <p>今天我们的社会，科学即将迎来指数型爆发，如没有正确之理念引导，将不知人类这艘巨轮将去往何方。易经为亘古不变的自然规律，其对一切世间客观事物有着引领指导发展方向的作用，这是人类社会发展的过程中不可或缺的明灯。无论于公于私，从哪方面来讲，学习易经修身养性，明德，复兴中华，造福世界，都是我们每一位炎黄子孙的生命中不可或缺的一部分，也应当是当前人类中最重要的一部分。传承中华文明的同时，让中华文明走向世界，造福世界。</p>
+            <div class="author">青岛 董德龙</div>
+        </section>
+        
+        <section id="payment">
+            <h2>本软件及课程收费方式</h2>
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th>易经排盘软件收费</th>
+                        <th>课程及六十四卦全象·推演系统收费</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>一年使用期10元</td>
+                        <td>一次性学习费用150元</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>如不愿支付使用费的则按照以下方法收费：</div>
+                            <div class="yin-de-explanation">
+                                <h4>其他支付方式</h4>
+                                <p>需在他人需要帮助时（使用的每年）做10件阴德之事。何为阴德，即帮助他人不图回报也。不只是对人，众生皆可。事不论大小，哪怕几包垃圾、一餐饱饭这样的小事也可。并且帮助他人后（有条件的情况下）提醒他人将阴德之理念传递下去，以求早日社会大同。</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>如不愿支付学习费用的则按照以下方法收费：</div>
+                            <div class="yin-de-explanation">
+                                <h4>其他支付方式</h4>
+                                <p>需在他人需要帮助时做150件阴德之事。何为阴德，即帮助他人不图回报也。不只是对人，众生皆可。事不论大小，哪怕几包垃圾、一餐饱饭这样的小事也可。并且帮助他人后（有条件的情况下）提醒他人将阴德之理念传递下去，以求早日社会大同。</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; background-color: #fcfaf7;">
+                            <strong>因收费方式的不同，所以软件及课程并不需要先支付再学习使用，希望大家自觉。</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="important-note">
+                <h4>重要提醒</h4>
+                <p>请不要错付，支付后对支付金额一律不退。</p>
+            </div>
+            
+            <h3 style="text-align: center; margin: 30px 0 20px 0; color: #8B4513;">支付方式</h3>
+            <div class="payment-methods">
+                <div class="payment-method">
+                    <h3>微信支付</h3>
+                    <div class="payment-placeholder">
+                        微信支付二维码<br/><img src="gua_images/董德龙微信支付码.png" style="max-width:100%;max-height:260px;border-radius:4px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                    </div>
+                    <p>请使用微信扫描二维码支付</p>
+                </div>
+                
+                <div class="payment-method">
+                    <h3>支付宝支付</h3>
+                    <div class="payment-placeholder">
+                        支付宝支付二维码<br/><img src="gua_images/董德龙支付宝支付码.png" style="max-width:100%;max-height:260px;border-radius:4px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                    </div>
+                    <p>请使用支付宝扫描二维码支付</p>
+                </div>
+<div class="payment-methods">
+                <div class="payment-method">
+                    <h3>银行卡支付</h3>
+                    <p>姓名：董德龙</p>
+                    <p>卡号：6231700190021083768</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="correction">
+            <h2>更正说明</h2>
+            <p>本课程及软件难免会有不尽人意的地方，如各位同仁有更好的见解，可发送邮件至本人邮箱：</p>
+            
+            <div class="contact-info">
+                <h4>联系邮箱</h4>
+                <p style="font-size: 1.2rem; font-weight: bold;">2224259906@qq.com</p>
+                <p>我会定期查阅邮件，并认真考虑各位同仁的宝贵意见。</p>
+            </div>
+            
+            <p>同时本软件会定期更新，请自行到网站下载最新版。</p>
+            <p style="margin-top: 15px;">希望各位同志能够共同参与，不断完善这一传承中华文明的重要工具，让易经智慧更好引领社会的发展。</p>
+        </section>
+        
+        <div class="footer">
+       
+        </div>
+    </div>
+    
+    <script>
+        // 简单的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为每个部分添加滚动动画
+            const sections = document.querySelectorAll('section');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                section.style.opacity = 0;
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(section);
+            });
+            
+            // 为支付占位符添加点击提示
+            const placeholders = document.querySelectorAll('.payment-placeholder');
+            placeholders.forEach(placeholder => {
+                placeholder.addEventListener('click', function() {
+                    const method = this.closest('.payment-method').querySelector('h3').textContent;
+                    alert(`请将您的${method}二维码图片放置在此位置`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+            </div>
+        </section>
+        
+        <footer>
+         
+            
+            <p style="margin-top: 10px; font-size: 0.8rem;">内容由青岛董德龙老师提供  ·  旨在传播中华传统文化</p>
+            <p style="margin-top: 10px; font-size: 1rem;">周易学习软件及课程  版权归董德龙老师所有</p>
+            <p style="margin-top: 10px; font-size: 1.3rem;">传承中华文明  ·  弘扬易经智慧  ·  促进社会大同</p>
+        </footer>
+    </div>
+
+    <script>
+        // 页面切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const pageContents = document.querySelectorAll('.page-content');
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 获取目标页面ID
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // 移除所有按钮的激活状态
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 添加当前按钮的激活状态
+                    this.classList.add('active');
+                    
+                    // 隐藏所有页面内容
+                    pageContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // 显示目标页面内容
+                    document.getElementById(targetPage).classList.add('active');
+                });
+            });
+            
+            // 模拟加载完成
+            setTimeout(() => {
+                document.body.style.opacity = 1;
+            }, 100);
+        });
+    </script>
+</body>
 </html>
